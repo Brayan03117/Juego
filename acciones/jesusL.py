@@ -143,10 +143,10 @@ def Pos0(t_x, t_y, t_z):
     draw_rectangular_prism(1, 2, 3.15, (255/255, 255/255, 0/255), (0.80 + t_x, 3. + t_y, 2.5 + t_z))  # Amarillo
     
     # Copa del sombrero (centrada sobre la cabeza)
-    draw_cylinder(1.25 + t_x, 4 + t_y, 6.8 + t_z, 0.5, 0.2, 32, (0, 0, 0))  # Negro
+    draw_cylinder(1.25 + t_x, 4 + t_y, 6.8 + t_z, 0.5, 0.2, 32, (1, 1, 1))  # Negro
 
     # Ala del sombrero (parte inferior)
-    draw_cylinder(1.25 + t_x, 4.0 + t_y, 6.7 + t_z, 0.1, 0.5, 32, (0, 0, 0))  
+    draw_cylinder(1.25 + t_x, 4.0 + t_y, 6.7 + t_z, 0.1, 0.5, 32, (1, 1, 1))  
     
     # Piernas (más delgadas y color azul)
     draw_cylinder(1.25 + t_x, 3.25 + t_y, 0.5 + t_z, 2, 0.2, 32, (0/255, 0/255, 255/255))  # Azul
@@ -161,7 +161,7 @@ def Pos0(t_x, t_y, t_z):
     draw_sphere1(1.28 + t_x, 5.25 + t_y, 5 + t_z, 0.4, (255/255, 0/255, 0/255))  # Rojo
     
     draw_cylinder(1.65 + t_x, 2.7 + t_y, 3 + t_z, height=1.75, radius=0.2, slices=32, color=(255/255, 0/255, 0/255))  # Rojo
-# Mano derecha
+    # Mano derecha
     draw_cylinder(1.65 + t_x, 5.3 + t_y, 3 + t_z, height=1.75, radius=0.2, slices=32, color=(255/255, 0/255, 0/255))  # Rojo
 
     glDisable(GL_LIGHTING) 

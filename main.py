@@ -28,15 +28,21 @@ def main():
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         iluminacion(1.0, 1.0, 1.0)  # Luz blanca
 
+
         # Dibujar JesusL
         glPushMatrix()
         glTranslatef(-3.0, 0.0, 0.0)
-        draw_jesus(2, 2, 1.5, 0)  
+        glRotatef(90, 1, 0, 0)  
+        glRotatef(180, 0, 1, 0)  
+        glRotatef(280, 0, 0, 1)  
+        draw_jesus(0, -3, 0, 0)
         glPopMatrix()
 
+        
         # Dibujar Torchic
         glPushMatrix()
         glTranslatef(3.0, 0.0, 0.0)
+        glRotatef(180, 0, 1, 0)  # Girar 180 grados en el eje Y para que mire hacia la cámara
         draw_torchic()
         glPopMatrix()
 
