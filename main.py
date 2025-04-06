@@ -26,7 +26,7 @@ def main():
                 quit()
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-        iluminacion(1.0, 1.0, 1.0)  # Luz blanca
+        iluminacion(0, 0, 0)  # Luz blanca
 
 
         # Dibujar JesusL
@@ -34,8 +34,8 @@ def main():
         glTranslatef(-3.0, 0.0, 0.0)
         glRotatef(90, 1, 0, 0)  
         glRotatef(180, 0, 1, 0)  
-        glRotatef(280, 0, 0, 1)  
-        draw_jesus(0, -3, 0, 0)
+        glRotatef(90, 0, 0, 1)  
+        draw_jesus(0, -3, -2.2, 0)          # x,y,z
         glPopMatrix()
 
         
