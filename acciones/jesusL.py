@@ -81,11 +81,6 @@ def draw_rectangular_prism(width, height, depth, color, translation):
     glEnd()
     glPopMatrix()
 
-def draw(t_x,t_y,t_z, Posimiento):
-    #Cabeza
-    if Posimiento == 0:
-        Pos0(t_x,t_y,t_z)
-
         
 def draw_cylinder(x, y, z, height, radius, slices=32, color=(0.0,0.0,0.0)):
     glPushMatrix()
@@ -129,7 +124,14 @@ def draw_cylinder(x, y, z, height, radius, slices=32, color=(0.0,0.0,0.0)):
     # Restauramos la matriz de transformación
     glPopMatrix()
 
-    
+
+def draw(t_x,t_y,t_z, Posimiento):
+    if Posimiento == 0:
+        Pos0(t_x,t_y,t_z)
+
+
+
+
 def Pos0(t_x, t_y, t_z):
     glEnable(GL_DEPTH_TEST)
     glPushMatrix()
