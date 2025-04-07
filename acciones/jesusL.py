@@ -82,7 +82,7 @@ def draw_rectangular_prism(width, height, depth, color, translation):
     glPopMatrix()
 
         
-def draw_cylinder(x, y, z, height, radius, slices=32, color=(0.0,0.0,0.0)):
+def draw_cylinder(x, y, z, height, radius, slices, color):
     glPushMatrix()
     glColor3f(*color)
 

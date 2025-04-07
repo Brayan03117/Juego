@@ -222,11 +222,11 @@ def dibujar_pico(position, scale_factor):
     glPopMatrix()
 
 def original5(position):
-    configurar_iluminacion()
+    #configurar_iluminacion()
 
     dibujar_cuerpo(position)
     dibujar_brazos(position)
     dibujar_piernas(position)
     dibujar_cabeza(position)
 
-    deshabilitar_iluminacion()
+    #deshabilitar_iluminacion()
