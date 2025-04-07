@@ -3,10 +3,10 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
 from pygame.locals import *
-from Acciones.jesusL import draw as draw_jesus  # Cambiado
-from Acciones.torchic import personaje as draw_torchic  # Cambiado
+from acciones.jesusL import draw as draw_jesus  # Cambiado
+from acciones.torchic import personaje as draw_torchic  # Cambiado
 from Esenarios.escenario import draw_e  # Cambiado
-from Acciones.iluminacion import iluminacion  # Cambiado
+from acciones.iluminacion import iluminacion  # Cambiado
 
 def main():
     pygame.init()
