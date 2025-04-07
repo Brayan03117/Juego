@@ -146,7 +146,7 @@ def set_color_rgb(r, g, b):
 def dibujar_cuerpo(position):
     x, y, z = position
     glPushMatrix()
-    set_color_rgb(40,60,80)  # verde eléctrico del difuso
+    set_color_rgb(255, 128, 0) 
     y_body = y + CUERPO_ALTO / 2 - 4
     draw_rectangle(CUERPO_ANCHO, CUERPO_ALTO, CUERPO_PROFUNDIDAD, (x, y_body, z - 5))
     glPopMatrix()
@@ -154,7 +154,7 @@ def dibujar_cuerpo(position):
 def dibujar_brazos(position):
     x, y, z = position
     glPushMatrix()
-    set_color_rgb(255, 128, 0)  # verde bosque del ambiente
+    set_color_rgb(40, 60, 80) 
     y_arm = y + CUERPO_ALTO / 2 - 4
     x_left = x - CUERPO_ANCHO / 2 - BRAZOS_ANCHO / 2
     draw_rectangle(BRAZOS_ANCHO, BRAZOS_ALTO, BRAZOS_ANCHO, (x_left, y_arm, z - 5))
@@ -165,7 +165,7 @@ def dibujar_brazos(position):
 def dibujar_piernas(position):
     x, y, z = position
     glPushMatrix()
-    set_color_rgb(255, 128, 0) 
+    set_color_rgb(40, 60, 80) 
     y_legs = y - 4
     x_left = x - PIERNAS_BASE_ANCHO / 2 - SEPARACION_X
     draw_rectangle(PIERNAS_BASE_ANCHO, PIERNAS_ALTO, PIERNAS_BASE_ANCHO, (x_left, y_legs, z - 5))
@@ -179,7 +179,7 @@ def dibujar_cabeza(position):
     scale_factor_head = cabeza_lado / (6 * SCALE_FACTOR)
 
     glPushMatrix()
-    set_color_rgb(187, 222, 251)  
+    set_color_rgb(187, 222, 251)
     y_head = y + CUERPO_ALTO + cabeza_lado / 2 - 4
     draw_rectangle(cabeza_lado, cabeza_lado, cabeza_lado, (x, y_head, z - 5))
     glPopMatrix()
@@ -222,11 +222,11 @@ def dibujar_pico(position, scale_factor):
     glPopMatrix()
 
 def original5(position):
-    configurar_iluminacion()
+   # configurar_iluminacion()
 
     dibujar_cuerpo(position)
     dibujar_brazos(position)
     dibujar_piernas(position)
     dibujar_cabeza(position)
 
-    deshabilitar_iluminacion()
+    #deshabilitar_iluminacion()

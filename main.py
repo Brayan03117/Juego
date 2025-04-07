@@ -30,6 +30,7 @@ def main():
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         iluminacion(0, 0, 0)  # Luz blanca
 
+
         # Dibujar JesusL
         glPushMatrix()
         glTranslatef(-3.0, 0.0, 0.0)
@@ -47,15 +48,13 @@ def main():
         draw_torchic()
         glPopMatrix()
 
-
-        # Dibujar dyson
+            # Dibujar dyson
         glPushMatrix()
         glTranslatef(3.0, 1.5, -5.0)      # Posición en el mundo
         #glRotatef(180, 0, 1, 0) 
         glRotatef(375, 0, 1, 0)  
         draw_dyson((-10, 2, 7))             # Posición local en su propio sistema
         glPopMatrix()
-
 
         pygame.display.flip()
         pygame.time.wait(10)
