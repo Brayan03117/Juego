@@ -28,7 +28,7 @@ def main():
                 quit()
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-        #iluminacion(0, 0, 0)  # Luz blanca
+        iluminacion(0, 0, 0)  # Luz blanca
         glColor3f(1.0, 1.0, 1.0)
 
         # Dibujar JesusL
@@ -37,7 +37,9 @@ def main():
         glRotatef(90, 1, 0, 0)  
         glRotatef(180, 0, 1, 0)  
         glRotatef(90, 0, 0, 1)  
-        draw_jesus(0, -3, -2.2, 0)          # x,y,z
+        glDisable(GL_LIGHTING)
+        draw_jesus(0, -3, -2.2, 0)   
+              # x,y,z
         glPopMatrix()
 
         # Dibujar Torchic
@@ -54,6 +56,8 @@ def main():
         glRotatef(375, 0, 1, 0)  
         draw_dyson((-10, 2, 7))             # Posición local en su propio sistema
         glPopMatrix()
+
+        glEnable(GL_LIGHTING)
 
 
         pygame.display.flip()
