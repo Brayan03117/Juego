@@ -53,6 +53,15 @@ def draw_param_surface(fx, fy, fz, u_range, t_range, u_steps=20, t_steps=10):
                 x = fx(uu, tt)
                 y = fz(uu, tt)
                 z = -fy(uu, tt)
+
+                # Normal aproximada: radial desde el centro
+                magn = (x**2 + y**2 + z**2) ** 0.5
+                if magn == 0:
+                    nx, ny, nz = 0, 0, 1
+                else:
+                    nx, ny, nz = x / magn, y / magn, z / magn
+
+                glNormal3f(nx, ny, nz)
                 glVertex3f(x, y, z)
     glEnd()
 
