@@ -1,7 +1,7 @@
 from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
-
+import pygame
 
 
 def draw_rectangle(width, height, depth, position):
@@ -126,19 +126,21 @@ PIERNAS_ALTO = 12 * SCALE_FACTOR
 PIERNAS_BASE_ANCHO = 1.8 * SCALE_FACTOR
 SEPARACION_X = 0.2 * SCALE_FACTOR
 
-def configurar_iluminacion():
-    if ILUMINACION_HABILITADA:
-        glEnable(GL_DEPTH_TEST)
-        glEnable(GL_LIGHTING)
-        glEnable(GL_LIGHT0)
-        glEnable(GL_NORMALIZE)
-        glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE)
-        glEnable(GL_COLOR_MATERIAL)
+def set_amarillo():
+    # Amarillo 
+    glColor3f(255/255.0, 255/255.0, 143/255.0)  # amarillo claro
 
-def deshabilitar_iluminacion():
-    if ILUMINACION_HABILITADA:
-        glDisable(GL_LIGHTING)
-        glDisable(GL_LIGHT0)
+def set_verde():
+    # Verde 
+    glColor3f( 99/255.0, 148/255.0, 53/255.0)  # verde azulado oscuro
+
+def set_robot_purple():
+    # Púrpura
+    glColor3f(148/255.0, 0.0, 211/255.0)
+
+def set_naranja():
+    # Naranja
+    glColor3f(1.0, 0.5, 0.0)  # Naranja
 
 def set_color_rgb(r, g, b):
     glColor3f(r / 255.0, g / 255.0, b / 255.0)
@@ -146,7 +148,7 @@ def set_color_rgb(r, g, b):
 def dibujar_cuerpo(position):
     x, y, z = position
     glPushMatrix()
-    set_color_rgb(255, 128, 0) 
+    set_naranja()
     y_body = y + CUERPO_ALTO / 2 - 4
     draw_rectangle(CUERPO_ANCHO, CUERPO_ALTO, CUERPO_PROFUNDIDAD, (x, y_body, z - 5))
     glPopMatrix()
@@ -154,7 +156,7 @@ def dibujar_cuerpo(position):
 def dibujar_brazos(position):
     x, y, z = position
     glPushMatrix()
-    set_color_rgb(40, 60, 80) 
+    set_verde() 
     y_arm = y + CUERPO_ALTO / 2 - 4
     x_left = x - CUERPO_ANCHO / 2 - BRAZOS_ANCHO / 2
     draw_rectangle(BRAZOS_ANCHO, BRAZOS_ALTO, BRAZOS_ANCHO, (x_left, y_arm, z - 5))
@@ -165,7 +167,7 @@ def dibujar_brazos(position):
 def dibujar_piernas(position):
     x, y, z = position
     glPushMatrix()
-    set_color_rgb(40, 60, 80) 
+    set_verde()  
     y_legs = y - 4
     x_left = x - PIERNAS_BASE_ANCHO / 2 - SEPARACION_X
     draw_rectangle(PIERNAS_BASE_ANCHO, PIERNAS_ALTO, PIERNAS_BASE_ANCHO, (x_left, y_legs, z - 5))
@@ -179,7 +181,7 @@ def dibujar_cabeza(position):
     scale_factor_head = cabeza_lado / (6 * SCALE_FACTOR)
 
     glPushMatrix()
-    set_color_rgb(187, 222, 251)
+    set_amarillo()
     y_head = y + CUERPO_ALTO + cabeza_lado / 2 - 4
     draw_rectangle(cabeza_lado, cabeza_lado, cabeza_lado, (x, y_head, z - 5))
     glPopMatrix()
@@ -191,7 +193,7 @@ def dibujar_cabeza(position):
 def dibujar_casco(position, cabeza_lado, scale_factor):
     x, y, z = position
     glPushMatrix()
-    set_color_rgb(102, 0, 153)  # violeta intenso difuso
+    set_robot_purple()
     y_helmet = y + cabeza_lado / 2 - 0.2 * scale_factor
     z_helmet = z + cabeza_lado / 2 + 0.1 * scale_factor
     draw_rectangle(2 * scale_factor, 0.3 * scale_factor, 0.2 * scale_factor, 
@@ -213,7 +215,7 @@ def dibujar_ojos(position, cabeza_lado, scale_factor):
 def dibujar_pico(position, scale_factor):
     x, y, z = position
     glPushMatrix()
-    set_color_rgb(40,60,80)
+    set_verde()
     x_pico = x - 0.2 * scale_factor
     y_pico = y - 0.2 * scale_factor
     z_pico = z + (6 * SCALE_FACTOR) / 2 + 0.1
