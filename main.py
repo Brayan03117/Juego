@@ -39,7 +39,6 @@ def main():
         glRotatef(90, 0, 0, 1)  
         glDisable(GL_LIGHTING)
         draw_jesus(0, -3, -2.2, 0)   
-              # x,y,z
         glPopMatrix()
 
         # Dibujar Torchic
