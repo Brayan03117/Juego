@@ -50,21 +50,20 @@ def main():
 
 
 
-
         # Dibujar JesusL
         glPushMatrix()
         glTranslatef(-1.5, 0.0, 0.0)
         glRotatef(90, 1, 0, 0)  
         glRotatef(180, 0, 1, 0)  
         glRotatef(90, 0, 0, 1)  
-        glDisable(GL_LIGHTING)
+        #glDisable(GL_LIGHTING)
 
         if seleccion_actual == 2 or seleccion_actual == 1:
             glEnable(GL_LIGHTING)
             glColor3f(1.0, 1.0, 1.0)  # Iluminado normal
         else:
             glDisable(GL_LIGHTING)
-            glColor3f(0.2, 0.2, 0.2)  # Oscuro
+            glColor3f(0, 0, 0)  # Oscuro
 
         draw_jesus(0, -3, -2.2, 0)   
         glPopMatrix()
