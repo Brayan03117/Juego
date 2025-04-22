@@ -3,28 +3,16 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
 from pygame.locals import *
-from OpenGL.GLUT import GLUT_BITMAP_TIMES_ROMAN_24
 from acciones.jesusL import draw as draw_jesus 
 from acciones.torchic import personaje as draw_torchic
 from acciones.dyson import original5 as draw_dyson  
 from Esenarios.escenario import draw_e  
 from acciones import iluminacion  
 from src.textos import dibujar_label_texto
-
+        
 
 personaje_posiciones = [(-0.5, 6.0, 0.0), (5.0, 6.0, 0.0), (-6, 6.0, 0.0)]  # Coordenadas para la flecha
-personaje_nombres = ["JESUSL", "TORCHIC", "DYSON"]  # Nombres de los personajes
 seleccion_actual = 0
-
-# Definir una función básica para renderizar texto
-def renderizar_texto(texto, x, y, escala=1.0, color=(1.0, 1.0, 1.0)):
-    """Función básica para renderizar texto en OpenGL"""
-    glDisable(GL_LIGHTING)
-    glColor3f(*color)
-    glRasterPos2f(x, y)
-    for caracter in texto:
-        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ord(caracter))
-    glEnable(GL_LIGHTING)
 
 
 def main():
@@ -35,15 +23,13 @@ def main():
     pygame.display.quit()
     pygame.display.init()
     pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
+    pygame.display.set_caption("Selecciona tu personaje")
     gluPerspective(45, (display[0]/display[1]), 0.1, 50.0)
     glTranslatef(0.0, -2.0, -15)    
 
     glEnable(GL_DEPTH_TEST)
     glEnable(GL_LIGHTING)
     glEnable(GL_COLOR_MATERIAL)
-
-    # Inicializar GLUT para renderizar texto
-    glutInit()
 
     #iluminacion.activar_iluminacion('phong')  # Cambia el modelo de iluminación aquí
 
@@ -64,6 +50,8 @@ def main():
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         iluminacion.iluminacion(0, 0, 0)  # Luz blanca
         glColor3f(1.0, 1.0, 1.0)
+
+
 
         # Dibujar JesusL
         glPushMatrix()
@@ -112,6 +100,8 @@ def main():
         glPopMatrix()
 
 
+
+
         # Dibujar flecha sobre personaje seleccionado
         glPushMatrix()
         glTranslatef(*personaje_posiciones[seleccion_actual])
@@ -124,48 +114,6 @@ def main():
         glEnd()
         glEnable(GL_LIGHTING)
         glPopMatrix()
-
-        # Dibujar el nombre del personaje seleccionado en la parte inferior
-        glMatrixMode(GL_PROJECTION)
-        glPushMatrix()
-        glLoadIdentity()
-        gluOrtho2D(0, display[0], 0, display[1])
-        glMatrixMode(GL_MODELVIEW)
-        glPushMatrix()
-        glLoadIdentity()
-        glDisable(GL_LIGHTING)
-        glDisable(GL_DEPTH_TEST)
-        
-        # Dibujar un fondo para el texto
-        glColor4f(0.0, 0.0, 0.0, 0.7)  # Negro semi-transparente
-        glBegin(GL_QUADS)
-        glVertex2f(0, 0)
-        glVertex2f(display[0], 0)
-        glVertex2f(display[0], 50)
-        glVertex2f(0, 50)
-        glEnd()
-        
-        # Dibujar el texto del nombre con colores más llamativos
-        nombre_personaje = personaje_nombres[seleccion_actual]
-        
-        # Usar colores diferentes según el personaje seleccionado
-        if seleccion_actual == 0:  # JESUSL
-            color_texto = (1.0, 0.8, 0.0)  # Dorado
-        elif seleccion_actual == 1:  # TORCHICH
-            color_texto = (1.0, 0.5, 0.0)  # Naranja
-        else:  # DYSON
-            color_texto = (0.0, 0.8, 1.0)  # Azul claro
-            
-        # Usar una escala mayor para hacer el texto más grande
-        renderizar_texto(f"PERSONAJE: {nombre_personaje}", display[0]/2 - 120, 20, escala=2.0, color=color_texto)
-        
-        # Restaurar matrices
-        glEnable(GL_DEPTH_TEST)
-        glEnable(GL_LIGHTING)
-        glPopMatrix()
-        glMatrixMode(GL_PROJECTION)
-        glPopMatrix()
-        glMatrixMode(GL_MODELVIEW)
 
 
         dibujar_label_texto("Selecciona tu personaje", pos_x=220, pos_y=550, tam=24)
