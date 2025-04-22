@@ -55,3 +55,21 @@ def draw_colision2():
     glTranslatef(0, 0, 0) 
     draw_text("Impacto esquivable", 100, 300, 0, 24, 255, 255, 255, 0, 0, 0)
     glPopMatrix()
+
+def renderizar_texto(texto, x, y, escala=1.0, color=(255, 255, 255)):
+    """
+    Renderiza texto en la posición especificada con escala y color personalizados.
+    
+    Args:
+        texto: El texto a renderizar
+        x, y: Coordenadas de posición
+        escala: Factor de escala para el tamaño del texto
+        color: Tupla RGB para el color del texto
+    """
+    font = pygame.font.Font(None, int(24 * escala))
+    text_surface = font.render(texto, True, color, (0, 0, 0))
+    text_data = pygame.image.tostring(text_surface, "RGBA", True)
+    
+    glRasterPos3d(x, y, 0)
+    glDrawPixels(text_surface.get_width(), text_surface.get_height(), 
+                GL_RGBA, GL_UNSIGNED_BYTE, text_data)

@@ -153,8 +153,8 @@ def Pos0(t_x, t_y, t_z):
     draw_cylinder(1.25 + t_x, 4.75 + t_y, 0.5 + t_z, 2, 0.2, 32, (0/255, 0/255, 255/255))  # Azul
     
     # Pies
-    draw_rectangular_prism(1, 0.5, 0.5, (0.0, 0.0, 0.0), (1 + t_x, 4.5 + t_y, 0 + t_z))
-    draw_rectangular_prism(1, 0.5, 0.5, (0.0, 0.0, 0.0), (1 + t_x, 3 + t_y, 0 + t_z))
+    draw_rectangular_prism(1, 0.5, 0.5, (1, 1, 1), (1 + t_x, 4.5 + t_y, 0 + t_z))
+    draw_rectangular_prism(1, 0.5, 0.5, (1, 1, 1), (1 + t_x, 3 + t_y, 0 + t_z))
     
     # Hombros
     draw_sphere1(1.28 + t_x, 2.75 + t_y, 5 + t_z, 0.4, (255/255, 0/255, 0/255))  # Rojo

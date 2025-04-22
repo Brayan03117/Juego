@@ -11,10 +11,10 @@ def iluminacion(R, G, B):
     posicion_luz = (2.0, 2.0, 2.0, 1.0)
 
     # Luz ambiental menos intensa
-    luz_ambiental = (1.0, 0.0, 0.0, 1.0)
+    luz_ambiental = (0.2, 0.2, 0.2, 1.0)
 
     # Luz difusa con el color especificado
-    difusion = (R, G, B, 0.1)
+    difusion = (R, G, B, 1.0)
 
     # Luz especular (opcional, para añadir brillo)
     especular = (0.5, 0.5, 0.5, 1.0)

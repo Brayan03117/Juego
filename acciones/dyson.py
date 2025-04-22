@@ -2,7 +2,9 @@ from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 import pygame
-
+from math import sin, cos, radians  # Importar funciones trigonométricas 
+import time
+import math
 
 def draw_rectangle(width, height, depth, position):
     x, y, z = position
@@ -142,6 +144,10 @@ def set_naranja():
     # Naranja
     glColor3f(1.0, 0.5, 0.0)  # Naranja
 
+def set_blanco_sucio():
+    # Blanco Sucio (ligeramente amarillento)
+    glColor3f(0.9, 0.9, 0.8)
+
 def set_color_rgb(r, g, b):
     glColor3f(r / 255.0, g / 255.0, b / 255.0)
 
@@ -232,3 +238,4 @@ def original5(position):
     dibujar_cabeza(position)
 
     #deshabilitar_iluminacion()
+
