@@ -166,6 +166,43 @@ COLOR_CASCO = None
 COLOR_OJOS = None
 COLOR_PICO = None
 
+def dibujar_brazo_izquierdo(position, color_func):
+    x, y, z = position
+    y_arm = y + CUERPO_ALTO / 2 - 4
+    x_left = x - CUERPO_ANCHO / 2 - BRAZOS_ANCHO / 2
+    glPushMatrix()
+    color_func()
+    draw_rectangle(BRAZOS_ANCHO, BRAZOS_ALTO, BRAZOS_ANCHO, (x_left, y_arm, z - 5))
+    glPopMatrix()
+
+def dibujar_brazo_derecho(position, color_func):
+    x, y, z = position
+    y_arm = y + CUERPO_ALTO / 2 - 4
+    x_right = x + CUERPO_ANCHO / 2 + BRAZOS_ANCHO / 2
+    glPushMatrix()
+    color_func()
+    draw_rectangle(BRAZOS_ANCHO, BRAZOS_ALTO, BRAZOS_ANCHO, (x_right, y_arm, z - 5))
+    glPopMatrix()
+
+def dibujar_pierna_izquierda(position, color_func):
+    x, y, z = position
+    y_leg = y - 4
+    x_left_leg = x - PIERNAS_BASE_ANCHO / 2 - SEPARACION_X
+    glPushMatrix()
+    color_func()
+    draw_rectangle(PIERNAS_BASE_ANCHO, PIERNAS_ALTO, PIERNAS_BASE_ANCHO, (x_left_leg, y_leg, z - 5))
+    glPopMatrix()
+
+def dibujar_pierna_derecha(position, color_func):
+    x, y, z = position
+    y_leg = y - 4
+    x_right_leg = x + PIERNAS_BASE_ANCHO / 2 + SEPARACION_X
+    glPushMatrix()
+    color_func()
+    draw_rectangle(PIERNAS_BASE_ANCHO, PIERNAS_ALTO, PIERNAS_BASE_ANCHO, (x_right_leg, y_leg, z - 5))
+    glPopMatrix()
+
+
 def dibujar_cuerpo(position, color_func):
     x, y, z = position
     glPushMatrix()
@@ -350,8 +387,56 @@ def pAsco(position):
     glDisable(GL_LIGHT0)
     glPopMatrix()
 
-    #####Colores
+# == Animaciones ===
+def animar_brazo_asco(position, color_func):
+    x, y, z = position
+    current_time = time.time()
+    angle = 75 + 75 * math.sin(current_time * 2)
 
+    y_arm = y + CUERPO_ALTO / 2 - 4
+    x_right = x + CUERPO_ANCHO / 2 + BRAZOS_ANCHO / 2
+
+    glPushMatrix()
+    glTranslatef(x_right, y_arm + BRAZOS_ALTO / 2, z - 5)
+    glRotatef(-angle, 1, 0, 0)
+    color_func()
+    draw_rectangle(BRAZOS_ANCHO, BRAZOS_ALTO, BRAZOS_ANCHO, (0, -BRAZOS_ALTO / 2, 0))
+    glPopMatrix()
+
+
+def animar_cabeza_asco(position, color_cabeza, color_ojos, color_casco, color_pico):
+    x, y, z = position
+    cabeza_lado = 6 * SCALE_FACTOR
+    scale_factor = cabeza_lado / (6 * SCALE_FACTOR)
+    current_time = time.time()
+    angle = 25 * math.sin(current_time * 3)
+
+    y_head = y + CUERPO_ALTO + cabeza_lado / 2 - 4
+    head_z = z - 5
+
+    glPushMatrix()
+    glTranslatef(x, y_head, head_z)
+    glRotatef(angle, 0, 1, 0)
+    glTranslatef(-x, -y_head, -head_z)
+
+    # Cabeza
+    color_cabeza()
+    draw_rectangle(cabeza_lado, cabeza_lado, cabeza_lado, (x, y_head, head_z))
+
+    # Casco
+    dibujar_casco((x, y_head, head_z), cabeza_lado, scale_factor, color_casco)
+
+    # Ojos
+    dibujar_ojos((x, y_head, head_z), cabeza_lado, scale_factor, color_ojos)
+
+    # Pico
+    dibujar_pico((x, y_head, head_z), scale_factor, color_pico)
+
+    glPopMatrix()
+
+
+
+#####Colores#############
 
 def set_azul_grisaceo():
     # Azul Grisáceo
@@ -379,7 +464,7 @@ def set_negro():
 
 def set_black():
     # Negro
-    glColor3f(0.0, 0.0, 0.0) # RGB: 0, 0, 0
+    glColor3f(10, 10, 10) # RGB: 0, 0, 0
 
 def set_robot_dark():
     # Robot Oscuro (Gris Oscuro)
@@ -449,3 +534,4 @@ def set_robot_dark_claro_transparente():
 def set_amarillo_claro_transparente():
     # Amarillo Claro Transparente (ignorando transparencia)
     glColor3f(1.0, 1.0, 0.6) # RGB: 255, 255, 153
+
