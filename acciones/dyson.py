@@ -113,20 +113,6 @@ def draw_triangular_prism(base, height, depth, position):
     glVertex3f(x, y, z + depth)
     glEnd()
 
-# Variables globales (configuración)
-SCALE_FACTOR = 0.3
-ILUMINACION_HABILITADA = True
-
-# Dimensiones del cuerpo (calculadas una vez)
-CUERPO_ANCHO = 6 * SCALE_FACTOR
-CUERPO_ALTO = 9 * SCALE_FACTOR
-CUERPO_PROFUNDIDAD = 4.5 * SCALE_FACTOR
-BRAZOS_ANCHO = 1.5 * SCALE_FACTOR
-BRAZOS_ALTO = 6 * SCALE_FACTOR
-PIERNAS_ANCHO = 2.1 * SCALE_FACTOR
-PIERNAS_ALTO = 12 * SCALE_FACTOR
-PIERNAS_BASE_ANCHO = 1.8 * SCALE_FACTOR
-SEPARACION_X = 0.2 * SCALE_FACTOR
 
 def set_amarillo():
     # Amarillo 
@@ -150,6 +136,22 @@ def set_blanco_sucio():
 
 def set_color_rgb(r, g, b):
     glColor3f(r / 255.0, g / 255.0, b / 255.0)
+
+# Variables globales (configuración)
+ILUMINACION_HABILITADA = True
+
+SCALE_FACTOR = 0.3
+
+# Dimensiones del cuerpo (calculadas una vez)
+CUERPO_ANCHO = 6 * SCALE_FACTOR
+CUERPO_ALTO = 9 * SCALE_FACTOR
+CUERPO_PROFUNDIDAD = 4.5 * SCALE_FACTOR
+BRAZOS_ANCHO = 1.5 * SCALE_FACTOR
+BRAZOS_ALTO = 6 * SCALE_FACTOR
+PIERNAS_ANCHO = 2.1 * SCALE_FACTOR
+PIERNAS_ALTO = 12 * SCALE_FACTOR
+PIERNAS_BASE_ANCHO = 1.8 * SCALE_FACTOR
+SEPARACION_X = 0.5 * SCALE_FACTOR
 
 def dibujar_cuerpo(position):
     x, y, z = position
@@ -238,4 +240,101 @@ def original5(position):
     dibujar_cabeza(position)
 
     #deshabilitar_iluminacion()
+def pAsco(position):
+    import time
+    x, y, z = position
 
+    cabeza_lado = 6 * SCALE_FACTOR
+    scale_factor_head = cabeza_lado / (6 * SCALE_FACTOR)
+
+    current_time = time.time()
+    
+    # Movimiento de cabeza lateral (como decir "no")
+    head_rotation_z = 25 * math.sin(current_time * 3)
+    
+    # Movimiento amplio del brazo derecho (0 a 150 grados)
+    arm_angle_front = 75 + 75 * math.sin(current_time * 2)
+
+    glPushMatrix()
+
+    # Cuerpo (misma posición que en original5)
+    set_verde()
+    y_body = y + CUERPO_ALTO / 2 - 4
+    draw_rectangle(CUERPO_ANCHO, CUERPO_ALTO, CUERPO_PROFUNDIDAD, (x, y_body, z - 5))
+
+    # Brazos - ajustados para misma altura visual
+    set_amarillo()
+    y_arm = y_body  # Misma altura para ambos brazos
+    
+    # Brazo izquierdo (estático)
+    x_left = x - CUERPO_ANCHO / 2 - BRAZOS_ANCHO / 2
+    draw_rectangle(BRAZOS_ANCHO, BRAZOS_ALTO, BRAZOS_ANCHO, (x_left, y_arm, z - 5))
+
+    # Brazo derecho (con movimiento pero misma altura base)
+    glPushMatrix()
+    x_right = x + CUERPO_ANCHO / 2 + BRAZOS_ANCHO / 2
+    glTranslatef(x_right, y_arm + BRAZOS_ALTO/2, z - 5)  # Pivote en el hombro
+    glRotatef(-arm_angle_front, 1, 0, 0)
+    draw_rectangle(BRAZOS_ANCHO, BRAZOS_ALTO, BRAZOS_ANCHO, (0, -BRAZOS_ALTO/2, 0))
+    glPopMatrix()
+
+    # Piernas
+    set_naranja()
+    y_legs = y - 4
+    x_left_leg = x - PIERNAS_BASE_ANCHO / 2 - SEPARACION_X
+    x_right_leg = x + PIERNAS_BASE_ANCHO / 2 + SEPARACION_X
+    draw_rectangle(PIERNAS_BASE_ANCHO, PIERNAS_ALTO, PIERNAS_BASE_ANCHO, (x_left_leg, y_legs, z - 5))
+    draw_rectangle(PIERNAS_BASE_ANCHO, PIERNAS_ALTO, PIERNAS_BASE_ANCHO, (x_right_leg, y_legs, z - 5))
+
+    # Cabeza con movimiento
+    y_head = y + CUERPO_ALTO + cabeza_lado / 2 - 4
+    head_z = z - 5
+    
+    glPushMatrix()
+    glTranslatef(x, y_head, head_z)  # Movemos al centro de la cabeza
+    glRotatef(head_rotation_z, 0, 1, 0)  # Rotación lateral
+    glTranslatef(-x, -y_head, -head_z)  # Volvemos al sistema original
+
+    # Cabeza
+    set_verde()
+    draw_rectangle(cabeza_lado, cabeza_lado, cabeza_lado, (x, y_head, head_z))
+
+    # Casco
+    set_naranja()
+    draw_rectangle(
+        2 * scale_factor_head,
+        0.3 * scale_factor_head,
+        0.2 * scale_factor_head,
+        (x, y_head + cabeza_lado / 2 - 0.2 * SCALE_FACTOR, head_z + cabeza_lado / 2 + 0.1 * SCALE_FACTOR)
+    )
+
+    # Ojos cuadrados como en el método original (visibles con rotación de cabeza)
+    set_color_rgb(10, 10, 10)  # Negro mate como en dibujar_ojos()
+    
+    # Ojo izquierdo
+    glPushMatrix()
+    glTranslatef(x - 0.6 * scale_factor_head, y_head + 0.1 * scale_factor_head, head_z + cabeza_lado / 2 - 0.1)
+    # Dibujamos cubo en lugar de rectángulo para que sea visible desde cualquier ángulo
+    draw_cube(0.3 * scale_factor_head, (0, 0, 0))
+    glPopMatrix()
+    
+    # Ojo derecho
+    glPushMatrix()
+    glTranslatef(x + 0.6 * scale_factor_head, y_head + 0.1 * scale_factor_head, head_z + cabeza_lado / 2 - 0.1)
+    draw_cube(0.3 * scale_factor_head, (0, 0, 0))
+    glPopMatrix()
+
+    # Pico
+    set_amarillo()
+    draw_triangular_prism(
+        0.6 * scale_factor_head,
+        0.3 * scale_factor_head,
+        0.3 * scale_factor_head,
+        (x - 1.0 * SCALE_FACTOR, y_head - 0.2 * scale_factor_head, head_z + cabeza_lado / 2 + 0.1 * SCALE_FACTOR)
+    )
+
+    glPopMatrix()  # Fin de transformaciones de cabeza
+
+    glDisable(GL_LIGHTING)
+    glDisable(GL_LIGHT0)
+    glPopMatrix()
