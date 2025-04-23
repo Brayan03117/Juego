@@ -113,6 +113,23 @@ def draw_triangular_prism(base, height, depth, position):
     glVertex3f(x, y, z + depth)
     glEnd()
 
+def draw_rotated_rectangle(width, height, depth, position, angle):
+    x, y, z = position
+    glPushMatrix()
+    glTranslatef(x, y, z)
+    glRotatef(angle, 0, 0, 1)  # Rotar alrededor del eje Z
+    draw_rectangle(width, height, depth, (0, 0, 0))  # Dibujar en el origen
+    glPopMatrix()
+
+
+def draw_cone(base_radius, height, slices, position):
+    x, y, z = position
+    glPushMatrix()
+    glTranslatef(x, y, z)
+    quadric = gluNewQuadric()
+    gluCylinder(quadric, base_radius, 0, height, slices, 1)  # Radio superior 0 para hacer un cono
+    gluDeleteQuadric(quadric)
+    glPopMatrix()
 
 def set_amarillo():
     # Amarillo 
@@ -387,7 +404,9 @@ def pAsco(position):
     glDisable(GL_LIGHT0)
     glPopMatrix()
 
-# == Animaciones ===
+#========================================================== == ANIMACIONES========================================================== ===
+
+#================================ ASCO ================================
 def animar_brazo_asco(position, color_func):
     x, y, z = position
     current_time = time.time()
@@ -402,7 +421,6 @@ def animar_brazo_asco(position, color_func):
     color_func()
     draw_rectangle(BRAZOS_ANCHO, BRAZOS_ALTO, BRAZOS_ANCHO, (0, -BRAZOS_ALTO / 2, 0))
     glPopMatrix()
-
 
 def animar_cabeza_asco(position, color_cabeza, color_ojos, color_casco, color_pico):
     x, y, z = position
@@ -434,9 +452,390 @@ def animar_cabeza_asco(position, color_cabeza, color_ojos, color_casco, color_pi
 
     glPopMatrix()
 
+#================================ ADMIRAR ================================
+def animar_brazo_izquierdo_admirar(position, color_func):
+    import math, time
+    x, y, z = position
+    current_time = time.time()
+    angle = 60 * math.sin(current_time * 2)
+
+    y_arm = y + CUERPO_ALTO / 2 - 4
+    x_left = x - CUERPO_ANCHO / 2 - BRAZOS_ANCHO / 2
+
+    glPushMatrix()
+    glTranslatef(x_left, y_arm + BRAZOS_ALTO / 2, z - 5)
+    glRotatef(-angle, 0, 0, 1)
+    color_func()
+    draw_rectangle(BRAZOS_ANCHO, BRAZOS_ALTO, BRAZOS_ANCHO, (0, -BRAZOS_ALTO / 2, 0))
+    glPopMatrix()
+
+def animar_cabeza_admirar(position, color_cabeza, color_ojos, color_casco, color_pico):
+    import math, time
+    x, y, z = position
+    cabeza_lado = 6 * SCALE_FACTOR
+    scale_factor = cabeza_lado / (6 * SCALE_FACTOR)
+    current_time = time.time()
+    angle = 10 * math.sin(current_time * 1.5)
+
+    y_head = y + CUERPO_ALTO + cabeza_lado / 2 - 4
+    z_head = z - 5
+
+    glPushMatrix()
+    glTranslatef(x, y_head, z_head)
+    glRotatef(angle, 0, 1, 0)
+    glTranslatef(-x, -y_head, -z_head)
+
+    # Cabeza
+    color_cabeza()
+    draw_rectangle(cabeza_lado, cabeza_lado, cabeza_lado, (x, y_head, z_head))
+
+    # Casco
+    dibujar_casco((x, y_head, z_head), cabeza_lado, scale_factor, color_casco)
+
+    # Cejas (negras)
+    set_negro()  # o usa color_por_parte("cejas", paleta) si prefieres
+    ceja_z = z_head + cabeza_lado / 2 - 0.05
+    draw_rotated_rectangle(
+        0.6 * scale_factor, 0.15 * scale_factor, 0.15 * scale_factor,
+        (x - 0.6 * scale_factor, y_head + 0.35 * scale_factor, ceja_z),
+        60
+    )
+    draw_rotated_rectangle(
+        0.6 * scale_factor, 0.15 * scale_factor, 0.15 * scale_factor,
+        (x + 0.6 * scale_factor, y_head + 0.35 * scale_factor, ceja_z),
+        -60
+    )
+
+    # Ojos
+    dibujar_ojos((x, y_head, z_head), cabeza_lado, scale_factor, color_ojos)
+
+    # Pico (tipo cono)
+    glPushMatrix()
+    glTranslatef(x - 0.2 * scale_factor, y_head - 0.2 * scale_factor, z_head + cabeza_lado / 2 + 0.1 * scale_factor)
+    color_pico()
+    draw_cone(0.2, 0.3, 32, (0, 0, 0))
+    glPopMatrix()
+
+    glPopMatrix()
+
+#================================ SAD ================================
+def animar_brazo_izquierdo_sad(position, color_func):
+    x, y, z = position
+    y_arm = y + CUERPO_ALTO / 2 - 4
+    x_left = x - CUERPO_ANCHO / 2 - BRAZOS_ANCHO / 2
+
+    glPushMatrix()
+    color_func()
+    draw_rectangle(BRAZOS_ANCHO, BRAZOS_ALTO, BRAZOS_ANCHO, (x_left, y_arm, z - 5))
+    glPopMatrix()
+
+def animar_brazo_derecho_sad(position, color_func):
+    x, y, z = position
+    y_arm = y + CUERPO_ALTO / 2 - 4
+    x_right = x + CUERPO_ANCHO / 2 + BRAZOS_ANCHO / 2
+
+    glPushMatrix()
+    color_func()
+    draw_rectangle(BRAZOS_ANCHO, BRAZOS_ALTO, BRAZOS_ANCHO, (x_right, y_arm, z - 5))
+    glPopMatrix()
+
+def animar_cabeza_sad(position, color_cabeza, color_ojos, color_casco, color_pico):
+    import time
+    x, y, z = position
+    cabeza_lado = 6 * SCALE_FACTOR
+    scale_factor = cabeza_lado / (6 * SCALE_FACTOR)
+
+    y_head = y + CUERPO_ALTO + cabeza_lado / 2 - 4
+    z_head = z - 5
+    t = time.time()
+
+    glPushMatrix()
+
+    # Cabeza
+    color_cabeza()
+    draw_rectangle(cabeza_lado, cabeza_lado, cabeza_lado, (x, y_head, z_head))
+
+    # Casco
+    dibujar_casco((x, y_head, z_head), cabeza_lado, scale_factor, color_casco)
+
+    # Ojos
+    dibujar_ojos((x, y_head, z_head), cabeza_lado, scale_factor, color_ojos)
+
+    # Pico
+    dibujar_pico((x, y_head, z_head), scale_factor, color_pico)
+
+    # Lágrimas animadas
+    glColor3f(0.0, 0.0, 1.0)  # Azul fuerte
+    glBegin(GL_LINES)
+    for i in range(2):  # Ojo izq y der
+        offset_x = (-0.6 if i == 0 else 0.6) * scale_factor
+        for j in range(5):  # 5 líneas por ojo
+            base_x = x + offset_x + 0.1 * j * scale_factor
+            base_y = (y_head+0.5) - 0.1 * scale_factor - 0.15 * j * scale_factor
+            lagrima_length = 0.8 + 0.2 * math.sin(t * 2 + j)  # animar longitud
+            glVertex3f(base_x, base_y, z_head + cabeza_lado / 2 - 0.1)
+            glVertex3f(base_x, base_y - lagrima_length, z_head + cabeza_lado / 2 - 0.1)
+    glEnd()
+
+    glColor3f(1.0, 1.0, 1.0)
+    glPopMatrix()
+
+#================================ Happy ================================
+
+def animar_brazo_izquierdo_happy(position, color_func):
+    import time, math
+    x, y, z = position
+    angle = 25 * math.sin(time.time() * 2)
+
+    y_arm = y + CUERPO_ALTO / 2 - 4
+    x_left = x - CUERPO_ANCHO / 2 - BRAZOS_ANCHO / 2
+
+    glPushMatrix()
+    glTranslatef(x_left, y_arm + BRAZOS_ALTO / 2, z - 5)
+    glRotatef(-angle, 0, 1, 0)
+    color_func()
+    draw_rectangle(BRAZOS_ANCHO, BRAZOS_ALTO, BRAZOS_ANCHO, (0, -BRAZOS_ALTO / 2, 0))
+    glPopMatrix()
+
+def animar_brazo_derecho_happy(position, color_func):
+    import time, math
+    x, y, z = position
+    angle = 25 * math.sin(time.time() * 2)
+
+    y_arm = y + CUERPO_ALTO / 2 - 4
+    x_right = x + CUERPO_ANCHO / 2 + BRAZOS_ANCHO / 2
+
+    glPushMatrix()
+    glTranslatef(x_right, y_arm + BRAZOS_ALTO / 2, z - 5)
+    glRotatef(-angle, 0, 1, 0)
+    color_func()
+    draw_rectangle(BRAZOS_ANCHO, BRAZOS_ALTO, BRAZOS_ANCHO, (0, -BRAZOS_ALTO / 2, 0))
+    glPopMatrix()
+
+def dibujar_cabeza_happy(position, color_cabeza, color_ojos, color_casco, color_pico):
+    x, y, z = position
+    cabeza_lado = 6 * SCALE_FACTOR
+    scale_factor = cabeza_lado / (6 * SCALE_FACTOR)
+
+    y_head = y + CUERPO_ALTO + cabeza_lado / 2 - 4
+    z_head = z - 5
+
+    glPushMatrix()
+
+    # Cabeza
+    color_cabeza()
+    draw_rectangle(cabeza_lado, cabeza_lado, cabeza_lado, (x, y_head, z_head))
+
+    # Casco
+    dibujar_casco((x, y_head, z_head), cabeza_lado, scale_factor, color_casco)
+
+    # Ojos
+    dibujar_ojos((x, y_head, z_head), cabeza_lado, scale_factor, color_ojos)
+
+    # Pico
+    glPushMatrix()
+    glTranslatef(x - 0.2 * scale_factor, y_head - 0.2 * scale_factor, z_head + cabeza_lado / 2 + 0.1 * scale_factor)
+    color_pico()
+    draw_cone(0.2, 0.3, 32, (0, 0, 0))
+    glPopMatrix()
+
+    # Pestañas negras
+    set_negro()
+    draw_rotated_rectangle(
+        0.5 * scale_factor, 0.08 * scale_factor, 0.1 * scale_factor,
+        (x - 0.6 * scale_factor, y_head + 0.25 * scale_factor, z_head + cabeza_lado / 2 - 0.05),
+        15
+    )
+    draw_rotated_rectangle(
+        0.5 * scale_factor, 0.08 * scale_factor, 0.1 * scale_factor,
+        (x + 0.6 * scale_factor, y_head + 0.25 * scale_factor, z_head + cabeza_lado / 2 - 0.05),
+        -15
+    )
+
+    glPopMatrix()
+
+#================================ Enojo ================================
+
+def animar_cabeza_enojar(position, color_cabeza, color_ojos, color_casco, color_pico):
+    import time, math
+    x, y, z = position
+    cabeza_lado = 6 * SCALE_FACTOR
+    scale_factor = cabeza_lado / (6 * SCALE_FACTOR)
+    current_time = time.time()
+    shake_angle = 10 * math.sin(current_time * 8)
+
+    y_head = y + CUERPO_ALTO + cabeza_lado / 2 - 4
+    z_head = z - 5
+
+    glPushMatrix()
+    glTranslatef(x, y_head, z_head)
+    glRotatef(shake_angle, 0, 0, 0)
+    glTranslatef(-x, -y_head, -z_head)
+
+    # Cabeza
+    color_cabeza()
+    draw_rectangle(cabeza_lado, cabeza_lado, cabeza_lado, (x, y_head, z_head))
+
+    # Casco
+    dibujar_casco((x, y_head, z_head), cabeza_lado, scale_factor, color_casco)
+
+    # Ojos
+    dibujar_ojos((x, y_head, z_head), cabeza_lado, scale_factor, color_ojos)
+
+    # Pico
+    dibujar_pico((x, y_head, z_head), scale_factor, color_pico)
+
+    # Cejas rectas negras
+    set_negro()
+    ceja_ancho = 0.4 * scale_factor
+    ceja_alto = 0.1 * scale_factor
+    ceja_z = z_head + cabeza_lado / 2 - 0.1
+    y_ceja = y_head + 0.3 * scale_factor
+
+    draw_rectangle(ceja_ancho, ceja_alto, 0.1 * scale_factor, (x - 0.6 * scale_factor, y_ceja, ceja_z))
+    draw_rectangle(ceja_ancho, ceja_alto, 0.1 * scale_factor, (x + 0.6 * scale_factor, y_ceja, ceja_z))
+
+    glPopMatrix()
+
+def animar_brazo_izquierdo_enojar(position, color_func):
+    x, y, z = position
+    y_arm = y + CUERPO_ALTO / 2 - 4
+    x_left = x - CUERPO_ANCHO / 2 - BRAZOS_ANCHO / 2
+
+    glPushMatrix()
+    glTranslatef(x_left, y_arm, z - 5)
+    glRotatef(-15, 1, 0, 0)  # Ligeramente hacia el frente
+    color_func()
+    draw_rectangle(BRAZOS_ANCHO, BRAZOS_ALTO, BRAZOS_ANCHO, (0, 0, 0))
+    glPopMatrix()
+
+def animar_brazo_derecho_enojar(position, color_func):
+    x, y, z = position
+    y_arm = y + CUERPO_ALTO / 2 - 4
+    x_right = x + CUERPO_ANCHO / 2 + BRAZOS_ANCHO / 2
+
+    glPushMatrix()
+    glTranslatef(x_right, y_arm, z - 5)
+    glRotatef(15, 1, 0, 0)
+    color_func()
+    draw_rectangle(BRAZOS_ANCHO, BRAZOS_ALTO, BRAZOS_ANCHO, (0, 0, 0))
+    glPopMatrix()
+
+#================================ Gesto ================================
+
+def animar_cabeza_gesto(position, color_cabeza, color_ojos, color_casco, color_pico):
+    import time
+    x, y, z = position
+    cabeza_lado = 6 * SCALE_FACTOR
+    scale_factor = cabeza_lado / (6 * SCALE_FACTOR)
+
+    y_head = y + CUERPO_ALTO + cabeza_lado / 2 - 4
+    z_head = z - 5
+
+    glPushMatrix()
+
+    # Cabeza
+    color_cabeza()
+    draw_rectangle(cabeza_lado, cabeza_lado, cabeza_lado, (x, y_head, z_head))
+
+    # Casco
+    dibujar_casco((x, y_head, z_head), cabeza_lado, scale_factor, color_casco)
+
+    # OJOS: Ojo izquierdo animado (guiño), derecho normal
+    current_time = time.time()
+    wink_duration = 0.5
+    cycle_time = 3.0
+    elapsed = current_time % cycle_time
+    if elapsed < wink_duration:
+        t = elapsed / wink_duration
+        wink_scale = 1.0 - abs(t * 2 - 1)
+    else:
+        wink_scale = 1.0
+
+    # Ojo izquierdo (animado)
+    glPushMatrix()
+    color_ojos()
+    draw_cube(0.3 * scale_factor * wink_scale, (x - 0.6 * scale_factor, y_head + 0.1 * scale_factor, z_head + cabeza_lado / 2 - 0.1))
+    glPopMatrix()
+
+    # Ojo derecho
+    glPushMatrix()
+    color_ojos()
+    draw_cube(0.3 * scale_factor, (x + 0.6 * scale_factor, y_head + 0.1 * scale_factor, z_head + cabeza_lado / 2 - 0.1))
+    glPopMatrix()
+
+    # Pico
+    dibujar_pico((x, y_head, z_head), scale_factor, color_pico)
+
+    # Cejas confiadas (inclinadas levemente hacia abajo en centro)
+    set_negro()
+    draw_rotated_rectangle(
+        0.6 * scale_factor, 0.08 * scale_factor, 0.1 * scale_factor,
+        (x - 0.6 * scale_factor, y_head + 0.3 * scale_factor, z_head + cabeza_lado / 2 - 0.05),
+        25
+    )
+    draw_rotated_rectangle(
+        0.6 * scale_factor, 0.08 * scale_factor, 0.1 * scale_factor,
+        (x + 0.6 * scale_factor, y_head + 0.3 * scale_factor, z_head + cabeza_lado / 2 - 0.05),
+        -25
+    )
+
+    glPopMatrix()
+
+#================================ Dormir ================================
+
+def animar_cabeza_dormir(position, color_cabeza, color_ojos, color_casco, color_pico):
+    import time, math
+    x, y, z = position
+    cabeza_lado = 6 * SCALE_FACTOR
+    scale_factor = cabeza_lado / (6 * SCALE_FACTOR)
+
+    y_head = y + CUERPO_ALTO + cabeza_lado / 2 - 4
+    z_head = z - 5
+
+    current_time = time.time()
+    tilt_angle = 15 + 5 * math.sin(current_time * 2)  # cabeza inclinada suavemente (cabeceo)
+
+    glPushMatrix()
+    glTranslatef(x, y_head, z_head)
+    glRotatef(tilt_angle, 1, 0, 0)
+    glTranslatef(-x, -y_head, -z_head)
+
+    # Cabeza
+    color_cabeza()
+    draw_rectangle(cabeza_lado, cabeza_lado, cabeza_lado, (x, y_head, z_head))
+
+    # Casco
+    dibujar_casco((x, y_head, z_head), cabeza_lado, scale_factor, color_casco)
+
+    # Ojos entrecerrados como rectángulos planos
+    color_ojos()
+
+    # Ojo izquierdo (ligeramente caído)
+    draw_rotated_rectangle(
+        0.35 * scale_factor, 0.08 * scale_factor, 0.1 * scale_factor,
+        (x - 0.6 * scale_factor, y_head + 0.1 * scale_factor, z_head + cabeza_lado / 2 - 0.05),
+        10  # leve caída diagonal
+    )
+
+    # Ojo derecho (igual, pero en sentido contrario)
+    draw_rotated_rectangle(
+        0.35 * scale_factor, 0.08 * scale_factor, 0.1 * scale_factor,
+        (x + 0.6 * scale_factor, y_head + 0.1 * scale_factor, z_head + cabeza_lado / 2 - 0.05),
+        -10
+    )
+
+    # Pico (tipo cono)
+    glPushMatrix()
+    glTranslatef(x - 0.2 * scale_factor, y_head - 0.2 * scale_factor, z_head + cabeza_lado / 2 + 0.1)
+    color_pico()
+    draw_cone(0.2, 0.3, 32, (0, 0, 0))
+    glPopMatrix()
+
+    glPopMatrix()
 
 
-#####Colores#############
+#####-------------------------------------------COLORES----------------------------------------#############
 
 def set_azul_grisaceo():
     # Azul Grisáceo

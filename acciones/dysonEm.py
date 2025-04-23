@@ -18,14 +18,14 @@ colores_emocion = {
     },
     "happy": {
         "cuerpo": set_robot_purple,
-        "brazo_izquierdo": set_robot_purple,
-        "brazo_derecho": set_robot_purple,
-        "pierna_izquierda": set_blue,
-        "pierna_derecha": set_blue,
+        "brazo_izquierdo": set_naranja,
+        "brazo_derecho": set_naranja,
+        "pierna_izquierda": set_naranja,
+        "pierna_derecha": set_naranja,
         "cabeza": set_blue_light,
-        "ojos": set_purple,
-        "casco": set_rojo,
-        "pico": set_amarillo
+        "ojos": set_naranja,
+        "casco": set_verde,
+        "pico": set_negro
     },
     "sad": {
         "cuerpo": set_gray,
@@ -40,58 +40,58 @@ colores_emocion = {
     },
     "gesto": {
         "cuerpo": set_gray,
-        "brazo_izquierdo": set_naranja,
-        "brazo_derecho": set_naranja,
-        "pierna_izquierda": set_naranja,
-        "pierna_derecha": set_naranja,
-        "cabeza": set_amarillo,
-        "ojos": set_negro,
-        "casco": set_naranja,
-        "pico": set_marron_opaco
-    },
-    "asco": {
-        "cuerpo": set_verde,
-        "brazo_izquierdo": set_amarillo,
-        "brazo_derecho": set_amarillo,
-        "pierna_izquierda": set_naranja,
-        "pierna_derecha": set_naranja,
-        "cabeza": set_verde,
-        "ojos": set_black,
-        "casco": set_naranja,
-        "pico": set_amarillo
-    },
-    "duda": {
-        "cuerpo": set_purpura,
-        "brazo_izquierdo": set_azul_grisaceo,
-        "brazo_derecho": set_azul_grisaceo,
-        "pierna_izquierda": set_naranja,
-        "pierna_derecha": set_naranja,
+        "brazo_izquierdo": set_blue,
+        "brazo_derecho": set_blue,
+        "pierna_izquierda": set_blue,
+        "pierna_derecha": set_blue,
         "cabeza": set_blue_light,
         "ojos": set_negro,
         "casco": set_negro,
         "pico": set_amarillo
     },
-    "enojar": {
-        "cuerpo": set_rojo,
-        "brazo_izquierdo": set_rojo,
-        "brazo_derecho": set_rojo,
-        "pierna_izquierda": set_rojo,
-        "pierna_derecha": set_rojo,
-        "cabeza": set_rojo,
-        "ojos": set_negro,
-        "casco": set_negro,
-        "pico": set_naranja
-    },
-    "admirar": {
+    "asco": {
         "cuerpo": set_purpura,
+        "brazo_izquierdo": set_azul_grisaceo,
+        "brazo_derecho": set_azul_grisaceo,
+        "pierna_izquierda": set_purpura,
+        "pierna_derecha": set_purpura,
+        "cabeza": set_verde,
+        "ojos": set_negro,
+        "casco": set_naranja,
+        "pico": set_marron_opaco
+    },
+    "dormir": {
+        "cuerpo": set_purpura,
+        "brazo_izquierdo": set_azul_grisaceo,
+        "brazo_derecho": set_azul_grisaceo,
+        "pierna_izquierda": set_purpura,
+        "pierna_derecha": set_purpura,
+        "cabeza": set_verde,
+        "ojos": set_negro,
+        "casco": set_naranja,
+        "pico": set_marron_opaco
+    },
+    "enojar": {
+        "cuerpo": set_gray,
         "brazo_izquierdo": set_naranja,
         "brazo_derecho": set_naranja,
         "pierna_izquierda": set_naranja,
         "pierna_derecha": set_naranja,
-        "cabeza": set_amarillo,
-        "ojos": set_naranja,
-        "casco": set_naranja,
-        "pico": set_amarillo
+        "cabeza": set_rojo,
+        "ojos": set_purple,
+        "casco": set_amarillo,
+        "pico": set_verde
+    },
+    "admirar": {
+        "cuerpo": set_robot_purple,
+        "brazo_izquierdo": set_amarillo,
+        "brazo_derecho": set_amarillo,
+        "pierna_izquierda": set_naranja,
+        "pierna_derecha": set_naranja,
+        "cabeza": set_gray,
+        "ojos": set_blue_light,
+        "casco": set_robot_purple,
+        "pico": set_naranja
     }
 }
 
@@ -114,6 +114,31 @@ acciones_emocion = {
     "asco": {
         "brazo_derecho": animar_brazo_asco,
         "cabeza": animar_cabeza_asco
+    },
+    "admirar": {
+    "brazo_izquierdo": animar_brazo_izquierdo_admirar,
+    "cabeza": animar_cabeza_admirar
+    },
+    "sad": {
+    "brazo_izquierdo": animar_brazo_izquierdo_sad,
+    "brazo_derecho": animar_brazo_derecho_sad,
+    "cabeza": animar_cabeza_sad
+    },
+    "happy": {
+    "brazo_izquierdo": animar_brazo_izquierdo_happy,
+    "brazo_derecho": animar_brazo_derecho_happy,
+    "cabeza": dibujar_cabeza_happy  # ojo, esta es una función de dibujo, no animada
+    },
+    "enojar": {
+    "brazo_izquierdo": animar_brazo_izquierdo_enojar,
+    "brazo_derecho": animar_brazo_derecho_enojar,
+    "cabeza": animar_cabeza_enojar
+    },
+    "gesto": {
+    "cabeza": animar_cabeza_gesto
+    },
+    "dormir": {
+    "cabeza": animar_cabeza_dormir
     }
 }
 
