@@ -4,13 +4,16 @@ from OpenGL.GLU import *
 from pygame.locals import *
 from src.textos import dibujar_label_texto
 
-opciones = ["Iniciar", "Seleccionar Personaje", "Salir"]
-coordenadas_opciones = [(150, 280), (150, 230), (150, 180)]
+opciones = ["Seleccionar Personaje", "Salir"]
+coordenadas_opciones = [(150, 280), (150, 230)]
 seleccion_actual = 0
 
 def pantalla_inicial():
     global seleccion_actual
     pygame.init()
+    pygame.mixer.init()
+    pygame.mixer.music.load("Sonidos/Tetris.mp3")
+    pygame.mixer.music.play(-1)  # -1 para que se repita en bucle
     display = (800, 600)
     pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
     gluOrtho2D(0, 800, 0, 600)
@@ -48,6 +51,12 @@ def pantalla_inicial():
         glVertex2f(x - 20, y)
         glVertex2f(x - 40, y + 8)
         glEnd()
+
+        # Créditos
+        dibujar_label_texto("DESARROLLADO POR:", pos_x=280, pos_y=100, tam=20)
+        dibujar_label_texto("Jesus Alberto Arroyo Lugo", pos_x=250, pos_y=80, tam=18)
+        dibujar_label_texto("Milton Florencio Arzate", pos_x=260, pos_y=60, tam=18)
+        dibujar_label_texto("Brayan Alberto Lara Garcia", pos_x=240, pos_y=40, tam=18)
 
         pygame.display.flip()
         pygame.time.wait(10)

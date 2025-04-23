@@ -32,6 +32,9 @@ def main():
     global seleccion_actual
     global personaje_posiciones
     pygame.init()
+    pygame.mixer.init()
+    pygame.mixer.music.load("Sonidos/Jumper.mp3")
+    pygame.mixer.music.play(-1)
     display = (800, 600)
     pygame.display.quit()
     pygame.display.init()
