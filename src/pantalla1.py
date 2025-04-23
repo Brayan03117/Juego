@@ -49,5 +49,11 @@ def pantalla_inicial():
         glVertex2f(x - 40, y + 8)
         glEnd()
 
+        # Créditos
+        dibujar_label_texto("DESARROLLADO POR:", pos_x=280, pos_y=100, tam=20)
+        dibujar_label_texto("Jesus Alberto Arroyo Lugo", pos_x=250, pos_y=80, tam=18)
+        dibujar_label_texto("Milton Florencio Arzate", pos_x=260, pos_y=60, tam=18)
+        dibujar_label_texto("Brayan Alberto Lara Garcia", pos_x=240, pos_y=40, tam=18)
+
         pygame.display.flip()
         pygame.time.wait(10)
