@@ -4,8 +4,8 @@ from OpenGL.GLU import *
 from pygame.locals import *
 from src.textos import dibujar_label_texto
 
-opciones = ["Iniciar", "Seleccionar Personaje", "Salir"]
-coordenadas_opciones = [(150, 280), (150, 230), (150, 180)]
+opciones = ["Seleccionar Personaje", "Salir"]
+coordenadas_opciones = [(150, 280), (150, 230)]
 seleccion_actual = 0
 
 def pantalla_inicial():
