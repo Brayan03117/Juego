@@ -6,7 +6,8 @@ from pygame.locals import *
 from OpenGL.GLUT import GLUT_BITMAP_TIMES_ROMAN_24
 from acciones.jesusL import draw as draw_jesus 
 from acciones.torchic import personaje as draw_torchic
-from acciones.dyson import original5 as draw_dyson  
+#from acciones.dyson import original5 as draw_dyson  
+from acciones.dysonEm import dibujar_personaje as draw_dyson
 # from Esenarios.escenario import draw_e  
 from acciones import iluminacion  
 from src.textos import dibujar_label_texto
@@ -108,7 +109,7 @@ def main():
         else:
             glDisable(GL_LIGHTING)
             glColor3f(0.2, 0.2, 0.2) 
-        draw_dyson((-9, 2, 8))             # Posición local en su propio sistema
+        draw_dyson((-9, 2, 8),emocion="gesto")             # Posición local en su propio sistema
         glPopMatrix()
 
 
