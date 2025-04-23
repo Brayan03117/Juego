@@ -14,6 +14,9 @@ def seleccion_nivel(personaje_id):
     """
     # Inicializar pygame
     pygame.init()
+    pygame.mixer.init()
+    pygame.mixer.music.load("Sonidos/Cycles.mp3")
+    pygame.mixer.music.play(-1)
     
     # Configuración de la pantalla
     ancho, alto = 800, 600
