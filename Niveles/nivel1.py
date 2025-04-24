@@ -6,7 +6,7 @@ from pygame.locals import *
 import sys
 
 # Importar funciones para dibujar escenarios
-#from Esenarios.escenario import draw_e
+from Esenarios import escenario as es
 
 # Importar personajes
 from acciones.jesusL import draw as draw_jesus
@@ -28,6 +28,10 @@ def iniciar_nivel1(personaje_id):
     display = (800, 600)
     pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
     pygame.display.set_caption("Nivel 1")
+    
+    # Inicializar fondos
+    es.inicializar_fondos()
+    fondo_nivel1 = "imagenes/paisaje3.jpg"  # Ruta relativa a la imagen
     
     # Configurar la perspectiva
     gluPerspective(45, (display[0]/display[1]), 0.1, 50.0)
@@ -100,12 +104,9 @@ def iniciar_nivel1(personaje_id):
         # Aplicar transformaciones de cámara (si las usas)
         glPushMatrix()
         glTranslatef(cam_x, cam_y, cam_z) # Mueve la cámara
-        # Puedes añadir rotación de cámara aquí si quieres
-        # glRotatef(rot_x, 1, 0, 0)
-        # glRotatef(rot_y, 0, 1, 0)
         
-        # Dibujar el escenario (si tienes uno)
-        # draw_e() 
+        # Mostrar el fondo del escenario
+        es.mostrar_escenario(3)  # Usamos el índice 3 para paisaje3.jpg
         
         # Dibujar el personaje seleccionado en su posición
         glPushMatrix()
