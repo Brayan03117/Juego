@@ -11,6 +11,9 @@ from acciones.dysonEm import dibujar_personaje as draw_dyson
 # from Esenarios.escenario import draw_e  
 from acciones import iluminacion  
 from src.textos import dibujar_label_texto
+from Esenarios import escenario as es
+
+
 
 
 personaje_posiciones = [(-0.5, 6.0, 0.0), (5.0, 6.0, 0.0), (-6, 6.0, 0.0)]  # Coordenadas para la flecha
@@ -29,6 +32,8 @@ def renderizar_texto(texto, x, y, escala=1.0, color=(1.0, 1.0, 1.0)):
 
 
 def main():
+    
+    fondo_actual=0
     global seleccion_actual
     global personaje_posiciones
     pygame.init()
@@ -39,6 +44,7 @@ def main():
     pygame.display.quit()
     pygame.display.init()
     pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
+    es.inicializar_fondos()
     gluPerspective(45, (display[0]/display[1]), 0.1, 50.0)
     glTranslatef(0.0, -2.0, -15)    
 
@@ -68,9 +74,11 @@ def main():
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         iluminacion.iluminacion(0, 0, 0)  # Luz blanca
         glColor3f(1.0, 1.0, 1.0)
+        
 
         # Dibujar JesusL
         glPushMatrix()
+        es.mostrar_escenario(fondo_actual)  # Mostrar el fondo del escenario
         glTranslatef(-1.5, 0.0, 0.0)
         glRotatef(90, 1, 0, 0)  
         glRotatef(180, 0, 1, 0)  

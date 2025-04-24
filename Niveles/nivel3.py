@@ -6,7 +6,7 @@ from pygame.locals import *
 import sys
 
 # Importar funciones para dibujar escenarios
-from Esenarios.escenario import draw_e
+#from Esenarios.escenario import draw_e
 
 # Importar personajes
 from acciones.jesusL import draw as draw_jesus
