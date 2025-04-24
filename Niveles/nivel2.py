@@ -11,7 +11,7 @@ import sys
 # Importar personajes
 from acciones.jesusL import draw as draw_jesus
 from acciones.torchic import personaje as draw_torchic
-from acciones.dyson import original5 as draw_dyson
+from acciones.dysonEm import dibujar_personaje as draw_dyson
 
 # Importar otras utilidades
 from acciones.iluminacion import iluminacion
@@ -96,7 +96,7 @@ def iniciar_nivel2(personaje_id):
             draw_torchic()
         elif personaje_id == 2:  # Dyson
             glTranslatef(0, 1.5, 0)
-            draw_dyson((0, 0, 0))
+            draw_dyson((0, 0, 0), emocion="asco")
         glPopMatrix()
         
         glPopMatrix()
