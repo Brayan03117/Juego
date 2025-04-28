@@ -70,6 +70,16 @@ def main():
                 elif event.key in (pygame.K_KP_ENTER, pygame.K_RETURN):
                     pygame.display.quit()
                     return seleccion_actual
+                elif event.key == pygame.K_1:
+                    fondo_actual = 1
+                elif event.key == pygame.K_2:
+                    fondo_actual = 2
+                elif event.key == pygame.K_3:
+                    fondo_actual = 3
+                elif event.key == pygame.K_4:
+                    fondo_actual = 4
+                elif event.key == pygame.K_5:
+                    fondo_actual = 5
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         iluminacion.iluminacion(0, 0, 0)  # Luz blanca
