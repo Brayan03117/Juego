@@ -6,7 +6,7 @@ from pygame.locals import *
 import sys
 
 # Importar funciones para dibujar escenarios
-#from Esenarios.escenario import draw_e
+from Esenarios import escenario as es
 
 # Importar personajes
 from acciones.jesusL import draw as draw_jesus
@@ -27,20 +27,24 @@ def iniciar_nivel3(personaje_id):
     pygame.init()
     display = (800, 600)
     pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
-    pygame.display.set_caption("Nivel 3") # <-- Cambiado a Nivel 3
-    
+    pygame.display.set_caption("Nivel 3")
+
+    # Inicializar fondos
+    es.inicializar_fondos()
+    # Puedes cambiar el índice del fondo si quieres otro diferente
+    fondo_actual = 3
+
     # Configurar la perspectiva
     gluPerspective(45, (display[0]/display[1]), 0.1, 50.0)
-    # Ajustamos la cámara inicial para ver mejor al personaje en el origen
-    glTranslatef(0.0, -2.0, -10) # Un poco más cerca
-    
+    glTranslatef(0.0, -2.0, -30) # Aleja la cámara para que el fondo se vea mejor
+
     # Habilitar prueba de profundidad e iluminación
     glEnable(GL_DEPTH_TEST)
     glEnable(GL_LIGHTING)
     glEnable(GL_COLOR_MATERIAL)
     
-    # Variables para controlar la cámara (opcional, puedes mantenerlas o quitarlas)
-    cam_x, cam_y, cam_z = 0, 0, 0
+    # Variables para controlar la cámara
+    cam_x, cam_y, cam_z = -4, 0, 15  # Iniciar con la cámara más cerca
     rot_x, rot_y = 0, 0
 
     # Variables para la posición y velocidad del jugador
@@ -72,6 +76,17 @@ def iniciar_nivel3(personaje_id):
                     cam_y += 0.5
                 elif event.key == pygame.K_x:
                     cam_y -= 0.5
+                # Cambio de escenarios como en seleccion.py
+                elif event.key == pygame.K_1:
+                    fondo_actual = 1
+                elif event.key == pygame.K_2:
+                    fondo_actual = 2
+                elif event.key == pygame.K_3:
+                    fondo_actual = 3
+                elif event.key == pygame.K_4:
+                    fondo_actual = 4
+                elif event.key == pygame.K_5:
+                    fondo_actual = 5
 
         # --- Control de movimiento del personaje (fuera del bucle de eventos) ---
         keys = pygame.key.get_pressed()
@@ -85,11 +100,6 @@ def iniciar_nivel3(personaje_id):
         if keys[pygame.K_DOWN]:
             # Mover hacia abajo en el eje Y
             player_y -= player_speed
-        # Puedes añadir K_PAGEUP / K_PAGEDOWN para mover en Z si lo necesitas
-        # if keys[pygame.K_PAGEUP]:
-        #     player_z -= player_speed # Hacia adelante
-        # if keys[pygame.K_PAGEDOWN]:
-        #     player_z += player_speed # Hacia atrás
         
         # Limpiar la pantalla
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -100,13 +110,10 @@ def iniciar_nivel3(personaje_id):
         # Aplicar transformaciones de cámara (si las usas)
         glPushMatrix()
         glTranslatef(cam_x, cam_y, cam_z) # Mueve la cámara
-        # Puedes añadir rotación de cámara aquí si quieres
-        # glRotatef(rot_x, 1, 0, 0)
-        # glRotatef(rot_y, 0, 1, 0)
-        
-        # Dibujar el escenario (si tienes uno)
-        # draw_e() 
-        
+
+        # Mostrar el fondo del escenario
+        es.mostrar_escenario(fondo_actual)
+
         # Dibujar el personaje seleccionado en su posición
         glPushMatrix()
         # Aplicar la posición del jugador ANTES de las rotaciones específicas del modelo
@@ -117,25 +124,24 @@ def iniciar_nivel3(personaje_id):
             glRotatef(90, 1, 0, 0)
             glRotatef(180, 0, 1, 0)
             glRotatef(90, 0, 0, 1)
-            # Ajusta las coordenadas relativas si es necesario (probablemente a 0,0,0)
-            draw_jesus(0, 0, 0, 0) # Dibujar en el origen local después de translate/rotate
+            draw_jesus(0, -3, -2.2, 0) # Dibujar en el origen local después de translate/rotate
         elif personaje_id == 1:  # Torchic
-            # Rotaciones específicas para este modelo
             glRotatef(180, 0, 1, 0)
             draw_torchic() # Dibujar en el origen local
         elif personaje_id == 2:  # Dyson
             # Rotaciones/Traslaciones específicas para este modelo
-            # glTranslatef(0, 1.5, 0) # Esta traslación ahora es relativa a player_pos
-            draw_dyson((0, 1.5, 0), emocion="asco") # Ajusta la posición relativa si es necesario
+            draw_dyson((0, 2, 8),emocion="asco") # Ajusta la posición relativa si es necesario
+       
         glPopMatrix() # Fin del bloque del personaje
-        
+
         glPopMatrix() # Fin del bloque de la cámara
-        
+
         # Mostrar información del nivel (actualizada)
-        dibujar_label_texto(f"Nivel 3", pos_x=10, pos_y=580, tam=24) # <-- Cambiado a Nivel 3
+        dibujar_label_texto(f"Nivel 3", pos_x=10, pos_y=580, tam=24)
         dibujar_label_texto(f"Usa las flechas para mover al personaje", pos_x=10, pos_y=550, tam=18)
         dibujar_label_texto(f"Usa W,A,S,D,Z,X para mover la camara (opcional)", pos_x=10, pos_y=520, tam=18)
         dibujar_label_texto(f"Presiona ESC para salir", pos_x=10, pos_y=490, tam=18)
-        
+        dibujar_label_texto(f"Presiona 1-5 para cambiar el escenario", pos_x=10, pos_y=460, tam=18)
+
         pygame.display.flip()
         pygame.time.wait(10) # Considera usar pygame.time.Clock().tick(60) para framerate estable
