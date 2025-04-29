@@ -27,12 +27,15 @@ def iniciar_nivel2(personaje_id):
     pygame.init()
     display = (800, 600)
     pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
-    pygame.display.set_caption("Nivel 2") # <-- Cambiado a Nivel 2
+    pygame.display.set_caption("Nivel 2")
 
     # Inicializar fondos
     es.inicializar_fondos()
     # Puedes cambiar el índice del fondo si quieres otro diferente
-    fondo_actual = 3
+    fondo_actual = 1
+    
+    # Variable para controlar la posición de JesusL
+    jesus_posicion = 0
 
     # Configurar la perspectiva
     gluPerspective(45, (display[0]/display[1]), 0.1, 50.0)
@@ -43,7 +46,6 @@ def iniciar_nivel2(personaje_id):
     glEnable(GL_LIGHTING)
     glEnable(GL_COLOR_MATERIAL)
     
-    # Variables para controlar la cámara (opcional, puedes mantenerlas o quitarlas)
     # Variables para controlar la cámara
     cam_x, cam_y, cam_z = -4, 0, 15  # Iniciar con la cámara más cerca
     rot_x, rot_y = 0, 0
@@ -77,17 +79,27 @@ def iniciar_nivel2(personaje_id):
                     cam_y += 0.5
                 elif event.key == pygame.K_x:
                     cam_y -= 0.5
-                # Cambio de escenarios como en seleccion.py
+                # Cambio de escenarios y posiciones de JesusL
                 elif event.key == pygame.K_1:
                     fondo_actual = 1
+                    if personaje_id == 0:  # Solo si es JesusL
+                        jesus_posicion = 1
                 elif event.key == pygame.K_2:
                     fondo_actual = 2
+                    if personaje_id == 0:  # Solo si es JesusL
+                        jesus_posicion = 2
                 elif event.key == pygame.K_3:
                     fondo_actual = 3
+                    if personaje_id == 0:  # Solo si es JesusL
+                        jesus_posicion = 3
                 elif event.key == pygame.K_4:
                     fondo_actual = 4
+                    if personaje_id == 0:  # Solo si es JesusL
+                        jesus_posicion = 4
                 elif event.key == pygame.K_5:
                     fondo_actual = 5
+                    if personaje_id == 0:  # Solo si es JesusL
+                        jesus_posicion = 5
 
         # --- Control de movimiento del personaje (fuera del bucle de eventos) ---
         keys = pygame.key.get_pressed()
@@ -101,11 +113,6 @@ def iniciar_nivel2(personaje_id):
         if keys[pygame.K_DOWN]:
             # Mover hacia abajo en el eje Y
             player_y -= player_speed
-        # Puedes añadir K_PAGEUP / K_PAGEDOWN para mover en Z si lo necesitas
-        # if keys[pygame.K_PAGEUP]:
-        #     player_z -= player_speed # Hacia adelante
-        # if keys[pygame.K_PAGEDOWN]:
-        #     player_z += player_speed # Hacia atrás
         
         # Limpiar la pantalla
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -130,15 +137,13 @@ def iniciar_nivel2(personaje_id):
             glRotatef(90, 1, 0, 0)
             glRotatef(180, 0, 1, 0)
             glRotatef(90, 0, 0, 1)
-            draw_jesus(0, -3, -2.2, 0) # Dibujar en el origen local después de translate/rotate
+            draw_jesus(0, -3, -2.2, jesus_posicion) # Usar la posición seleccionada
         elif personaje_id == 1:  # Torchic
             glRotatef(180, 0, 1, 0)
             draw_torchic() # Dibujar en el origen local
         elif personaje_id == 2:  # Dyson
             # Rotaciones/Traslaciones específicas para este modelo
-            # glTranslatef(0, 1.5, 0) # Esta traslación ahora es relativa a player_pos
             draw_dyson((0, 2, 8),emocion="asco") # Ajusta la posición relativa si es necesario
-       
        
         glPopMatrix() # Fin del bloque del personaje
 
@@ -150,6 +155,10 @@ def iniciar_nivel2(personaje_id):
         dibujar_label_texto(f"Usa W,A,S,D,Z,X para mover la camara (opcional)", pos_x=10, pos_y=520, tam=18)
         dibujar_label_texto(f"Presiona ESC para salir", pos_x=10, pos_y=490, tam=18)
         dibujar_label_texto(f"Presiona 1-5 para cambiar el escenario", pos_x=10, pos_y=460, tam=18)
+        
+        # Información adicional para JesusL
+        if personaje_id == 0:
+            dibujar_label_texto(f"Presiona 1-5 para cambiar expresiones de JesusL", pos_x=10, pos_y=430, tam=18)
 
         pygame.display.flip()
         pygame.time.wait(10) # Considera usar pygame.time.Clock().tick(60) para framerate estable
