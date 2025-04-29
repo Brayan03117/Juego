@@ -102,7 +102,7 @@ def main():
             glDisable(GL_LIGHTING)
             glColor3f(0, 0, 0)  # Oscuro
 
-        draw_jesus(0, -3, -2.2, 0)   
+        draw_jesus(0, -3, -2.2,5)   
         glPopMatrix()
 
 
