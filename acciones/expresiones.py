@@ -2,7 +2,7 @@ from OpenGL.GL import *
 from src import objetos as obj
 import math
 from OpenGL.GLU import *
-
+from acciones import torchic
 
 ESCALA = 0.5
 OFFSET_X = 0
@@ -14,9 +14,9 @@ OFFSET_Z = -5.5 * ESCALA
 # ========================
 
 def draw_cejas_chad():
-    obj.draw_cuerpo()
-    obj.draw_detalles()
-    obj.draw_plumas()
+    torchic.draw_cuerpo()
+    torchic.draw_detalles()
+    torchic.draw_plumas()
     glColor3f(0.0, 0.0, 0.0)  # Negro
     # Ceja Izquierda (acercada en Z)
     glBegin(GL_LINES)
@@ -39,8 +39,9 @@ def draw_cejas_chad():
 # ========================
 
 def draw_feliz():
+    torchic.draw_cuerpo()
+    torchic.draw_plumas()
     glColor3f(0.0, 0.0, 0.0)  # Negro
-
     # Cejas felices (curvas)
     glBegin(GL_LINE_STRIP)
     for i in range(30):
@@ -92,8 +93,7 @@ def draw_feliz():
     def fy_zz2(u, t): return ESCALA * (((3.5 - t) * math.sin(u) + 0.35 * math.cos(14 * u)) * cos_a - (0.4 * t + 6.3) * sin_a) - OFFSET_Y-.8
     def fz_zz2(u, t): return ESCALA * (((3.5 - t) * math.sin(u) + 0.35 * math.cos(14 * u)) * sin_a + (0.4 * t + 6.3) * cos_a) + OFFSET_Z
     obj.draw_param_surface(fx_zz2, fy_zz2, fz_zz2, (0, 2*math.pi), (0, 1))
-    obj.draw_cuerpo()
-    obj.draw_plumas()
+
 
 # ========================
 # personaje  indiferente
@@ -143,17 +143,17 @@ def draw_indiferente():
     def fy_zz2(u, t): return ESCALA * (((3.5 - t) * math.sin(u) + 0.35 * math.cos(14 * u)) * cos_a - (0.4 * t + 6.3) * sin_a) - OFFSET_Y-.8
     def fz_zz2(u, t): return ESCALA * (((3.5 - t) * math.sin(u) + 0.35 * math.cos(14 * u)) * sin_a + (0.4 * t + 6.3) * cos_a) + OFFSET_Z
     obj.draw_param_surface(fx_zz2, fy_zz2, fz_zz2, (0, 2*math.pi), (0, 1))
-    obj.draw_cuerpo()
-    obj.draw_plumas()
+    torchic.draw_cuerpo()
+    torchic.draw_plumas()
 
 # ========================
 # personaje  sorprendido
 # ========================
 
 def draw_sorprendido():
-    obj.draw_cuerpo()
-    obj.draw_detalles()
-    obj.draw_plumas()
+    torchic.draw_cuerpo()
+    torchic.draw_detalles()
+    torchic.draw_plumas()
 
     glColor3f(0.0, 0.0, 0.0)  # Negro
 
@@ -182,9 +182,9 @@ def draw_sorprendido():
 # ========================
 
 def draw_triste():
-    obj.draw_cuerpo()
-    obj.draw_detalles()
-    obj.draw_plumas()
+    torchic.draw_cuerpo()
+    torchic.draw_detalles()
+    torchic.draw_plumas()
 
     glColor3f(0.0, 0.0, 0.0)  # Negro (cejas)
 
@@ -221,9 +221,9 @@ def draw_triste():
 
 def draw_enojado():
 
-    obj.draw_cuerpo()
-    obj.draw_detalles()
-    obj.draw_plumas()
+    torchic.draw_cuerpo()
+    torchic.draw_detalles()
+    torchic.draw_plumas()
 
     glColor3f(0, 0, 0)  # Azul oscuro, para distinguir
 
@@ -242,8 +242,8 @@ def draw_enojado():
 # ========================
 
 def draw_nervioso():
-    obj.draw_plumas()
-    obj.draw_detalles()
+    torchic.draw_plumas()
+    torchic.draw_detalles()
     glColor3f(1.0, 0.5, 0.0)  # Naranja
     obj.draw_sphere((0, (-0.6 * ESCALA) - OFFSET_Y, (5.5 * ESCALA) + OFFSET_Z), 2.5 * ESCALA)  # Cuerpo
     glColor3f(1.0, 0.95, 0.6)
@@ -326,15 +326,15 @@ def draw_agachado():
     gluCylinder(gluNewQuadric(), 0.5 * ESCALA, 0.5 * ESCALA, 2.0 * ESCALA, 20, 20)  # Alargado
     glPopMatrix()
     # Dibuja cuerpo y plumas
-    obj.draw_detalles()
-    obj.draw_plumas()
+    torchic.draw_detalles()
+    torchic.draw_plumas()
 
 # ========================
 # personaje  sentado
 # ========================
 def dibujar_personaje_sentado():
-    obj.draw_detalles()
-    obj.draw_plumas()
+    torchic.draw_detalles()
+    torchic.draw_plumas()
     glColor3f(1.0, 0.5, 0.0)  # Naranja
     obj.draw_sphere((0, (0.3 * ESCALA) - OFFSET_Y, (9.2 * ESCALA) + OFFSET_Z), 3 * ESCALA)   # Cabeza
     obj.draw_sphere((0, (-0.6 * ESCALA) - OFFSET_Y, (5.5 * ESCALA) + OFFSET_Z), 2.5 * ESCALA)  # Cuerpo
@@ -370,8 +370,8 @@ def dibujar_personaje_acostado():
     glRotatef(90, 1, 0, 0)  # rotación hacia atrás (mirando hacia arriba)
     
     # Dibujo normal, pero rotado
-    obj.draw_cuerpo()
-    obj.draw_detalles()
-    obj.draw_plumas()
+    torchic.draw_cuerpo()
+    torchic.draw_detalles()
+    torchic.draw_plumas()
     
     glPopMatrix()

@@ -12,6 +12,7 @@ from Esenarios import escenario as es
 from acciones.jesusL import draw as draw_jesus
 from acciones.torchic import personaje as draw_torchic
 from acciones.dysonEm import dibujar_personaje as draw_dyson
+from acciones.expresiones import draw_cejas_chad,draw_feliz,draw_triste,draw_enojado,draw_nervioso
 
 # Importar otras utilidades
 from acciones.iluminacion import iluminacion
@@ -32,10 +33,14 @@ def iniciar_nivel1(personaje_id):
     # Inicializar fondos
     es.inicializar_fondos()
     # Puedes cambiar el índice del fondo si quieres otro diferente
-    fondo_actual = 3
+    fondo_actual = 1
     
     # Variable para controlar la posición de JesusL
     jesus_posicion = 0
+
+    torchic_posicion = 0
+
+    dyson_posicion = 0
 
     # Configurar la perspectiva
     gluPerspective(45, (display[0]/display[1]), 0.1, 50.0)
@@ -84,22 +89,32 @@ def iniciar_nivel1(personaje_id):
                     fondo_actual = 1
                     if personaje_id == 0:  # Solo si es JesusL
                         jesus_posicion = 1
+                    if personaje_id == 1:  # Solo si es Torchic
+                        torchic_posicion = 1
                 elif event.key == pygame.K_2:
                     fondo_actual = 2
                     if personaje_id == 0:  # Solo si es JesusL
                         jesus_posicion = 2
+                    if personaje_id == 1:
+                        torchic_posicion = 2
                 elif event.key == pygame.K_3:
                     fondo_actual = 3
                     if personaje_id == 0:  # Solo si es JesusL
                         jesus_posicion = 3
+                    if personaje_id == 1:
+                        torchic_posicion = 3
                 elif event.key == pygame.K_4:
                     fondo_actual = 4
                     if personaje_id == 0:  # Solo si es JesusL
                         jesus_posicion = 4
+                    if personaje_id == 1:
+                        torchic_posicion = 4
                 elif event.key == pygame.K_5:
                     fondo_actual = 5
                     if personaje_id == 0:  # Solo si es JesusL
                         jesus_posicion = 5
+                    if personaje_id == 1:
+                        torchic_posicion = 5
 
         # --- Control de movimiento del personaje (fuera del bucle de eventos) ---
         keys = pygame.key.get_pressed()
@@ -140,6 +155,18 @@ def iniciar_nivel1(personaje_id):
             draw_jesus(0, -3, -2.2, jesus_posicion) # Usar la posición seleccionada
         elif personaje_id == 1:  # Torchic
             glRotatef(180, 0, 1, 0)
+            if torchic_posicion == 0:
+                draw_torchic()
+            elif torchic_posicion == 1:
+                draw_triste()
+            elif torchic_posicion == 2:
+                draw_feliz()
+            elif torchic_posicion == 3:
+                draw_enojado()
+            elif torchic_posicion == 4:
+                draw_nervioso()
+            elif torchic_posicion == 5:
+                draw_cejas_chad()
             draw_torchic() # Dibujar en el origen local
         elif personaje_id == 2:  # Dyson
             # Rotaciones/Traslaciones específicas para este modelo
@@ -150,7 +177,7 @@ def iniciar_nivel1(personaje_id):
         glPopMatrix() # Fin del bloque de la cámara
 
         # Mostrar información del nivel (actualizada)
-        dibujar_label_texto(f"Nivel 1", pos_x=10, pos_y=580, tam=24)
+        dibujar_label_texto(f"Nivel 2", pos_x=10, pos_y=580, tam=24)
         dibujar_label_texto(f"Usa las flechas para mover al personaje", pos_x=10, pos_y=550, tam=18)
         dibujar_label_texto(f"Usa W,A,S,D,Z,X para mover la camara (opcional)", pos_x=10, pos_y=520, tam=18)
         dibujar_label_texto(f"Presiona ESC para salir", pos_x=10, pos_y=490, tam=18)
