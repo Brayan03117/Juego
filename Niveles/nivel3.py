@@ -55,7 +55,7 @@ def iniciar_nivel3(personaje_id):
 
     torchic_posicion = 0
 
-    dyson_posicion = 0
+    dyson_emocion="original"
     
     # Variable para controlar la iluminación
     luz_encendida = True
@@ -120,6 +120,8 @@ def iniciar_nivel3(personaje_id):
                     fondo_actual = 1
                     if personaje_id == 0:  # Solo si es JesusL
                         jesus_posicion = 1
+                    if personaje_id == 2: 
+                        dyson_emocion="happy"
                     if personaje_id == 1:  # Solo si es Torchic
                         torchic_posicion = 1
                 elif event.key == pygame.K_2:
@@ -131,6 +133,8 @@ def iniciar_nivel3(personaje_id):
                     fondo_actual = 2
                     if personaje_id == 0:  # Solo si es JesusL
                         jesus_posicion = 2
+                    if personaje_id == 2: 
+                        dyson_emocion="sad"
                     if personaje_id == 1:
                         torchic_posicion = 2
                 elif event.key == pygame.K_3:
@@ -142,6 +146,8 @@ def iniciar_nivel3(personaje_id):
                     fondo_actual = 3
                     if personaje_id == 0:  # Solo si es JesusL
                         jesus_posicion = 3
+                    if personaje_id == 2: 
+                        dyson_emocion="asco"
                     if personaje_id == 1:
                         torchic_posicion = 3
                 elif event.key == pygame.K_4:
@@ -153,6 +159,8 @@ def iniciar_nivel3(personaje_id):
                     fondo_actual = 4
                     if personaje_id == 0:  # Solo si es JesusL
                         jesus_posicion = 4
+                    if personaje_id == 2: 
+                        dyson_emocion="admirar"
                     if personaje_id == 1:
                         torchic_posicion = 4
                 elif event.key == pygame.K_5:
@@ -164,8 +172,11 @@ def iniciar_nivel3(personaje_id):
                     fondo_actual = 5
                     if personaje_id == 0:  # Solo si es JesusL
                         jesus_posicion = 5
+                    if personaje_id == 2: 
+                        dyson_emocion="dormir"
                     if personaje_id == 1:
                         torchic_posicion = 5
+
 
         # --- Control de movimiento del personaje (fuera del bucle de eventos) ---
         keys = pygame.key.get_pressed()
@@ -222,7 +233,7 @@ def iniciar_nivel3(personaje_id):
             draw_torchic() # Dibujar en el origen local
         elif personaje_id == 2:  # Dyson
             # Rotaciones/Traslaciones específicas para este modelo
-            draw_dyson((0, 2, 8),emocion="asco") # Ajusta la posición relativa si es necesario
+            draw_dyson((0, 2, 8),emocion=dyson_emocion) # Ajusta la posición relativa si es necesario
        
         glPopMatrix() # Fin del bloque del personaje
 

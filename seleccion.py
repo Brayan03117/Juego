@@ -130,7 +130,7 @@ def main():
         else:
             glDisable(GL_LIGHTING)
             glColor3f(0.2, 0.2, 0.2) 
-        draw_dyson((-9, 2, 8),emocion="dormir")             # Posición local en su propio sistema
+        draw_dyson((-9, 2, 8),emocion="original")             # Posición local en su propio sistema
         glPopMatrix()
 
 
