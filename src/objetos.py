@@ -65,3 +65,101 @@ def draw_param_surface(fx, fy, fz, u_range, t_range, u_steps=20, t_steps=10):
                 glVertex3f(x, y, z)
     glEnd()
 
+def draw_pyramid(position, base_size=2.0, height=2.0):
+    x, y, z = position
+    hs = base_size / 2  # Half size (para los vértices)
+    
+    glPushMatrix()
+    glTranslatef(x, height / 2 + y, -z)  # ¡Aquí está el ajuste clave de altura!
+
+    glBegin(GL_TRIANGLES)
+    # Caras laterales
+    # Frente    
+    glNormal3f(0, 0.707, 0.707)
+    glVertex3f(0.0, height / 2, 0.0)           # Punta
+    glVertex3f(-hs, -height / 2, hs)           # Base izquierda
+    glVertex3f(hs, -height / 2, hs)            # Base derecha
+
+    # Derecha
+    glNormal3f(0.707, 0.707, 0)
+    glVertex3f(0.0, height / 2, 0.0)
+    glVertex3f(hs, -height / 2, hs)
+    glVertex3f(hs, -height / 2, -hs)
+
+    # Atrás
+    glNormal3f(0, 0.707, -0.707)
+    glVertex3f(0.0, height / 2, 0.0)
+    glVertex3f(hs, -height / 2, -hs)
+    glVertex3f(-hs, -height / 2, -hs)
+
+    # Izquierda
+    glNormal3f(-0.707, 0.707, 0)
+    glVertex3f(0.0, height / 2, 0.0)
+    glVertex3f(-hs, -height / 2, -hs)
+    glVertex3f(-hs, -height / 2, hs)
+    glEnd()
+
+    # Base (cuadrado)
+    glBegin(GL_QUADS)
+    glNormal3f(0, -1, 0)
+    glVertex3f(-hs, -height / 2, hs)
+    glVertex3f(hs, -height / 2, hs)
+    glVertex3f(hs, -height / 2, -hs)
+    glVertex3f(-hs, -height / 2, -hs)
+    glEnd()
+
+    glPopMatrix()
+
+
+
+def draw_cube(position, size=2.0):
+    x, y, z = position
+    hs = size / 2  # half size
+    glPushMatrix()
+    glTranslatef(x, z + hs, -y)  # ajustamos altura
+    glBegin(GL_QUADS)
+
+    # Cara frontal
+    glNormal3f(0, 0, 1)
+    glVertex3f(-hs, -hs, hs)
+    glVertex3f(hs, -hs, hs)
+    glVertex3f(hs, hs, hs)
+    glVertex3f(-hs, hs, hs)
+
+    # Cara trasera
+    glNormal3f(0, 0, -1)
+    glVertex3f(hs, -hs, -hs)
+    glVertex3f(-hs, -hs, -hs)
+    glVertex3f(-hs, hs, -hs)
+    glVertex3f(hs, hs, -hs)
+
+    # Cara izquierda
+    glNormal3f(-1, 0, 0)
+    glVertex3f(-hs, -hs, -hs)
+    glVertex3f(-hs, -hs, hs)
+    glVertex3f(-hs, hs, hs)
+    glVertex3f(-hs, hs, -hs)
+
+    # Cara derecha
+    glNormal3f(1, 0, 0) 
+    glVertex3f(hs, -hs, hs)
+    glVertex3f(hs, -hs, -hs)
+    glVertex3f(hs, hs, -hs)
+    glVertex3f(hs, hs, hs)
+
+    # Cara superior
+    glNormal3f(0, 1, 0)
+    glVertex3f(-hs, hs, hs)
+    glVertex3f(hs, hs, hs)
+    glVertex3f(hs, hs, -hs)
+    glVertex3f(-hs, hs, -hs)
+
+    # Cara inferior
+    glNormal3f(0, -1, 0)
+    glVertex3f(-hs, -hs, -hs)
+    glVertex3f(hs, -hs, -hs)
+    glVertex3f(hs, -hs, hs)
+    glVertex3f(-hs, -hs, hs)
+
+    glEnd()
+    glPopMatrix()
