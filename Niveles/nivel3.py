@@ -6,7 +6,7 @@ from pygame.locals import *
 import sys
 
 # Importar funciones para dibujar escenarios
-from Esenarios import escenario as es
+from Esenarios import escenarioObjetos as es
 
 # Importar personajes
 from acciones.jesusL import draw as draw_jesus
@@ -17,6 +17,7 @@ from acciones.expresiones import draw_cejas_chad,draw_feliz,draw_triste,draw_eno
 # Importar otras utilidades
 from acciones.iluminacion import iluminacion
 from src.textos import dibujar_label_texto
+from src.colisiones import hay_colision
 
 # Importar módulo para sonidos
 import os
@@ -180,16 +181,23 @@ def iniciar_nivel3(personaje_id):
 
         # --- Control de movimiento del personaje (fuera del bucle de eventos) ---
         keys = pygame.key.get_pressed()
+        nueva_x, nueva_y = player_x, player_y
         if keys[pygame.K_LEFT]:
-            player_x -= player_speed
+            nueva_x -= player_speed
         if keys[pygame.K_RIGHT]:
-            player_x += player_speed
+            nueva_x += player_speed
         if keys[pygame.K_UP]:
             # Mover hacia arriba en el eje Y
-            player_y += player_speed
+            nueva_y += player_speed
         if keys[pygame.K_DOWN]:
             # Mover hacia abajo en el eje Y
-            player_y -= player_speed
+            nueva_y -= player_speed
+        
+        nueva_pos = [nueva_x, nueva_y, player_z]
+
+        if not hay_colision(nueva_pos):
+            player_x, player_y = nueva_x, nueva_y
+        
         
         # Limpiar la pantalla
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
