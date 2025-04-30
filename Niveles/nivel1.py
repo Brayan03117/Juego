@@ -18,6 +18,9 @@ from acciones.expresiones import draw_cejas_chad,draw_feliz,draw_triste,draw_eno
 from acciones.iluminacion import iluminacion
 from src.textos import dibujar_label_texto
 
+# Importar módulo para sonidos
+import os
+
 def iniciar_nivel1(personaje_id):
     """
     Inicia el nivel 1 con el personaje seleccionado.
@@ -29,6 +32,18 @@ def iniciar_nivel1(personaje_id):
     display = (800, 600)
     pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
     pygame.display.set_caption("Nivel 1")
+    
+    # Inicializar el módulo de sonido
+    pygame.mixer.init()
+    
+    # Cargar los sonidos para cada escenario
+    sonidos_escenarios = {
+        1: pygame.mixer.Sound(os.path.join("Sonidos", "BackOnTrack.mp3")),
+        2: pygame.mixer.Sound(os.path.join("Sonidos", "Cycles.mp3")),
+        3: pygame.mixer.Sound(os.path.join("Sonidos", "Electroman.mp3")),
+        4: pygame.mixer.Sound(os.path.join("Sonidos", "GeometricalDominator.mp3")),
+        5: pygame.mixer.Sound(os.path.join("Sonidos", "Jumper.mp3"))
+    }
 
     # Inicializar fondos
     es.inicializar_fondos()
@@ -59,6 +74,9 @@ def iniciar_nivel1(personaje_id):
     player_x, player_y, player_z = 0.0, 0.0, 0.0
     player_speed = 0.1 # Ajusta la velocidad según sea necesario
     
+    # Reproducir el sonido del escenario inicial
+    sonidos_escenarios[fondo_actual].play()
+    
     # Bucle principal del juego
     while True:
         for event in pygame.event.get():
@@ -86,30 +104,55 @@ def iniciar_nivel1(personaje_id):
                     cam_y -= 0.5
                 # Cambio de escenarios y posiciones de JesusL
                 elif event.key == pygame.K_1:
+                    # Detener sonido actual y reproducir el nuevo
+                    for sonido in sonidos_escenarios.values():
+                        sonido.stop()
+                    sonidos_escenarios[1].play()
+                    
                     fondo_actual = 1
                     if personaje_id == 0:  # Solo si es JesusL
                         jesus_posicion = 1
                     if personaje_id == 1:  # Solo si es Torchic
                         torchic_posicion = 1
                 elif event.key == pygame.K_2:
+                    # Detener sonido actual y reproducir el nuevo
+                    for sonido in sonidos_escenarios.values():
+                        sonido.stop()
+                    sonidos_escenarios[2].play()
+                    
                     fondo_actual = 2
                     if personaje_id == 0:  # Solo si es JesusL
                         jesus_posicion = 2
                     if personaje_id == 1:
                         torchic_posicion = 2
                 elif event.key == pygame.K_3:
+                    # Detener sonido actual y reproducir el nuevo
+                    for sonido in sonidos_escenarios.values():
+                        sonido.stop()
+                    sonidos_escenarios[3].play()
+                    
                     fondo_actual = 3
                     if personaje_id == 0:  # Solo si es JesusL
                         jesus_posicion = 3
                     if personaje_id == 1:
                         torchic_posicion = 3
                 elif event.key == pygame.K_4:
+                    # Detener sonido actual y reproducir el nuevo
+                    for sonido in sonidos_escenarios.values():
+                        sonido.stop()
+                    sonidos_escenarios[4].play()
+                    
                     fondo_actual = 4
                     if personaje_id == 0:  # Solo si es JesusL
                         jesus_posicion = 4
                     if personaje_id == 1:
                         torchic_posicion = 4
                 elif event.key == pygame.K_5:
+                    # Detener sonido actual y reproducir el nuevo
+                    for sonido in sonidos_escenarios.values():
+                        sonido.stop()
+                    sonidos_escenarios[5].play()
+                    
                     fondo_actual = 5
                     if personaje_id == 0:  # Solo si es JesusL
                         jesus_posicion = 5
