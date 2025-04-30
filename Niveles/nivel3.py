@@ -56,6 +56,9 @@ def iniciar_nivel3(personaje_id):
     torchic_posicion = 0
 
     dyson_posicion = 0
+    
+    # Variable para controlar la iluminación
+    luz_encendida = True
 
     # Configurar la perspectiva
     gluPerspective(45, (display[0]/display[1]), 0.1, 50.0)
@@ -99,6 +102,13 @@ def iniciar_nivel3(personaje_id):
                     cam_y += 0.5
                 elif event.key == pygame.K_x:
                     cam_y -= 0.5
+                # Control de iluminación
+                elif event.key == pygame.K_6:  # Tecla 6 para apagar la luz
+                    luz_encendida = False
+                    glDisable(GL_LIGHTING)
+                elif event.key == pygame.K_7:  # Tecla 7 para encender la luz
+                    luz_encendida = True
+                    glEnable(GL_LIGHTING)
                 # En la sección donde manejas los eventos de teclado:
                 # Cambio de escenarios y posiciones
                 elif event.key == pygame.K_1:
@@ -173,8 +183,9 @@ def iniciar_nivel3(personaje_id):
         # Limpiar la pantalla
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         
-        # Aplicar iluminación
-        iluminacion(1.0, 1.0, 1.0)  # Luz blanca
+        # Aplicar iluminación solo si está encendida
+        if luz_encendida:
+            iluminacion(1.0, 1.0, 1.0)  # Luz blanca
         
         # Aplicar transformaciones de cámara (si las usas)
         glPushMatrix()
@@ -223,7 +234,8 @@ def iniciar_nivel3(personaje_id):
         dibujar_label_texto(f"Usa W,A,S,D,Z,X para mover la camara (opcional)", pos_x=10, pos_y=520, tam=18)
         dibujar_label_texto(f"Presiona ESC para salir", pos_x=10, pos_y=490, tam=18)
         dibujar_label_texto(f"Presiona 1-5 para cambiar el escenario y expresiones", pos_x=10, pos_y=460, tam=18)
-        
+        dibujar_label_texto(f"Presiona 6 para apagar la luz, 7 para encenderla", pos_x=10, pos_y=430, tam=18)
+        dibujar_label_texto(f"Luz: {'Encendida' if luz_encendida else 'Apagada'}", pos_x=10, pos_y=400, tam=18)
 
         pygame.display.flip()
         pygame.time.wait(10) # Considera usar pygame.time.Clock().tick(60) para framerate estable
