@@ -378,7 +378,7 @@ def Pos3(t_x, t_y, t_z):
     draw_sphere1(1.28 + t_x, 5.25 + t_y, 5 + t_z, 0.4, (255/255, 0/255, 0/255))  # Rojo
     
     # Brazo izquierdo (en posición normal)
-    draw_cylinder(1.65 + t_x, 2.7 + t_y, 3 + t_z, height=1.75, radius=0.2, slices=32, color=(255/255, 0/255, 0/255))  # Rojo
+    draw_cylinder2(1.28 + t_x, 2.75 + t_y, 5 + t_z, height=1.75, radius=0.2, slices=32, color=(255/255, 0/255, 0/255), rotation=(45, 0, 0))  # Brazo izquierdo
     
     # Brazo derecho (levantado)
     draw_cylinder(1.65 + t_x, 5.3 + t_y, 5 + t_z, height=1.75, radius=0.2, slices=32, color=(255/255, 0/255, 0/255))  # Rojo

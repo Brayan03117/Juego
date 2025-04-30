@@ -181,11 +181,8 @@ def iniciar_nivel2(personaje_id):
         dibujar_label_texto(f"Usa las flechas para mover al personaje", pos_x=10, pos_y=550, tam=18)
         dibujar_label_texto(f"Usa W,A,S,D,Z,X para mover la camara (opcional)", pos_x=10, pos_y=520, tam=18)
         dibujar_label_texto(f"Presiona ESC para salir", pos_x=10, pos_y=490, tam=18)
-        dibujar_label_texto(f"Presiona 1-5 para cambiar el escenario", pos_x=10, pos_y=460, tam=18)
+        dibujar_label_texto(f"Presiona 1-5 para cambiar el escenario y expresiones", pos_x=10, pos_y=460, tam=18)
         
-        # Información adicional para JesusL
-        if personaje_id == 0:
-            dibujar_label_texto(f"Presiona 1-5 para cambiar expresiones de JesusL", pos_x=10, pos_y=430, tam=18)
 
         pygame.display.flip()
         pygame.time.wait(10) # Considera usar pygame.time.Clock().tick(60) para framerate estable
