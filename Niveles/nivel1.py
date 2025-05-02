@@ -203,7 +203,7 @@ def iniciar_nivel1(personaje_id):
                         showing_options = True
                         options_cell_coords = (row, col)
                         selected_option = None
-                
+                        
                 # Seleccionar una opción (1, 2 o 3)
                 elif event.key in [pygame.K_1, pygame.K_2, pygame.K_3] and showing_options and options_cell_coords:
                     option_index = event.key - pygame.K_1  # 0 para tecla 1, 1 para tecla 2, 2 para tecla 3
@@ -356,8 +356,11 @@ def iniciar_nivel1(personaje_id):
                     glEnable(GL_BLEND)
                     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
                     
+                    # Invertir la coordenada de la fila para que coincida con la visualización
+                    visual_row = 3 - row  # Invertir la fila (0->3, 1->2, 2->1, 3->0)
+                    
                     x = board_x + col * cell_size + cell_size // 2 - num_surface.get_width() // 2
-                    y = display[1] - (board_y + row * cell_size + cell_size // 2 + num_surface.get_height() // 2)
+                    y = display[1] - (board_y + visual_row * cell_size + cell_size // 2 + num_surface.get_height() // 2)
                     
                     glBegin(GL_QUADS)
                     glTexCoord2f(0, 0); glVertex2f(x, y)
@@ -375,8 +378,11 @@ def iniciar_nivel1(personaje_id):
         # Resaltar la celda seleccionada
         if selected_cell:
             row, col = selected_cell
+            # Invertir la coordenada de la fila para que coincida con la visualización
+            visual_row = 3 - row  # Invertir la fila (0->3, 1->2, 2->1, 3->0)
+            
             x = board_x + col * cell_size
-            y = board_y + row * cell_size
+            y = board_y + visual_row * cell_size
             
             glColor3f(1.0, 0.0, 0.0)  # Color rojo para la selección
             glLineWidth(3.0)
@@ -386,7 +392,7 @@ def iniciar_nivel1(personaje_id):
             glVertex2f(x + cell_size, y + cell_size)
             glVertex2f(x, y + cell_size)
             glEnd()
-        
+
         # Volver al modo 3D
         glEnable(GL_DEPTH_TEST)
         glMatrixMode(GL_PROJECTION)
@@ -406,7 +412,10 @@ def iniciar_nivel1(personaje_id):
         # Mostrar la casilla seleccionada actualmente
         if selected_cell:
             row, col = selected_cell
-            dibujar_label_texto(f"Casilla seleccionada: Fila {row+1}, Columna {col+1}", pos_x=10, pos_y=370, tam=18)
+            # Invertir la fila para mostrar la coordenada visual correcta
+            visual_row = 3 - row + 1  # +1 para mostrar números de fila del 1 al 4 en lugar de 0 al 3
+            visual_col = col + 1  # +1 para mostrar números de columna del 1 al 4 en lugar de 0 al 3
+            dibujar_label_texto(f"Casilla seleccionada: Fila {visual_row}, Columna {visual_col}", pos_x=10, pos_y=370, tam=18)
 
         # Mostrar las opciones si están activas
         if showing_options and selected_cell:
