@@ -4,6 +4,7 @@ from OpenGL.GLU import *
 from OpenGL.GLUT import *
 from pygame.locals import *
 import sys
+import random
 
 # Importar funciones para dibujar escenarios
 from Esenarios import escenarioObjetos as es
@@ -32,7 +33,7 @@ def iniciar_nivel1(personaje_id):
     pygame.init()
     display = (800, 600)
     pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
-    pygame.display.set_caption("Nivel 1")
+    pygame.display.set_caption("Sudoku - Nivel 1")
     
     # Inicializar el módulo de sonido
     pygame.mixer.init()
@@ -78,6 +79,36 @@ def iniciar_nivel1(personaje_id):
     player_x, player_y, player_z = 0.0, 0.0, 0.0
     player_speed = 0.1 # Ajusta la velocidad según sea necesario
 
+    # Crear tablero de Sudoku
+    # Tablero de la imagen proporcionada
+    sudoku_board = [
+        [0, 0, 2, 4, 0, 0],
+        [1, 0, 0, 0, 3, 0],
+        [0, 0, 0, 0, 0, 0],
+        [4, 0, 0, 0, 0, 2],
+        [0, 0, 1, 3, 0, 0]
+    ]
+    
+    # Solución del Sudoku (basada en la imagen)
+    sudoku_solution = [
+        [3, 1, 2, 4, 5, 6],
+        [1, 5, 6, 2, 3, 4],
+        [2, 3, 5, 6, 4, 1],
+        [4, 6, 3, 1, 5, 2],
+        [5, 2, 1, 3, 6, 4]
+    ]
+    
+    # Variables para el juego de Sudoku
+    selected_cell = None
+    input_value = 0
+    error_count = 0
+    showing_options = False  # Inicializar esta variable
+    cell_options = []  # Inicializar esta variable
+    options_cell_coords = None # Añade esta línea para guardar las coordenadas de la celda con opciones
+
+    # Fuente para el Sudoku
+    pygame.font.init()
+    font = pygame.font.SysFont('Arial', 30)
     
     # Bucle principal del juego
     while True:
@@ -105,98 +136,117 @@ def iniciar_nivel1(personaje_id):
                 elif event.key == pygame.K_x:
                     cam_y -= 0.5
                 # Control de iluminación
-                elif event.key == pygame.K_6:  # Tecla 6 para apagar la luz
+                elif event.key == pygame.K_l:  # Tecla 6 para apagar la luz
                     luz_encendida = False
                     glDisable(GL_LIGHTING)
-                elif event.key == pygame.K_7:  # Tecla 7 para encender la luz
+                elif event.key == pygame.K_k:  # Tecla 7 para encender la luz
                     luz_encendida = True
                     glEnable(GL_LIGHTING)
-                # En la sección donde manejas los eventos de teclado:
-                # Cambio de escenarios y posiciones
-                elif event.key == pygame.K_1:
-                    # Detener sonido actual y reproducir el nuevo
-                    for sonido in sonidos_escenarios.values():
-                        sonido.stop()
-                    sonidos_escenarios[1].play()
+                
+                # Manejo de entrada para el Sudoku
+                elif event.key in [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5, pygame.K_6]:
+                    # Obtener el valor numérico de la tecla
+                    input_value = event.key - pygame.K_0
                     
-                    fondo_actual = 1
-                    if personaje_id == 0:  # Solo si es JesusL
-                        jesus_posicion = 1
-                    if personaje_id == 2: 
-                        dyson_emocion="happy"
-                    if personaje_id == 1:  # Solo si es Torchic
-                        torchic_posicion = 1
-                elif event.key == pygame.K_2:
-                    # Detener sonido actual y reproducir el nuevo
-                    for sonido in sonidos_escenarios.values():
-                        sonido.stop()
-                    sonidos_escenarios[2].play()
-                    
-                    fondo_actual = 2
-                    if personaje_id == 0:  # Solo si es JesusL
-                        jesus_posicion = 2
-                    if personaje_id == 2: 
-                        dyson_emocion="sad"
-                    if personaje_id == 1:
-                        torchic_posicion = 2
-                elif event.key == pygame.K_3:
-                    # Detener sonido actual y reproducir el nuevo
-                    for sonido in sonidos_escenarios.values():
-                        sonido.stop()
-                    sonidos_escenarios[3].play()
-                    
-                    fondo_actual = 3
-                    if personaje_id == 0:  # Solo si es JesusL
-                        jesus_posicion = 3
-                    if personaje_id == 2: 
-                        dyson_emocion="asco"
-                    if personaje_id == 1:
-                        torchic_posicion = 3
-                elif event.key == pygame.K_4:
-                    # Detener sonido actual y reproducir el nuevo
-                    for sonido in sonidos_escenarios.values():
-                        sonido.stop()
-                    sonidos_escenarios[4].play()
-                    
-                    fondo_actual = 4
-                    if personaje_id == 0:  # Solo si es JesusL
-                        jesus_posicion = 4
-                    if personaje_id == 2: 
-                        dyson_emocion="admirar"
-                    if personaje_id == 1:
-                        torchic_posicion = 4
-                elif event.key == pygame.K_5:
-                    # Detener sonido actual y reproducir el nuevo
-                    for sonido in sonidos_escenarios.values():
-                        sonido.stop()
-                    sonidos_escenarios[5].play()
-                    
-                    fondo_actual = 5
-                    if personaje_id == 0:  # Solo si es JesusL
-                        jesus_posicion = 5
-                    if personaje_id == 2: 
-                        dyson_emocion="dormir"
-                    if personaje_id == 1:
-                        torchic_posicion = 5
+                    # Si hay una celda seleccionada y está vacía en el tablero original
+                    if selected_cell and sudoku_board[selected_cell[0]][selected_cell[1]] == 0:
+                        row, col = selected_cell
+                        
+                        # Verificar si el valor es correcto
+                        if input_value == sudoku_solution[row][col]:
+                            # Valor correcto
+                            sudoku_board[row][col] = input_value
+                            # JesusL mantiene su posición original
+                            jesus_posicion = 0
+                        else:
+                            # Valor incorrecto
+                            error_count += 1
+                            # JesusL cambia de posición cuando hay un error
+                            jesus_posicion = error_count % 5 + 1
+                
+                # Selección de celda con las flechas (corregido)
+                elif event.key == pygame.K_UP and selected_cell and selected_cell[0] > 0:
+                    selected_cell = (selected_cell[0] - 1, selected_cell[1])  # Ahora sube correctamente
+                elif event.key == pygame.K_DOWN and selected_cell and selected_cell[0] < 4:
+                    selected_cell = (selected_cell[0] + 1, selected_cell[1])  # Ahora baja correctamente
+                elif event.key == pygame.K_LEFT and selected_cell and selected_cell[1] > 0:
+                    selected_cell = (selected_cell[0], selected_cell[1] - 1)
+                elif event.key == pygame.K_RIGHT and selected_cell and selected_cell[1] < 5:
+                    selected_cell = (selected_cell[0], selected_cell[1] + 1)
+                
+                # Inicializar la selección de celda si no hay ninguna seleccionada
+                elif event.key in [pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT] and not selected_cell:
+                    selected_cell = (0, 0)
+                
+                # Sistema de opciones múltiples (3 opciones)
+                elif event.key == pygame.K_SPACE and selected_cell:
+                    row, col = selected_cell  # Usar directamente selected_cell
+                    # Solo mostrar opciones si la celda está vacía en el tablero original
+                    if sudoku_board[row][col] == 0:
+                        # Generar 3 opciones (una correcta y dos incorrectas)
+                        correct_option = sudoku_solution[row][col]
+                        
+                        # Generar opciones incorrectas (diferentes a la correcta)
+                        incorrect_options = []
+                        while len(incorrect_options) < 2:
+                            option = random.randint(1, 6)
+                            if option != correct_option and option not in incorrect_options:
+                                incorrect_options.append(option)
+                        
+                        # Mezclar las opciones
+                        options = [correct_option] + incorrect_options
+                        random.shuffle(options)
+                        
+                        # Guardar las opciones y las coordenadas de la celda
+                        cell_options = options
+                        showing_options = True
+                        options_cell_coords = (row, col) # Guarda las coordenadas aquí
+                        selected_option = None
+                
+                # Seleccionar una opción (1, 2 o 3)
+                elif event.key in [pygame.K_1, pygame.K_2, pygame.K_3] and showing_options and options_cell_coords: # Asegúrate de que hay coordenadas guardadas
+                    option_index = event.key - pygame.K_1  # 0 para tecla 1, 1 para tecla 2, 2 para tecla 3
 
-        # --- Control de movimiento del personaje (fuera del bucle de eventos) ---
-        keys = pygame.key.get_pressed()
-        nueva_x, nueva_y = player_x, player_y
-        if keys[pygame.K_LEFT]:
-            nueva_x -= player_speed
-        if keys[pygame.K_RIGHT]:
-            nueva_x += player_speed
-        if keys[pygame.K_UP]:
-            # Mover hacia arriba en el eje Y
-            nueva_y += player_speed
-        if keys[pygame.K_DOWN]:
-            # Mover hacia abajo en el eje Y
-            nueva_y -= player_speed
-        
-        nueva_pos = [nueva_x, nueva_y, player_z]
+                    # Asegurarse de que el índice esté dentro del rango
+                    if option_index < len(cell_options):
+                        selected_option = cell_options[option_index]
 
-        if not hay_colision(nueva_pos):
-            player_x, player_y = nueva_x, nueva_y
+                        # Obtener las coordenadas de la celda donde se pidieron las opciones
+                        row, col = options_cell_coords # Usa las coordenadas guardadas
+
+                        # Verificar si la opción seleccionada es correcta
+                        if selected_option == sudoku_solution[row][col]:
+                            # Opción correcta - actualizar ESTA celda específica
+                            sudoku_board[row][col] = selected_option
+                            # JesusL mantiene su posición original
+                            jesus_posicion = 0
+                        else:
+                            # Opción incorrecta
+                            error_count += 1
+                            # JesusL cambia de posición cuando hay un error
+                            jesus_posicion = error_count % 5 + 1
+
+                        # Ocultar las opciones y resetear estado después de seleccionar
+                        showing_options = False
+                        options_cell_coords = None # Resetea las coordenadas guardadas
+                        cell_options = [] # Limpia las opciones mostradas
+                        # Obtener las coordenadas actuales de la celda seleccionada
+                        row, col = selected_cell  # Usar directamente selected_cell
+                        
+                        # Verificar si la opción seleccionada es correcta
+                        if selected_option == sudoku_solution[row][col]:
+                            # Opción correcta - actualizar ESTA celda específica
+                            sudoku_board[row][col] = selected_option
+                            # JesusL mantiene su posición original
+                            jesus_posicion = 0
+                        else:
+                            # Opción incorrecta
+                            error_count += 1
+                            # JesusL cambia de posición cuando hay un error
+                            jesus_posicion = error_count % 5 + 1
+                        
+                        # Ocultar las opciones después de seleccionar
+                        showing_options = False
         
         # Limpiar la pantalla
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -246,14 +296,126 @@ def iniciar_nivel1(personaje_id):
 
         glPopMatrix() # Fin del bloque de la cámara
 
-        # Mostrar información del nivel (actualizada)
-        dibujar_label_texto(f"Nivel 1", pos_x=10, pos_y=580, tam=24)
-        dibujar_label_texto(f"Usa las flechas para mover al personaje", pos_x=10, pos_y=550, tam=18)
-        dibujar_label_texto(f"Usa W,A,S,D,Z,X para mover la camara (opcional)", pos_x=10, pos_y=520, tam=18)
-        dibujar_label_texto(f"Presiona ESC para salir", pos_x=10, pos_y=490, tam=18)
-        dibujar_label_texto(f"Presiona 1-5 para cambiar el escenario y expresiones", pos_x=10, pos_y=460, tam=18)
-        dibujar_label_texto(f"Presiona 6 para apagar la luz, 7 para encenderla", pos_x=10, pos_y=430, tam=18)
-        dibujar_label_texto(f"Luz: {'Encendida' if luz_encendida else 'Apagada'}", pos_x=10, pos_y=400, tam=18)
+        # Renderizar el tablero de Sudoku en 2D
+        # Cambiar a modo 2D para dibujar el tablero
+        glMatrixMode(GL_PROJECTION)
+        glPushMatrix()
+        glLoadIdentity()
+        gluOrtho2D(0, display[0], 0, display[1])
+        glMatrixMode(GL_MODELVIEW)
+        glPushMatrix()
+        glLoadIdentity()
+        glDisable(GL_DEPTH_TEST)
+        
+        # Dibujar el tablero de Sudoku
+        cell_size = 50
+        board_width = 6 * cell_size
+        board_height = 5 * cell_size
+        board_x = (display[0] - board_width) // 2
+        board_y = (display[1] - board_height) // 2
+        
+        # Dibujar el fondo del tablero
+        glColor3f(1.0, 1.0, 1.0)  # Color blanco
+        glBegin(GL_QUADS)
+        glVertex2f(board_x, board_y)
+        glVertex2f(board_x + board_width, board_y)
+        glVertex2f(board_x + board_width, board_y + board_height)
+        glVertex2f(board_x, board_y + board_height)
+        glEnd()
+        
+        # Dibujar las líneas del tablero
+        glColor3f(0.0, 0.0, 0.0)  # Color negro
+        glLineWidth(2.0)
+        glBegin(GL_LINES)
+        # Líneas horizontales
+        for i in range(6):
+            y = board_y + i * cell_size
+            glVertex2f(board_x, y)
+            glVertex2f(board_x + board_width, y)
+        # Líneas verticales
+        for i in range(7):
+            x = board_x + i * cell_size
+            glVertex2f(x, board_y)
+            glVertex2f(x, board_y + board_height)
+        glEnd()
+        
+        # Dibujar los números del tablero
+        for row in range(5):
+            for col in range(6):
+                if sudoku_board[row][col] != 0:
+                    # Renderizar el número
+                    num_surface = font.render(str(sudoku_board[row][col]), True, (0, 0, 0))
+                    num_texture = pygame.image.tostring(num_surface, 'RGBA', True)
+                    
+                    # Crear textura OpenGL
+                    texture_id = glGenTextures(1)
+                    glBindTexture(GL_TEXTURE_2D, texture_id)
+                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
+                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
+                    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, num_surface.get_width(), num_surface.get_height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, num_texture)
+                    
+                    # Dibujar la textura
+                    glEnable(GL_TEXTURE_2D)
+                    glEnable(GL_BLEND)
+                    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+                    
+                    x = board_x + col * cell_size + cell_size // 2 - num_surface.get_width() // 2
+                    y = display[1] - (board_y + row * cell_size + cell_size // 2 + num_surface.get_height() // 2)
+                    
+                    glBegin(GL_QUADS)
+                    glTexCoord2f(0, 0); glVertex2f(x, y)
+                    glTexCoord2f(1, 0); glVertex2f(x + num_surface.get_width(), y)
+                    glTexCoord2f(1, 1); glVertex2f(x + num_surface.get_width(), y + num_surface.get_height())
+                    glTexCoord2f(0, 1); glVertex2f(x, y + num_surface.get_height())
+                    glEnd()
+                    
+                    glDisable(GL_TEXTURE_2D)
+                    glDisable(GL_BLEND)
+                    
+                    # Liberar la textura
+                    glDeleteTextures(1, [texture_id])
+        
+        # Resaltar la celda seleccionada
+        if selected_cell:
+            row, col = selected_cell
+            x = board_x + col * cell_size
+            y = board_y + row * cell_size
+            
+            glColor3f(1.0, 0.0, 0.0)  # Color rojo para la selección
+            glLineWidth(3.0)
+            glBegin(GL_LINE_LOOP)
+            glVertex2f(x, y)
+            glVertex2f(x + cell_size, y)
+            glVertex2f(x + cell_size, y + cell_size)
+            glVertex2f(x, y + cell_size)
+            glEnd()
+        
+        # Volver al modo 3D
+        glEnable(GL_DEPTH_TEST)
+        glMatrixMode(GL_PROJECTION)
+        glPopMatrix()
+        glMatrixMode(GL_MODELVIEW)
+        glPopMatrix()
 
+        # Mostrar información del juego
+        dibujar_label_texto(f"Sudoku - Nivel 1", pos_x=10, pos_y=580, tam=24)
+        dibujar_label_texto(f"Usa las flechas para seleccionar una celda", pos_x=10, pos_y=550, tam=18)
+        dibujar_label_texto(f"Presiona ESPACIO para ver opciones", pos_x=10, pos_y=520, tam=18)
+        dibujar_label_texto(f"Selecciona 1, 2 o 3 para elegir una opción", pos_x=10, pos_y=490, tam=18)
+        dibujar_label_texto(f"Presiona ESC para salir", pos_x=10, pos_y=460, tam=18)
+        dibujar_label_texto(f"Errores: {error_count}", pos_x=10, pos_y=430, tam=18)
+        dibujar_label_texto(f"Luz: {'Encendida' if luz_encendida else 'Apagada'}", pos_x=10, pos_y=400, tam=18)
+        
+        # Mostrar la casilla seleccionada actualmente
+        if selected_cell:
+            row, col = selected_cell
+            dibujar_label_texto(f"Casilla seleccionada: Fila {row+1}, Columna {col+1}", pos_x=10, pos_y=370, tam=18)
+
+        # Mostrar las opciones si están activas
+        if showing_options and selected_cell:
+            option_y = 350
+            for i, option in enumerate(cell_options):
+                dibujar_label_texto(f"Opción {i+1}: {option}", pos_x=10, pos_y=option_y, tam=18)
+                option_y -= 30
         pygame.display.flip()
         pygame.time.wait(10) # Considera usar pygame.time.Clock().tick(60) para framerate estable
