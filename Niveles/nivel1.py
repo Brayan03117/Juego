@@ -79,36 +79,37 @@ def iniciar_nivel1(personaje_id):
     player_x, player_y, player_z = 0.0, 0.0, 0.0
     player_speed = 0.1 # Ajusta la velocidad según sea necesario
 
-    # Crear tablero de Sudoku
-    # Tablero de la imagen proporcionada
+    # Crear tablero de Sudoku 2x2 (4x4)
+    # Tablero inicial con algunas casillas llenas
     sudoku_board = [
-        [0, 0, 2, 4, 0, 0],
-        [1, 0, 0, 0, 3, 0],
-        [0, 0, 0, 0, 0, 0],
-        [4, 0, 0, 0, 0, 2],
-        [0, 0, 1, 3, 0, 0]
+        [0, 0, 2, 0],
+        [2, 0, 0, 0],
+        [0, 2, 0, 0],
+        [0, 0, 3, 0]
     ]
     
-    # Solución del Sudoku (basada en la imagen)
+    # Solución del Sudoku 2x2 (4x4)
     sudoku_solution = [
-        [3, 1, 2, 4, 5, 6],
-        [1, 5, 6, 2, 3, 4],
-        [2, 3, 5, 6, 4, 1],
-        [4, 6, 3, 1, 5, 2],
-        [5, 2, 1, 3, 6, 4]
+        [4, 3, 2, 1],
+        [2, 1, 4, 3],
+        [3, 2, 1, 4],
+        [1, 4, 3, 2]
     ]
     
     # Variables para el juego de Sudoku
     selected_cell = None
     input_value = 0
     error_count = 0
-    showing_options = False  # Inicializar esta variable
-    cell_options = []  # Inicializar esta variable
-    options_cell_coords = None # Añade esta línea para guardar las coordenadas de la celda con opciones
+    showing_options = False
+    cell_options = []
+    options_cell_coords = None
 
     # Fuente para el Sudoku
     pygame.font.init()
     font = pygame.font.SysFont('Arial', 30)
+    
+    # Crear un reloj para controlar el framerate
+    clock = pygame.time.Clock()
     
     # Bucle principal del juego
     while True:
@@ -136,15 +137,15 @@ def iniciar_nivel1(personaje_id):
                 elif event.key == pygame.K_x:
                     cam_y -= 0.5
                 # Control de iluminación
-                elif event.key == pygame.K_l:  # Tecla 6 para apagar la luz
+                elif event.key == pygame.K_l:  # Tecla L para apagar la luz
                     luz_encendida = False
                     glDisable(GL_LIGHTING)
-                elif event.key == pygame.K_k:  # Tecla 7 para encender la luz
+                elif event.key == pygame.K_k:  # Tecla K para encender la luz
                     luz_encendida = True
                     glEnable(GL_LIGHTING)
                 
                 # Manejo de entrada para el Sudoku
-                elif event.key in [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5, pygame.K_6]:
+                elif event.key in [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4]:
                     # Obtener el valor numérico de la tecla
                     input_value = event.key - pygame.K_0
                     
@@ -164,14 +165,14 @@ def iniciar_nivel1(personaje_id):
                             # JesusL cambia de posición cuando hay un error
                             jesus_posicion = error_count % 5 + 1
                 
-                # Selección de celda con las flechas (corregido)
+                # Selección de celda con las flechas
                 elif event.key == pygame.K_UP and selected_cell and selected_cell[0] > 0:
-                    selected_cell = (selected_cell[0] - 1, selected_cell[1])  # Ahora sube correctamente
-                elif event.key == pygame.K_DOWN and selected_cell and selected_cell[0] < 4:
-                    selected_cell = (selected_cell[0] + 1, selected_cell[1])  # Ahora baja correctamente
+                    selected_cell = (selected_cell[0] - 1, selected_cell[1])
+                elif event.key == pygame.K_DOWN and selected_cell and selected_cell[0] < 3:  # Cambiado a 3 para un tablero 4x4
+                    selected_cell = (selected_cell[0] + 1, selected_cell[1])
                 elif event.key == pygame.K_LEFT and selected_cell and selected_cell[1] > 0:
                     selected_cell = (selected_cell[0], selected_cell[1] - 1)
-                elif event.key == pygame.K_RIGHT and selected_cell and selected_cell[1] < 5:
+                elif event.key == pygame.K_RIGHT and selected_cell and selected_cell[1] < 3:  # Cambiado a 3 para un tablero 4x4
                     selected_cell = (selected_cell[0], selected_cell[1] + 1)
                 
                 # Inicializar la selección de celda si no hay ninguna seleccionada
@@ -180,7 +181,7 @@ def iniciar_nivel1(personaje_id):
                 
                 # Sistema de opciones múltiples (3 opciones)
                 elif event.key == pygame.K_SPACE and selected_cell:
-                    row, col = selected_cell  # Usar directamente selected_cell
+                    row, col = selected_cell
                     # Solo mostrar opciones si la celda está vacía en el tablero original
                     if sudoku_board[row][col] == 0:
                         # Generar 3 opciones (una correcta y dos incorrectas)
@@ -189,7 +190,7 @@ def iniciar_nivel1(personaje_id):
                         # Generar opciones incorrectas (diferentes a la correcta)
                         incorrect_options = []
                         while len(incorrect_options) < 2:
-                            option = random.randint(1, 6)
+                            option = random.randint(1, 4)  # Cambiado a 4 para un tablero 4x4
                             if option != correct_option and option not in incorrect_options:
                                 incorrect_options.append(option)
                         
@@ -200,11 +201,11 @@ def iniciar_nivel1(personaje_id):
                         # Guardar las opciones y las coordenadas de la celda
                         cell_options = options
                         showing_options = True
-                        options_cell_coords = (row, col) # Guarda las coordenadas aquí
+                        options_cell_coords = (row, col)
                         selected_option = None
                 
                 # Seleccionar una opción (1, 2 o 3)
-                elif event.key in [pygame.K_1, pygame.K_2, pygame.K_3] and showing_options and options_cell_coords: # Asegúrate de que hay coordenadas guardadas
+                elif event.key in [pygame.K_1, pygame.K_2, pygame.K_3] and showing_options and options_cell_coords:
                     option_index = event.key - pygame.K_1  # 0 para tecla 1, 1 para tecla 2, 2 para tecla 3
 
                     # Asegurarse de que el índice esté dentro del rango
@@ -212,7 +213,7 @@ def iniciar_nivel1(personaje_id):
                         selected_option = cell_options[option_index]
 
                         # Obtener las coordenadas de la celda donde se pidieron las opciones
-                        row, col = options_cell_coords # Usa las coordenadas guardadas
+                        row, col = options_cell_coords
 
                         # Verificar si la opción seleccionada es correcta
                         if selected_option == sudoku_solution[row][col]:
@@ -228,25 +229,8 @@ def iniciar_nivel1(personaje_id):
 
                         # Ocultar las opciones y resetear estado después de seleccionar
                         showing_options = False
-                        options_cell_coords = None # Resetea las coordenadas guardadas
-                        cell_options = [] # Limpia las opciones mostradas
-                        # Obtener las coordenadas actuales de la celda seleccionada
-                        row, col = selected_cell  # Usar directamente selected_cell
-                        
-                        # Verificar si la opción seleccionada es correcta
-                        if selected_option == sudoku_solution[row][col]:
-                            # Opción correcta - actualizar ESTA celda específica
-                            sudoku_board[row][col] = selected_option
-                            # JesusL mantiene su posición original
-                            jesus_posicion = 0
-                        else:
-                            # Opción incorrecta
-                            error_count += 1
-                            # JesusL cambia de posición cuando hay un error
-                            jesus_posicion = error_count % 5 + 1
-                        
-                        # Ocultar las opciones después de seleccionar
-                        showing_options = False
+                        options_cell_coords = None
+                        cell_options = []
         
         # Limpiar la pantalla
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -308,9 +292,9 @@ def iniciar_nivel1(personaje_id):
         glDisable(GL_DEPTH_TEST)
         
         # Dibujar el tablero de Sudoku
-        cell_size = 50
-        board_width = 6 * cell_size
-        board_height = 5 * cell_size
+        cell_size = 60  # Aumentado para mejor visibilidad
+        board_width = 4 * cell_size  # 4 columnas
+        board_height = 4 * cell_size  # 4 filas
         board_x = (display[0] - board_width) // 2
         board_y = (display[1] - board_height) // 2
         
@@ -328,20 +312,33 @@ def iniciar_nivel1(personaje_id):
         glLineWidth(2.0)
         glBegin(GL_LINES)
         # Líneas horizontales
-        for i in range(6):
+        for i in range(5):  # 5 líneas para 4 filas
             y = board_y + i * cell_size
             glVertex2f(board_x, y)
             glVertex2f(board_x + board_width, y)
         # Líneas verticales
-        for i in range(7):
+        for i in range(5):  # 5 líneas para 4 columnas
             x = board_x + i * cell_size
             glVertex2f(x, board_y)
             glVertex2f(x, board_y + board_height)
         glEnd()
         
+        # Dibujar líneas más gruesas para separar los bloques 2x2
+        glLineWidth(4.0)
+        glBegin(GL_LINES)
+        # Línea horizontal central
+        y = board_y + 2 * cell_size
+        glVertex2f(board_x, y)
+        glVertex2f(board_x + board_width, y)
+        # Línea vertical central
+        x = board_x + 2 * cell_size
+        glVertex2f(x, board_y)
+        glVertex2f(x, board_y + board_height)
+        glEnd()
+        
         # Dibujar los números del tablero
-        for row in range(5):
-            for col in range(6):
+        for row in range(4):  # 4 filas
+            for col in range(4):  # 4 columnas
                 if sudoku_board[row][col] != 0:
                     # Renderizar el número
                     num_surface = font.render(str(sudoku_board[row][col]), True, (0, 0, 0))
@@ -398,7 +395,7 @@ def iniciar_nivel1(personaje_id):
         glPopMatrix()
 
         # Mostrar información del juego
-        dibujar_label_texto(f"Sudoku - Nivel 1", pos_x=10, pos_y=580, tam=24)
+        dibujar_label_texto(f"Sudoku 2x2 - Nivel 1", pos_x=10, pos_y=580, tam=24)
         dibujar_label_texto(f"Usa las flechas para seleccionar una celda", pos_x=10, pos_y=550, tam=18)
         dibujar_label_texto(f"Presiona ESPACIO para ver opciones", pos_x=10, pos_y=520, tam=18)
         dibujar_label_texto(f"Selecciona 1, 2 o 3 para elegir una opción", pos_x=10, pos_y=490, tam=18)
@@ -417,5 +414,6 @@ def iniciar_nivel1(personaje_id):
             for i, option in enumerate(cell_options):
                 dibujar_label_texto(f"Opción {i+1}: {option}", pos_x=10, pos_y=option_y, tam=18)
                 option_y -= 30
+                
         pygame.display.flip()
-        pygame.time.wait(10) # Considera usar pygame.time.Clock().tick(60) para framerate estable
+        clock.tick(60)  # Mantener 60 FPS
