@@ -82,7 +82,7 @@ def iniciar_nivel1(personaje_id):
     # Crear tablero de Sudoku 2x2 (4x4)
     # Tablero inicial con algunas casillas llenas
     sudoku_board = [
-        [0, 0, 2, 0],
+        [4, 0, 2, 0],
         [2, 0, 0, 0],
         [0, 2, 0, 0],
         [0, 0, 3, 0]
@@ -103,6 +103,7 @@ def iniciar_nivel1(personaje_id):
     showing_options = False
     cell_options = []
     options_cell_coords = None
+    last_insertion = None  # Para almacenar la última inserción (fila, columna, valor)
 
     # Fuente para el Sudoku
     pygame.font.init()
@@ -150,35 +151,51 @@ def iniciar_nivel1(personaje_id):
                     input_value = event.key - pygame.K_0
                     
                     # Si hay una celda seleccionada y está vacía en el tablero original
-                    if selected_cell and sudoku_board[selected_cell[0]][selected_cell[1]] == 0:
+                    if selected_cell:
                         row, col = selected_cell
-                        
-                        # Verificar si el valor es correcto
-                        if input_value == sudoku_solution[row][col]:
-                            # Valor correcto
-                            sudoku_board[row][col] = input_value
-                            # JesusL mantiene su posición original
-                            jesus_posicion = 0
+                        # Verificar si la celda está vacía (0) en el tablero actual
+                        if sudoku_board[row][col] == 0:
+                            # Verificar si el valor es correcto
+                            if input_value == sudoku_solution[row][col]:
+                                # Valor correcto
+                                sudoku_board[row][col] = input_value
+                                # JesusL mantiene su posición original
+                                jesus_posicion = 0
+                                # Guardar información sobre la última inserción
+                                last_insertion = (row, col, input_value)
+                            else:
+                                # Valor incorrecto
+                                error_count += 1
+                                # JesusL cambia de posición cuando hay un error
+                                jesus_posicion = error_count % 5 + 1
+                                # Guardar información sobre el intento fallido
+                                last_insertion = (row, col, input_value)
                         else:
-                            # Valor incorrecto
-                            error_count += 1
-                            # JesusL cambia de posición cuando hay un error
-                            jesus_posicion = error_count % 5 + 1
+                            # Celda ya ocupada
+                            last_insertion = None
+                    else:
+                        # No hay celda seleccionada
+                        last_insertion = None
                 
                 # Selección de celda con las flechas
                 elif event.key == pygame.K_UP and selected_cell and selected_cell[0] > 0:
                     selected_cell = (selected_cell[0] - 1, selected_cell[1])
-                elif event.key == pygame.K_DOWN and selected_cell and selected_cell[0] < 3:  # Cambiado a 3 para un tablero 4x4
+                    print(f"Seleccionada celda: Fila {selected_cell[0]+1}, Columna {selected_cell[1]+1}")
+                elif event.key == pygame.K_DOWN and selected_cell and selected_cell[0] < 3:
                     selected_cell = (selected_cell[0] + 1, selected_cell[1])
+                    print(f"Seleccionada celda: Fila {selected_cell[0]+1}, Columna {selected_cell[1]+1}")
                 elif event.key == pygame.K_LEFT and selected_cell and selected_cell[1] > 0:
                     selected_cell = (selected_cell[0], selected_cell[1] - 1)
-                elif event.key == pygame.K_RIGHT and selected_cell and selected_cell[1] < 3:  # Cambiado a 3 para un tablero 4x4
+                    print(f"Seleccionada celda: Fila {selected_cell[0]+1}, Columna {selected_cell[1]+1}")
+                elif event.key == pygame.K_RIGHT and selected_cell and selected_cell[1] < 3:
                     selected_cell = (selected_cell[0], selected_cell[1] + 1)
+                    print(f"Seleccionada celda: Fila {selected_cell[0]+1}, Columna {selected_cell[1]+1}")
                 
                 # Inicializar la selección de celda si no hay ninguna seleccionada
                 elif event.key in [pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT] and not selected_cell:
                     selected_cell = (0, 0)
-                
+                    print(f"Inicializada selección en: Fila 1, Columna 1")
+                    
                 # Sistema de opciones múltiples (3 opciones)
                 elif event.key == pygame.K_SPACE and selected_cell:
                     row, col = selected_cell
@@ -267,8 +284,6 @@ def iniciar_nivel1(personaje_id):
                 draw_feliz()
             elif torchic_posicion == 3:
                 draw_enojado()
-            elif torchic_posicion == 4:
-                draw_nervioso()
             elif torchic_posicion == 5:
                 draw_cejas_chad()
             draw_torchic() # Dibujar en el origen local
@@ -352,15 +367,15 @@ def iniciar_nivel1(personaje_id):
                     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, num_surface.get_width(), num_surface.get_height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, num_texture)
                     
                     # Dibujar la textura
+                    # Dibujar la textura
                     glEnable(GL_TEXTURE_2D)
                     glEnable(GL_BLEND)
                     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
                     
-                    # Invertir la coordenada de la fila para que coincida con la visualización
-                    visual_row = 3 - row  # Invertir la fila (0->3, 1->2, 2->1, 3->0)
-                    
+                    # Corregir la posición de dibujo para que coincida con la matriz interna
+                    # La fila 0 debe ser la superior, no la inferior
                     x = board_x + col * cell_size + cell_size // 2 - num_surface.get_width() // 2
-                    y = display[1] - (board_y + visual_row * cell_size + cell_size // 2 + num_surface.get_height() // 2)
+                    y = board_y + (3 - row) * cell_size + cell_size // 2 - num_surface.get_height() // 2
                     
                     glBegin(GL_QUADS)
                     glTexCoord2f(0, 0); glVertex2f(x, y)
@@ -378,11 +393,9 @@ def iniciar_nivel1(personaje_id):
         # Resaltar la celda seleccionada
         if selected_cell:
             row, col = selected_cell
-            # Invertir la coordenada de la fila para que coincida con la visualización
-            visual_row = 3 - row  # Invertir la fila (0->3, 1->2, 2->1, 3->0)
-            
+            # Corregir la posición de la selección
             x = board_x + col * cell_size
-            y = board_y + visual_row * cell_size
+            y = board_y + (3 - row) * cell_size
             
             glColor3f(1.0, 0.0, 0.0)  # Color rojo para la selección
             glLineWidth(3.0)
@@ -412,10 +425,20 @@ def iniciar_nivel1(personaje_id):
         # Mostrar la casilla seleccionada actualmente
         if selected_cell:
             row, col = selected_cell
-            # Invertir la fila para mostrar la coordenada visual correcta
-            visual_row = 3 - row + 1  # +1 para mostrar números de fila del 1 al 4 en lugar de 0 al 3
-            visual_col = col + 1  # +1 para mostrar números de columna del 1 al 4 en lugar de 0 al 3
+            # Mostrar directamente la fila y columna +1 para que sean del 1 al 4
+            visual_row = row + 1
+            visual_col = col + 1
             dibujar_label_texto(f"Casilla seleccionada: Fila {visual_row}, Columna {visual_col}", pos_x=10, pos_y=370, tam=18)
+        
+        # Mostrar información sobre la última inserción
+        if last_insertion:
+            row, col, value = last_insertion
+            visual_row = row + 1
+            visual_col = col + 1
+            if value == sudoku_solution[row][col]:
+                dibujar_label_texto(f"¡Correcto! Insertado {value} en Fila {visual_row}, Columna {visual_col}", pos_x=10, pos_y=340, tam=18)
+            else:
+                dibujar_label_texto(f"¡Incorrecto! Intentaste insertar {value} en Fila {visual_row}, Columna {visual_col}", pos_x=10, pos_y=340, tam=18)
 
         # Mostrar las opciones si están activas
         if showing_options and selected_cell:
