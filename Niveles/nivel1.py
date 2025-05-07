@@ -46,6 +46,10 @@ def iniciar_nivel1(personaje_id):
         4: pygame.mixer.Sound(os.path.join("Sonidos", "GeometricalDominator.mp3")),
         5: pygame.mixer.Sound(os.path.join("Sonidos", "Jumper.mp3"))
     }
+    
+    # Reproducir la música inicial
+    sonido_actual = 2  # Comenzamos con el segundo sonido
+    sonidos_escenarios[sonido_actual].play(-1)  # Reproducir en bucle
 
     # Inicializar fondos
     es.inicializar_fondos()
@@ -104,6 +108,31 @@ def iniciar_nivel1(personaje_id):
     cell_options = []
     options_cell_coords = None
     last_insertion = None  # Para almacenar la última inserción (fila, columna, valor)
+    
+    # Contador de respuestas correctas
+    correct_answers = 0
+    
+    # Función para cambiar escenario y música
+    def cambiar_escenario_y_musica():
+        nonlocal fondo_actual, sonido_actual
+        
+        # Detener la música actual
+        sonidos_escenarios[sonido_actual].stop()
+        
+        # Cambiar a un nuevo escenario y música (diferentes al actual)
+        nuevos_indices = list(range(1, 6))
+        nuevos_indices.remove(fondo_actual)  # Remover el escenario actual
+        
+        # Seleccionar un nuevo escenario aleatorio
+        fondo_actual = random.choice(nuevos_indices)
+        
+        # Seleccionar una nueva música aleatoria (puede ser la misma que el escenario)
+        sonido_actual = random.choice(list(sonidos_escenarios.keys()))
+        
+        # Reproducir la nueva música
+        sonidos_escenarios[sonido_actual].play(-1)  # Reproducir en bucle
+        
+        print(f"Cambiando a escenario {fondo_actual} con música {sonido_actual}")
 
     # Fuente para el Sudoku
     pygame.font.init()
@@ -116,12 +145,18 @@ def iniciar_nivel1(personaje_id):
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                # Detener todos los sonidos antes de salir
+                for sonido in sonidos_escenarios.values():
+                    sonido.stop()
                 pygame.quit()
                 return
             
             # Control de teclado para salir (ESC) y mover la cámara (opcional)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
+                    # Detener todos los sonidos antes de salir
+                    for sonido in sonidos_escenarios.values():
+                        sonido.stop()
                     pygame.quit()
                     return
                 # Movimiento de cámara (si aún lo quieres)
@@ -163,6 +198,18 @@ def iniciar_nivel1(personaje_id):
                                 jesus_posicion = 0
                                 # Guardar información sobre la última inserción
                                 last_insertion = (row, col, input_value)
+                                
+                                # Incrementar contador de respuestas correctas
+                                correct_answers += 1
+                                
+                                # Cambiar escenario y música
+                                cambiar_escenario_y_musica()
+                                
+                                # Cambiar la emoción del personaje según el personaje seleccionado
+                                if personaje_id == 1:  # Torchic
+                                    torchic_posicion = 2  # Feliz
+                                elif personaje_id == 2:  # Dyson
+                                    dyson_emocion = "happy"  # Cambiar de "feliz" a "happy"
                             else:
                                 # Valor incorrecto
                                 error_count += 1
@@ -170,6 +217,12 @@ def iniciar_nivel1(personaje_id):
                                 jesus_posicion = error_count % 5 + 1
                                 # Guardar información sobre el intento fallido
                                 last_insertion = (row, col, input_value)
+                                
+                                # Cambiar la emoción del personaje según el personaje seleccionado
+                                if personaje_id == 1:  # Torchic
+                                    torchic_posicion = 1  # Triste
+                                elif personaje_id == 2:  # Dyson
+                                    dyson_emocion = "sad"
                         else:
                             # Celda ya ocupada
                             last_insertion = None
@@ -238,11 +291,29 @@ def iniciar_nivel1(personaje_id):
                             sudoku_board[row][col] = selected_option
                             # JesusL mantiene su posición original
                             jesus_posicion = 0
+                            
+                            # Incrementar contador de respuestas correctas
+                            correct_answers += 1
+                            
+                            # Cambiar escenario y música
+                            cambiar_escenario_y_musica()
+                            
+                            # Cambiar la emoción del personaje según el personaje seleccionado
+                            if personaje_id == 1:  # Torchic
+                                torchic_posicion = 2  # Feliz
+                            elif personaje_id == 2:  # Dyson
+                                dyson_emocion = "happy"
                         else:
                             # Opción incorrecta
                             error_count += 1
                             # JesusL cambia de posición cuando hay un error
                             jesus_posicion = error_count % 5 + 1
+                            
+                            # Cambiar la emoción del personaje según el personaje seleccionado
+                            if personaje_id == 1:  # Torchic
+                                torchic_posicion = 1  # Triste
+                            elif personaje_id == 2:  # Dyson
+                                dyson_emocion = "sad"
 
                         # Ocultar las opciones y resetear estado después de seleccionar
                         showing_options = False
@@ -420,7 +491,9 @@ def iniciar_nivel1(personaje_id):
         dibujar_label_texto(f"Selecciona 1, 2 o 3 para elegir una opción", pos_x=10, pos_y=490, tam=18)
         dibujar_label_texto(f"Presiona ESC para salir", pos_x=10, pos_y=460, tam=18)
         dibujar_label_texto(f"Errores: {error_count}", pos_x=10, pos_y=430, tam=18)
-        dibujar_label_texto(f"Luz: {'Encendida' if luz_encendida else 'Apagada'}", pos_x=10, pos_y=400, tam=18)
+        dibujar_label_texto(f"Respuestas correctas: {correct_answers}", pos_x=10, pos_y=410, tam=18)
+        dibujar_label_texto(f"Escenario actual: {fondo_actual}", pos_x=10, pos_y=390, tam=18)
+        dibujar_label_texto(f"Luz: {'Encendida' if luz_encendida else 'Apagada'}", pos_x=10, pos_y=370, tam=18)
         
         # Mostrar la casilla seleccionada actualmente
         if selected_cell:
@@ -428,7 +501,7 @@ def iniciar_nivel1(personaje_id):
             # Mostrar directamente la fila y columna +1 para que sean del 1 al 4
             visual_row = row + 1
             visual_col = col + 1
-            dibujar_label_texto(f"Casilla seleccionada: Fila {visual_row}, Columna {visual_col}", pos_x=10, pos_y=370, tam=18)
+            dibujar_label_texto(f"Casilla seleccionada: Fila {visual_row}, Columna {visual_col}", pos_x=10, pos_y=340, tam=18)
         
         # Mostrar información sobre la última inserción
         if last_insertion:
@@ -436,13 +509,13 @@ def iniciar_nivel1(personaje_id):
             visual_row = row + 1
             visual_col = col + 1
             if value == sudoku_solution[row][col]:
-                dibujar_label_texto(f"¡Correcto! Insertado {value} en Fila {visual_row}, Columna {visual_col}", pos_x=10, pos_y=340, tam=18)
+                dibujar_label_texto(f"¡Correcto! Insertado {value} en Fila {visual_row}, Columna {visual_col}", pos_x=10, pos_y=310, tam=18)
             else:
-                dibujar_label_texto(f"¡Incorrecto! Intentaste insertar {value} en Fila {visual_row}, Columna {visual_col}", pos_x=10, pos_y=340, tam=18)
+                dibujar_label_texto(f"¡Incorrecto! Intentaste insertar {value} en Fila {visual_row}, Columna {visual_col}", pos_x=10, pos_y=310, tam=18)
 
         # Mostrar las opciones si están activas
         if showing_options and selected_cell:
-            option_y = 350
+            option_y = 280
             for i, option in enumerate(cell_options):
                 dibujar_label_texto(f"Opción {i+1}: {option}", pos_x=10, pos_y=option_y, tam=18)
                 option_y -= 30
