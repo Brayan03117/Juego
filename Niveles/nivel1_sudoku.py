@@ -27,6 +27,50 @@ def verificar_solucion(tablero, solucion, fila, columna, valor):
     """Verifica si el valor ingresado es correcto según la solución"""
     return valor == solucion[fila][columna]
 
+def dibujar_numero_sin_fondo(numero, pos_x, pos_y, tam, color=(1.0, 1.0, 1.0)):
+    """Dibuja un número sin fondo negro utilizando líneas OpenGL"""
+    # Crear una superficie temporal con fondo transparente
+    font = pygame.font.SysFont('Arial', tam, bold=True)
+    text_surface = font.render(str(numero), True, (255, 255, 255))
+    
+    # Obtener los datos de la superficie
+    text_data = pygame.image.tostring(text_surface, "RGBA", True)
+    text_width, text_height = text_surface.get_size()
+    
+    # Guardar el estado actual
+    glPushAttrib(GL_ALL_ATTRIB_BITS)
+    
+    # Configurar para dibujar la textura
+    glEnable(GL_BLEND)
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+    
+    # Crear una textura temporal
+    texture_id = glGenTextures(1)
+    glBindTexture(GL_TEXTURE_2D, texture_id)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, text_width, text_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, text_data)
+    
+    # Habilitar texturas
+    glEnable(GL_TEXTURE_2D)
+    
+    # Establecer el color (afecta a la textura)
+    glColor3f(*color)
+    
+    # Dibujar el quad con la textura
+    glBegin(GL_QUADS)
+    glTexCoord2f(0, 0); glVertex2f(pos_x, pos_y)
+    glTexCoord2f(1, 0); glVertex2f(pos_x + text_width, pos_y)
+    glTexCoord2f(1, 1); glVertex2f(pos_x + text_width, pos_y + text_height)
+    glTexCoord2f(0, 1); glVertex2f(pos_x, pos_y + text_height)
+    glEnd()
+    
+    # Limpiar
+    glDeleteTextures(1, [texture_id])
+    
+    # Restaurar el estado
+    glPopAttrib()
+
 def dibujar_tablero_sudoku(config, estado_juego, tablero):
     """Dibuja el tablero de Sudoku en la pantalla"""
     # Configurar para dibujo 2D
@@ -94,28 +138,18 @@ def dibujar_tablero_sudoku(config, estado_juego, tablero):
             if tablero[row][col] != 0:
                 # Determinar el color según si es un valor original o ingresado
                 if estado_juego['last_insertion'] and estado_juego['last_insertion'][0] == row and estado_juego['last_insertion'][1] == col:
-                    glColor3f(0.0, 1.0, 0.0)  # Verde brillante para la última inserción correcta
+                    color = (0.0, 1.0, 0.3)  # Verde brillante para la última inserción correcta
                 else:
-                    glColor3f(1.0, 1.0, 1.0)  # Blanco brillante para valores originales
+                    color = (1.0, 0.9, 0.0)  # Amarillo dorado para valores normales
                 
-                # Renderizar el número con un tamaño más grande y efecto de sombra para hacerlo más llamativo
-                # Primero dibujamos una sombra
-                glColor3f(0.0, 0.0, 0.0)  # Negro para la sombra
-                dibujar_label_texto(str(tablero[row][col]), 
-                                   pos_x=cell_x + cell_size//2 - 4, 
-                                   pos_y=cell_y + cell_size//2 - 4, 
-                                   tam=28)
-                
-                # Luego dibujamos el número en su color real
-                if estado_juego['last_insertion'] and estado_juego['last_insertion'][0] == row and estado_juego['last_insertion'][1] == col:
-                    glColor3f(0.0, 1.0, 0.3)  # Verde brillante para la última inserción correcta
-                else:
-                    glColor3f(1.0, 0.9, 0.0)  # Amarillo dorado para valores normales
-                
-                dibujar_label_texto(str(tablero[row][col]), 
-                                   pos_x=cell_x + cell_size//2 - 5, 
-                                   pos_y=cell_y + cell_size//2 - 5, 
-                                   tam=28)
+                # Usar nuestra nueva función para dibujar números sin fondo
+                dibujar_numero_sin_fondo(
+                    tablero[row][col],
+                    cell_x + cell_size//2 - 10,
+                    cell_y + cell_size//2 - 15,
+                    32,  # Tamaño más grande para mejor visibilidad
+                    color
+                )
     
     # Dibujar instrucciones del Sudoku con colores más llamativos
     glColor3f(1.0, 0.8, 0.2)  # Color dorado para el título
