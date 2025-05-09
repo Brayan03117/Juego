@@ -57,7 +57,7 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
                             # Valor correcto
                             tablero[row][col] = input_value
                             # JesusL mantiene su posición original
-                            config['jesus_posicion'] = 0
+                
                             # Guardar información sobre la última inserción
                             estado_juego['last_insertion'] = (row, col, input_value)
                             
