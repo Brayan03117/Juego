@@ -138,6 +138,9 @@ def draw(t_x,t_y,t_z, Posimiento):
         Pos4(t_x,t_y,t_z)
     elif Posimiento == 5:
         Pos5(t_x,t_y,t_z)
+    elif Posimiento == 6:
+        Pos6(t_x,t_y,t_z)
+
 def draw_cylinder2(x, y, z, height, radius, slices=32, color=(0.0,0.0,0.0), rotation=(0, 0, 0)):
     glPushMatrix()
     glColor3f(*color)
@@ -396,7 +399,33 @@ def Pos4(t_x, t_y, t_z):
     glPopMatrix() 
 
 
+
 def Pos5(t_x, t_y, t_z):
+    glEnable(GL_DEPTH_TEST)
+    glPushMatrix()
+    
+    # Cabeza
+    draw_rectangular_prism(0.5, 1, 1, (0.5, 0, 1), (1 + t_x, 3.5 + t_y, 5.7 + t_z))
+    
+    # Cara (texto "X_X")
+    glPushMatrix()
+    glTranslatef(2 + t_x, 3.7 + t_y, 6.1 + t_z)
+    glRotatef(180, 0, 1, 0)  # Girar para que el texto mire hacia la cámara
+    glDisable(GL_LIGHTING)  # Desactivar iluminación para el texto
+    glColor3f(0, 0, 0)  # Color negro para el texto
+    glRasterPos3f(0, 0, 0)
+    for c in "X_X":
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ord(c))
+    glEnable(GL_LIGHTING)  # Reactivar iluminación
+    glPopMatrix()
+    
+
+    glDisable(GL_LIGHTING) 
+    glDisable(GL_LIGHT0)
+    glPopMatrix() 
+
+
+def Pos6(t_x, t_y, t_z):
     glEnable(GL_DEPTH_TEST)
     glPushMatrix()
     
@@ -444,45 +473,6 @@ def Pos5(t_x, t_y, t_z):
     glDisable(GL_LIGHTING) 
     glDisable(GL_LIGHT0)
     glPopMatrix() 
-
-
-def Pos6(t_x, t_y, t_z):
-    glEnable(GL_DEPTH_TEST)
-    glPushMatrix()
-    
-    # Cabeza
-    draw_rectangular_prism(0.5, 1, 1, (0.5, 0, 1), (1 + t_x, 2.3 + t_y, 5.2 + t_z))
-    
-    # Pecho (más delgado)
-    draw_rectangular_prism(1, 2, 3.15, (255/255, 255/255, 0/255), (0.80 + t_x, 1.8 + t_y, 2 + t_z))  # Amarillo
-    
-    # Copa del sombrero (centrada sobre la cabeza)
-    draw_cylinder(1.25 + t_x, 2.8 + t_y, 6.3 + t_z, 0.5, 0.2, 32, (0, 0, 0))  # Negro
-
-    # Ala del sombrero (parte inferior)
-    draw_cylinder(1.25 + t_x, 2.8 + t_y, 6.2 + t_z, 0.1, 0.5, 32, (0, 0, 0))  
-    
-    # Piernas (más delgadas y color azul)
-    draw_cylinder2(1.25 + t_x, 3.25 + t_y, 0.5 + t_z, 2, 0.2, 32, (0/255, 0/255, 255/255),rotation=(45, 0, 0))  # Azul
-    draw_cylinder2(1.25 + t_x, 4.75 + t_y, 0.5 + t_z, 2, 0.2, 32, (0/255, 0/255, 255/255),rotation=(45, 0, 0))  # Azul
-    
-    # Pies
-    draw_rectangular_prism2(1, 0.5, 0.5, (1,1,1), (1 + t_x, 4.5 + t_y, 0 + t_z),rotation=(45, 0, 0))
-    draw_rectangular_prism2(1, 0.5, 0.5, (1,1,1), (1 + t_x, 3 + t_y, 0 + t_z),rotation=(45, 0, 0))
-    
-    # Hombros
-    draw_sphere1(1.28 + t_x, 1.55 + t_y, 5 + t_z, 0.4, (255/255, 0/255, 0/255))  # Rojo
-    draw_sphere1(1.28 + t_x, 4.05 + t_y, 5 + t_z, 0.4, (255/255, 0/255, 0/255))  # Rojo
-    
-# Brazos abiertos (horizontales)
-    draw_cylinder2(1.28 + t_x, 1.55 + t_y, 5 + t_z, height=1.75, radius=0.2, slices=32, color=(255/255, 0/255, 0/255), rotation=(45, 0, 0))  # Brazo izquierdo
-    draw_cylinder2(1.28 + t_x, 4.05 + t_y, 5 + t_z, height=1.75, radius=0.2, slices=32, color=(255/255, 0/255, 0/255), rotation=(0,45 , 0))  # Brazo derecho
-
-
-    glDisable(GL_LIGHTING) 
-    glDisable(GL_LIGHT0)
-    glPopMatrix() 
-
 
 def Pos7(t_x, t_y, t_z):
     glEnable(GL_DEPTH_TEST)
