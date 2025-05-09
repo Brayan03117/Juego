@@ -2,6 +2,7 @@ import pygame
 from OpenGL.GL import *
 from src.colisiones import hay_colision
 from Niveles.nivel1_config import cambiar_escenario_y_musica
+from Transiciones.GameOver import mostrar_game_over # <--- AÑADIR ESTA LÍNEA
 
 def manejar_eventos(config, estado_juego, tablero, solucion):
     """Maneja todos los eventos del nivel"""
@@ -85,6 +86,19 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
                                 config['torchic_posicion'] = 1  # Triste
                             elif config['personaje_id'] == 2:  # Dyson
                                 config['dyson_emocion'] = "sad"
+
+                            # Comprobar si se alcanzó el límite de errores
+                            if estado_juego['error_count'] >= 5:
+                                # Detener todos los sonidos del nivel antes de mostrar Game Over
+                                for sonido_escenario in config['sonidos_escenarios'].values():
+                                    sonido_escenario.stop()
+                                
+                                decision_game_over = mostrar_game_over(config['display'])
+                                if decision_game_over == 'menu':
+                                    return "menu" # O la señal que uses para volver al menú
+                                elif decision_game_over == 'salir':
+                                    pygame.quit()
+                                    return "salir"
         
         # Manejo de clics del ratón para seleccionar celdas del Sudoku
         elif event.type == pygame.MOUSEBUTTONDOWN:
