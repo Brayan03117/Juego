@@ -135,8 +135,9 @@ def main():
     mostrar_titulo(display)
     stopsonido() # Apagar el sonido al terminar de mostrar el título
 
-    import main
-    main.main()
+    # Importar y ejecutar el main directamente
+    from main import main
+    main()
 
 if __name__ == "__main__":
     main()

@@ -1,7 +1,7 @@
 import pygame
 from OpenGL.GL import *
 
-def dibujar_label_texto(texto, pos_x=10, pos_y=580, tam=12, fuente_nombre="consolas"):
+def dibujar_label_texto(texto, pos_x=10, pos_y=580, tam=12, fuente_nombre="consolas", color=(255, 255, 255)):
     """
     Dibuja texto en la pantalla usando OpenGL y Pygame, con soporte para diferentes fuentes y tamaños.
 
@@ -10,6 +10,7 @@ def dibujar_label_texto(texto, pos_x=10, pos_y=580, tam=12, fuente_nombre="conso
     - pos_x, pos_y: int. Posición inicial en pantalla.
     - tam: int. Tamaño de fuente. Se pueden usar tamaños grandes para títulos.
     - fuente_nombre: str. Nombre de la fuente del sistema o fuente instalada (como 'arial', 'timesnewroman', etc.).
+    - color: tuple. Color del texto en formato RGB (r, g, b).
     """
     # Crear la fuente
     fuente = pygame.font.SysFont(fuente_nombre, tam)
@@ -47,7 +48,7 @@ def dibujar_label_texto(texto, pos_x=10, pos_y=580, tam=12, fuente_nombre="conso
     glPopAttrib()
 
     for i, linea in enumerate(lineas):
-        superficie = fuente.render(linea, True, (255, 255, 255), (0, 0, 0))
+        superficie = fuente.render(linea, True, color, (0, 0, 0))
         text_data = pygame.image.tostring(superficie, "RGBA", True)
         glWindowPos2d(pos_x, pos_y - i * (tam + 4))
         glDrawPixels(superficie.get_width(), superficie.get_height(), GL_RGBA, GL_UNSIGNED_BYTE, text_data)

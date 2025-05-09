@@ -19,6 +19,9 @@ def pantalla_inicial():
     gluOrtho2D(0, 800, 0, 600)
     glClearColor(0, 0, 0, 1)
 
+    # Para la animación del indicador
+    tiempo_inicio = pygame.time.get_ticks()
+
     while True:
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -41,16 +44,12 @@ def pantalla_inicial():
         # Dibuja las opciones
         for i, texto in enumerate(opciones):
             x, y = coordenadas_opciones[i]
-            dibujar_label_texto(texto, pos_x=x, pos_y=y, tam=28)
-
-        # Dibuja el triangulito de selección (ajustado)
-        glColor3f(1, 0, 0)
-        x, y = coordenadas_opciones[seleccion_actual]
-        glBegin(GL_TRIANGLES)
-        glVertex2f(x - 40, y - 8)
-        glVertex2f(x - 20, y)
-        glVertex2f(x - 40, y + 8)
-        glEnd()
+            
+            # Resalta la opción seleccionada con un color diferente
+            if i == seleccion_actual:
+                dibujar_label_texto("> " + texto, pos_x=x - 30, pos_y=y, tam=28, color=(255, 0, 0))
+            else:
+                dibujar_label_texto(texto, pos_x=x, pos_y=y, tam=28)
 
         # Créditos
         dibujar_label_texto("DESARROLLADO POR:", pos_x=280, pos_y=100, tam=20)

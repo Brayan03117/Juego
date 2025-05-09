@@ -167,3 +167,31 @@ def dibujar_tablero_sudoku(config, estado_juego, tablero):
     glMatrixMode(GL_PROJECTION)
     glPopMatrix()
     glMatrixMode(GL_MODELVIEW)
+
+
+def configurar_iluminacion(config):
+    """Configura la iluminación del escenario"""
+    # Definir posición de la luz (más alta sobre el escenario)
+    posicion_luz = [0.0, 30, 0.0, 1.0]  # Aumentamos la altura (Y) para que venga más desde arriba
+    
+    # Configurar propiedades de la luz
+    luz_ambiente = [0.6, 0.6, 0.6, 1.0]  # Aumentamos la luz ambiental para mayor brillo general
+    luz_difusa = [1.0, 1.0, 1.0, 1.0]    # Máxima intensidad de luz difusa
+    luz_especular = [1.0, 1.0, 1.0, 1.0]
+    
+    # Aplicar configuración
+    glLightfv(GL_LIGHT0, GL_POSITION, posicion_luz)
+    glLightfv(GL_LIGHT0, GL_AMBIENT, luz_ambiente)
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, luz_difusa)
+    glLightfv(GL_LIGHT0, GL_SPECULAR, luz_especular)
+    
+    # Habilitar iluminación
+    glEnable(GL_LIGHTING)
+    glEnable(GL_LIGHT0)
+    glEnable(GL_COLOR_MATERIAL)
+    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE)
+    
+    # Configurar modelo de sombreado
+    glShadeModel(GL_SMOOTH)
+    
+    return True
