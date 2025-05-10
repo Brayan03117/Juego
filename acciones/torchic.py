@@ -109,3 +109,54 @@ def personaje():
     draw_cuerpo()
     draw_plumas()
     draw_detalles()
+
+
+def personaje2(error):
+    if error<7:
+        glColor3f(1.0, 0.5, 0.0)  # Naranja
+        draw_sphere((0, (0.3 * ESCALA) - OFFSET_Y, (9.2 * ESCALA) + OFFSET_Z), 3 * ESCALA)
+        glColor3f(1.0, 0.95, 0.6)
+        def fx_j(u, t): return ESCALA * (1 - t) * math.cos(u)
+        def fy_j(u, t): return ESCALA * ((1 - t) * math.sin(u) + 2.8) - OFFSET_Y
+        def fz_j(u, t): return ESCALA * (1.5 * t + 7) + OFFSET_Z
+        draw_param_surface(fx_j, fy_j, fz_j, (0, 2*math.pi), (0, 1))
+        glColor3f(0.0, 0.0, 0.0)
+        draw_sphere((-1.5 * ESCALA, 2.5 * ESCALA - OFFSET_Y, 9.2 * ESCALA + OFFSET_Z), 0.7 * ESCALA)
+        draw_sphere((1.5 * ESCALA, 2.5 * ESCALA - OFFSET_Y, 9.2 * ESCALA + OFFSET_Z), 0.7 * ESCALA)
+        glColor3f(1.0, 1.0, 1.0)
+        draw_sphere((-1.7 * ESCALA, 2.99 * ESCALA - OFFSET_Y, 9.3 * ESCALA + OFFSET_Z), 0.3 * ESCALA)
+        draw_sphere((1.7 * ESCALA, 2.99 * ESCALA - OFFSET_Y, 9.3 * ESCALA + OFFSET_Z), 0.3 * ESCALA)
+    if error<6:
+        draw_plumas()
+    if error<5:
+        angle = math.radians(-13)
+        cos_a = math.cos(angle)
+        sin_a = math.sin(angle)
+
+        glColor3f(1.0, 0.85, 0.1)
+        def fx_zz(u, t): return ESCALA * ((3.2 - t) * math.cos(u) + 0.35 * math.sin(10 * u))
+        def fy_zz(u, t): return ESCALA * (((3.2 - t) * math.sin(u) + 0.35 * math.cos(10 * u)) * cos_a - (0.4 * t + 6.3) * sin_a) - OFFSET_Y-.8
+        def fz_zz(u, t): return ESCALA * (((3.2 - t) * math.sin(u) + 0.35 * math.cos(10 * u)) * sin_a + (0.4 * t + 6.3) * cos_a) + OFFSET_Z+.3
+        draw_param_surface(fx_zz, fy_zz, fz_zz, (0, 2*math.pi), (0, 1))
+
+        def fx_zz2(u, t): return ESCALA * ((3.5 - t) * math.cos(u) + 0.35 * math.sin(14 * u))
+        def fy_zz2(u, t): return ESCALA * (((3.5 - t) * math.sin(u) + 0.35 * math.cos(14 * u)) * cos_a - (0.4 * t + 6.3) * sin_a) - OFFSET_Y-.8
+        def fz_zz2(u, t): return ESCALA * (((3.5 - t) * math.sin(u) + 0.35 * math.cos(14 * u)) * sin_a + (0.4 * t + 6.3) * cos_a) + OFFSET_Z
+        draw_param_surface(fx_zz2, fy_zz2, fz_zz2, (0, 2*math.pi), (0, 1))
+    if error<4:
+        glColor3f(1.0, 0.5, 0.0)
+        draw_sphere((0, (-0.6 * ESCALA) - OFFSET_Y, (5.5 * ESCALA) + OFFSET_Z), 2.5 * ESCALA)
+    if error<3:
+        glColor3f(1.0, 0.85, 0.1)
+        def fx_l(u, t): return 1.6 * ESCALA * (1 - t) * math.cos(u)
+        def fy_l(u, t): return ESCALA * (-2 - 2.5 * t) - OFFSET_Y
+        def fz_l(u, t): return 1.6 * ESCALA * (1 - t) * math.sin(u) + OFFSET_Z + (5.5 * ESCALA)
+        draw_param_surface(fx_l, fy_l, fz_l, (0, 2*math.pi), (0.3, 1))
+    if error<2:
+        glColor3f(1.0, 0.95, 0.6)
+        draw_cylinder((-1 * ESCALA, -1 * ESCALA - OFFSET_Y, (1.2 * ESCALA) + OFFSET_Z),
+                    (-1 * ESCALA, -1 * ESCALA - OFFSET_Y, (3.7 * ESCALA) + OFFSET_Z), 0.5 * ESCALA)
+    if error<1:
+        glColor3f(1.0, 0.95, 0.6)
+        draw_cylinder((1 * ESCALA, -1 * ESCALA - OFFSET_Y, (1.2 * ESCALA) + OFFSET_Z),
+                  (1 * ESCALA, -1 * ESCALA - OFFSET_Y, (3.7 * ESCALA) + OFFSET_Z), 0.5 * ESCALA)
