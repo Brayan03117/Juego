@@ -40,10 +40,11 @@ def main():
                     # Procesar el resultado del nivel
                     if resultado == "salir":
                         sys.exit()  # Cerrar el juego completamente con Esc
-                    elif resultado == "menu":
-                        reiniciar_nivel = False  # Volver al menú principal con Enter
+                    elif resultado == "menu" or resultado == "gameover":
+                        reiniciar_nivel = False  # Volver al menú principal con Enter o en caso de Game Over
+                    # Se elimina la opción de reiniciar nivel en Game Over
                     elif resultado == "reiniciar":
-                        reiniciar_nivel = True  # Reiniciar el nivel actual con Espacio
+                        reiniciar_nivel = True  # Reiniciar el nivel actual con Espacio (solo durante el juego)
                     else:
                         reiniciar_nivel = False  # Por defecto, volver al menú principal
                 

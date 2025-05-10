@@ -42,8 +42,9 @@ def mostrar_game_over(display):
     opcion_menu_texto = "Presiona ENTER para ir al Menú Principal" # <--- TEXTO CORREGIDO
     tex_op_menu, w_op_menu, h_op_menu = cargar_textura_desde_texto(opcion_menu_texto, fuente_pequena, (255, 255, 255))
     
-    opcion_reiniciar_texto = "Presiona ESPACIO para Reiniciar Nivel" # <--- NUEVO TEXTO
-    tex_op_reiniciar, w_op_reiniciar, h_op_reiniciar = cargar_textura_desde_texto(opcion_reiniciar_texto, fuente_pequena, (255, 255, 255))
+    # Eliminamos la opción de reiniciar
+    # opcion_reiniciar_texto = "Presiona ESPACIO para Reiniciar Nivel"
+    # tex_op_reiniciar, w_op_reiniciar, h_op_reiniciar = cargar_textura_desde_texto(opcion_reiniciar_texto, fuente_pequena, (255, 255, 255))
 
     opcion_salir_texto = "Presiona ESC para Salir del Juego" # <--- CAMBIO DE TEXTO
     tex_op_salir, w_op_salir, h_op_salir = cargar_textura_desde_texto(opcion_salir_texto, fuente_pequena, (255, 255, 255))
@@ -78,9 +79,10 @@ def mostrar_game_over(display):
                 if evento.key == K_ESCAPE:
                     decision = 'salir'
                     corriendo = False
-                if evento.key == K_SPACE: # <--- NUEVA CONDICIÓN
-                    decision = 'reiniciar'
-                    corriendo = False
+                # Eliminamos la opción de reiniciar
+                # if evento.key == K_SPACE:
+                #     decision = 'reiniciar'
+                #     corriendo = False
 
         glClearColor(0.1, 0.1, 0.1, 1)  # Fondo gris oscuro
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -110,8 +112,11 @@ def mostrar_game_over(display):
         y_opciones_base = display[1] // 2 + h_go // 2 + 30
 
         renderizar_texto_textura(tex_op_menu, centro_x_opciones - w_op_menu // 2, y_opciones_base, w_op_menu, h_op_menu)
-        renderizar_texto_textura(tex_op_reiniciar, centro_x_opciones - w_op_reiniciar // 2, y_opciones_base + h_op_menu + 20, w_op_reiniciar, h_op_reiniciar) # <--- RENDERIZAR NUEVA OPCIÓN
-        renderizar_texto_textura(tex_op_salir, centro_x_opciones - w_op_salir // 2, y_opciones_base + h_op_menu + h_op_reiniciar + 40, w_op_salir, h_op_salir) # <--- AJUSTAR POSICIÓN Y
+        # Eliminamos la renderización de la opción reiniciar
+        # renderizar_texto_textura(tex_op_reiniciar, centro_x_opciones - w_op_reiniciar // 2, y_opciones_base + h_op_menu + 20, w_op_reiniciar, h_op_reiniciar)
+        
+        # Ajustamos la posición de la opción salir
+        renderizar_texto_textura(tex_op_salir, centro_x_opciones - w_op_salir // 2, y_opciones_base + h_op_menu + 20, w_op_salir, h_op_salir)
         
         pygame.display.flip()
         clock.tick(30) # Controlar FPS
@@ -147,12 +152,13 @@ def main_test_game_over(): # Función de prueba para esta pantalla
         # from Transiciones.pantalla1 import mostrar_pantalla1 # Ejemplo
         # mostrar_pantalla1(display)
         pass
-    elif decision_usuario == 'reiniciar': # <--- NUEVA CONDICIÓN
-        print("Reiniciando el nivel...")
-        # Aquí llamarías a la función que reinicia el nivel actual
-        # from Niveles.nivel1_main import iniciar_nivel1 # Ejemplo
-        # iniciar_nivel1() # O como se llame tu función para iniciar/reiniciar el nivel
-        pass
+    # Eliminamos la condición de reiniciar
+    # elif decision_usuario == 'reiniciar':
+    #     print("Reiniciando el nivel...")
+    #     # Aquí llamarías a la función que reinicia el nivel actual
+    #     # from Niveles.nivel1_main import iniciar_nivel1 # Ejemplo
+    #     # iniciar_nivel1() # O como se llame tu función para iniciar/reiniciar el nivel
+    #     pass
     elif decision_usuario == 'salir':
         print("Saliendo del juego...")
     
