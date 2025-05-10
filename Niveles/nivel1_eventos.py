@@ -3,6 +3,8 @@ from OpenGL.GL import *
 from src.colisiones import hay_colision
 from Niveles.nivel1_config import cambiar_escenario_y_musica
 from Transiciones.GameOver import mostrar_game_over # <--- AÑADIR ESTA LÍNEA
+from Esenarios.escenarioObjetos import obtener_obstaculos
+
 
 def manejar_eventos(config, estado_juego, tablero, solucion):
     """Maneja todos los eventos del nivel"""
@@ -141,6 +143,16 @@ def manejar_movimiento(config):
         nueva_y -= config['player_speed']
     
     nueva_pos = [nueva_x, nueva_y, config['player_z']]
-    
-    if not hay_colision(nueva_pos):
+    cam_x, cam_y, cam_z = config['cam_x'], config['cam_y'], config['cam_z']
+
+    # Ajusta esta posición para que coincida con donde *visualmente* está el tablero
+    sudoku_virtual = {
+        "tipo": "sudoku_virtual",
+        "pos": (cam_x + (10.5), cam_y + (4.5), 0),
+        "radio": 2.5  # Puedes afinar el radio según el tamaño visible
+    }
+
+    obstaculos_dinamicos = obtener_obstaculos() + [sudoku_virtual]
+
+    if not hay_colision(nueva_pos, obstaculos_dinamicos):
         config['player_x'], config['player_y'] = nueva_x, nueva_y
