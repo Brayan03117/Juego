@@ -41,7 +41,11 @@ def iniciar_nivel1(personaje_id):
         # Manejar eventos (teclado, ratón, etc.)
         accion = manejar_eventos(config, estado_juego, tablero, solucion)
         if accion == "salir":
-            return
+            return "salir"
+        elif accion == "menu":
+            return "menu"
+        elif accion == "reiniciar":
+            return "reiniciar"
             
         # Manejar movimiento del personaje
         manejar_movimiento(config)

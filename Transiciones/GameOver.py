@@ -21,7 +21,7 @@ def mostrar_game_over(display):
         pygame.mixer.init()
     
     try:
-        pygame.mixer.music.load("Sonidos/xSep.mp3") # Cargar la música
+        pygame.mixer.music.load("Sonidos/xStep.mp3") # Cargar la música
         pygame.mixer.music.play(-1)  # Reproducir en bucle (-1)
     except pygame.error as e:
         print(f"No se pudo cargar o reproducir la música: Sonidos/xSep.mp3 - {e}")
