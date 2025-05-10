@@ -5,10 +5,8 @@ from Esenarios import escenarioObjetos as es
 from acciones.iluminacion import iluminacion
 from src.textos import dibujar_label_texto
 from acciones.jesusL import draw as draw_jesus
-from acciones.torchic import personaje as draw_torchic
+from acciones.torchic import personaje2 as draw_torchic
 from acciones.dysonEm import dibujar_personaje as draw_dyson
-from acciones.expresiones import draw_cejas_chad, draw_feliz, draw_triste, draw_enojado, draw_nervioso
-
 def renderizar_escena(config, estado_juego, tablero):
     """Renderiza toda la escena del nivel"""
     # Limpiar la pantalla
@@ -38,19 +36,7 @@ def renderizar_escena(config, estado_juego, tablero):
         draw_jesus(0, -3, -2.2, config['jesus_posicion'])  # Usar la posición seleccionada
     elif config['personaje_id'] == 1:  # Torchic
         glRotatef(180, 0, 1, 0)
-        if config['torchic_posicion'] == 0:
-            draw_torchic()
-        elif config['torchic_posicion'] == 1:
-            draw_triste()
-        elif config['torchic_posicion'] == 2:
-            draw_feliz()
-        elif config['torchic_posicion'] == 3:
-            draw_enojado()
-        elif config['torchic_posicion'] == 4:
-            draw_nervioso()
-        elif config['torchic_posicion'] == 5:
-            draw_cejas_chad()
-        draw_torchic()  # Dibujar en el origen local
+        draw_torchic(config['torchic_posicion'])  # Dibujar en el origen local
     elif config['personaje_id'] == 2:  # Dyson
         # Rotaciones/Traslaciones específicas para este modelo
         draw_dyson((0, 2, 8), emocion=config['dyson_emocion'])  # Ajusta la posición relativa si es necesario

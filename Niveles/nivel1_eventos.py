@@ -71,10 +71,10 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
                             cambiar_escenario_y_musica(config)
                             
                             # Cambiar la emoción del personaje según el personaje seleccionado
-                            if config['personaje_id'] == 1:  # Torchic
-                                config['torchic_posicion'] = 2  # Feliz
-                            elif config['personaje_id'] == 2:  # Dyson
-                                config['dyson_emocion'] = "happy"
+                            #if config['personaje_id'] == 1:  # Torchic
+                            #    config['torchic_posicion'] = 2  # Feliz
+                            #elif config['personaje_id'] == 2:  # Dyson
+                            #    config['dyson_emocion'] = "happy"
                         else:
                             # Valor incorrecto
                             estado_juego['error_count'] += 1
@@ -85,12 +85,12 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
                             
                             # Cambiar la emoción del personaje según el personaje seleccionado
                             if config['personaje_id'] == 1:  # Torchic
-                                config['torchic_posicion'] = 1  # Triste
+                                config['torchic_posicion'] = config['torchic_posicion']+1
                             elif config['personaje_id'] == 2:  # Dyson
                                 config['dyson_emocion'] = "sad"
 
                             # Comprobar si se alcanzó el límite de errores
-                            if estado_juego['error_count'] >= 5:
+                            if (config['personaje_id']!=1 and estado_juego['error_count'] >= 5) or (config['personaje_id']==1 and estado_juego['error_count'] >= 7):
                                 # Detener todos los sonidos del nivel antes de mostrar Game Over
                                 for sonido_escenario in config['sonidos_escenarios'].values():
                                     sonido_escenario.stop()
