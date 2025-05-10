@@ -133,7 +133,11 @@ def mostrar_escenario(num):
 
 
 obstaculos = [
-    {"tipo": "cubo", "pos": (-4.0, 0.0, 0.0), "radio": 2.4}
+    {"tipo": "cubo", "pos": (-4.0, 0.0, 0.0), "radio": 2.4},
+    {"tipo": "invisible", "pos": (-14.0, 0.0, 0.0), "radio": 4.0},
+    {"tipo": "invisible", "pos": (14.0, 0.0, 0.0), "radio": 4.0},
+    {"tipo": "invisible", "pos": (0.0, 12.0, 0.0), "radio": 8.0},
+    {"tipo": "invisible", "pos": (0.0, -12.0, 0.0), "radio": 8.0},
 ]
 
 def obtener_obstaculos():
