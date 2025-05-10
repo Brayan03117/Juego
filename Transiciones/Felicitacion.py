@@ -17,10 +17,16 @@ def mostrar_felicitacion(display):
         pygame.mixer.init()
     
     try:
-        pygame.mixer.music.load("Sonidos/victory.mp3") # Cargar música de victoria (asegúrate de tener este archivo)
+        # Cambiamos la música a una canción más festiva
+        pygame.mixer.music.load("Sonidos/Electroman.mp3") # Asegúrate de tener este archivo
         pygame.mixer.music.play(-1)  # Reproducir en bucle (-1)
     except pygame.error as e:
-        print(f"No se pudo cargar o reproducir la música: Sonidos/victory.mp3 - {e}")
+        try:
+            # Intentar con la canción original como respaldo
+            pygame.mixer.music.load("Sonidos/victory.mp3")
+            pygame.mixer.music.play(-1)
+        except pygame.error as e2:
+            print(f"No se pudo cargar o reproducir ninguna música de victoria: {e2}")
 
     parpadeo_activo = True
     tiempo_ultimo_parpadeo = time()
@@ -73,6 +79,9 @@ def mostrar_felicitacion(display):
     tiempo_cambio_color = time()
     intervalo_cambio_color = 0.2  # Cambiar color cada 0.2 segundos
 
+    # Posición de los triángulos (movidos hacia abajo)
+    posicion_triangulos = display[1] - 100  # Ajusta este valor para mover los triángulos más arriba o abajo
+
     while corriendo:
         for evento in pygame.event.get():
             if evento.type == QUIT:
@@ -99,21 +108,20 @@ def mostrar_felicitacion(display):
         glColor3f(*colores[indice_color])
         glBegin(GL_TRIANGLES)
         margen = 40
-        # Cuatro esquinas
+        
+        # Triángulos en la parte inferior (movidos hacia abajo)
+        for i in range(10):
+            x = (i * display[0] // 10) + (display[0] // 20)
+            y = posicion_triangulos
+            tam = 15
+            glVertex2f(x, y + tam); glVertex2f(x - tam, y - tam); glVertex2f(x + tam, y - tam)
+        
+        # Mantenemos las esquinas
         glVertex2f(0, 0); glVertex2f(margen, 0); glVertex2f(0, margen)
         glVertex2f(display[0], 0); glVertex2f(display[0] - margen, 0); glVertex2f(display[0], margen)
         glVertex2f(0, display[1]); glVertex2f(margen, display[1]); glVertex2f(0, display[1] - margen)
         glVertex2f(display[0], display[1]); glVertex2f(display[0] - margen, display[1]); glVertex2f(display[0], display[1] - margen)
         
-        # Estrellas adicionales
-        for i in range(10):
-            x = (i * display[0] // 10) + (display[0] // 20)
-            y = display[1] // 4
-            tam = 15
-            glVertex2f(x, y - tam); glVertex2f(x - tam, y + tam); glVertex2f(x + tam, y + tam)
-            
-            y = display[1] * 3 // 4
-            glVertex2f(x, y + tam); glVertex2f(x - tam, y - tam); glVertex2f(x + tam, y - tam)
         glEnd()
 
         # Parpadeo del título

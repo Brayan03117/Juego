@@ -11,6 +11,9 @@ from Niveles.nivel1_sudoku import crear_tablero_sudoku, verificar_solucion, dibu
 from Niveles.nivel1_render import renderizar_escena, actualizar_personaje
 from Niveles.nivel1_eventos import manejar_eventos, manejar_movimiento
 
+# Importar la función mostrar_felicitacion
+from Transiciones.Felicitacion import mostrar_felicitacion
+
 def iniciar_nivel1(personaje_id):
     """
     Inicia el Nivel 1 con el personaje seleccionado.
@@ -55,6 +58,37 @@ def iniciar_nivel1(personaje_id):
         
         # Actualizar el personaje según el estado del juego
         actualizar_personaje(config, estado_juego)
+        
+        # Verificar si el Sudoku está completo (todas las celdas llenas)
+        sudoku_completo = all(all(cell != 0 for cell in row) for row in tablero)
+        
+        # Si está completo, verificar si es correcto
+        if sudoku_completo:
+            # Verificar cada celda del tablero
+            sudoku_correcto = True
+            for fila in range(len(tablero)):
+                for columna in range(len(tablero[fila])):
+                    valor = tablero[fila][columna]
+                    # Verificar si el valor en esta celda es correcto
+                    if not verificar_solucion(tablero, solucion, fila, columna, valor):
+                        sudoku_correcto = False
+                        break
+                if not sudoku_correcto:
+                    break
+            
+            if sudoku_correcto:
+                # Detener todos los sonidos antes de mostrar la felicitación
+                for sonido in config['sonidos_escenarios'].values():
+                    sonido.stop()
+                
+                # Mostrar la pantalla de felicitación
+                resultado = mostrar_felicitacion(config['display'])
+                
+                # Procesar el resultado de la pantalla de felicitación
+                if resultado == 'menu':
+                    return 'menu'
+                elif resultado == 'salir':
+                    return 'salir'
         
         # Actualizar la pantalla
         pygame.display.flip()

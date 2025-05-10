@@ -7,10 +7,10 @@ def crear_tablero_sudoku():
     """Crea el tablero de Sudoku y su solución"""
     # Tablero inicial con algunas casillas llenas
     tablero = [
-        [4, 0, 2, 0],
-        [2, 0, 0, 0],
-        [0, 2, 0, 0],
-        [0, 0, 3, 0]
+        [4, 3, 2, 1],
+        [2, 1, 4, 3],
+        [3, 2, 1, 4],
+        [0, 4, 0, 0]
     ]
     
     # Solución del Sudoku 2x2 (4x4)
