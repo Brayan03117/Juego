@@ -90,11 +90,11 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
                                 config['dyson_emocion'] = "sad"
 
                             # Comprobar si se alcanzó el límite de errores
-                            if (config['personaje_id']!=1 and estado_juego['error_count'] >= 5) or (config['personaje_id']==1 and estado_juego['error_count'] >= 7):
+                            if estado_juego['error_count'] >= 5:
                                 # Detener todos los sonidos del nivel antes de mostrar Game Over
                                 for sonido_escenario in config['sonidos_escenarios'].values():
                                     sonido_escenario.stop()
-                                
+
                                 decision_game_over = mostrar_game_over(config['display'])
                                 if decision_game_over == 'menu':
                                     return "menu" # O la señal que uses para volver al menú

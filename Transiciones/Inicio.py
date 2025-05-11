@@ -10,7 +10,7 @@ from pygame.locals import *
 from time import time
 
 from acciones.renderizarTexto import cargar_textura_desde_texto, renderizar_texto_textura
-from Sonidos.sonidos import sonido
+from sonidos.sonidos import sonido
 
 def stopsonido():
     pygame.mixer.music.stop()
