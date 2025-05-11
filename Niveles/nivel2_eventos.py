@@ -4,7 +4,7 @@ from src.colisiones import hay_colision
 from Niveles.nivel2_config import cambiar_escenario_y_musica
 from Transiciones.GameOver import mostrar_game_over # <--- AÑADIR ESTA LÍNEA
 from Esenarios.escenarioObjetos import obtener_obstaculos
-
+from src.objetosDinamicos import obtener_objetos_dinamicos, generar_objetos_dinamicos
 
 def manejar_eventos(config, estado_juego, tablero, solucion):
     """Maneja todos los eventos del nivel"""
@@ -128,7 +128,7 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
     
     return "continuar"
 
-def manejar_movimiento(config):
+def manejar_movimiento(config,estado_juego):
     """Maneja el movimiento del personaje"""
     keys = pygame.key.get_pressed()
     nueva_x, nueva_y = config['player_x'], config['player_y']
@@ -149,10 +149,25 @@ def manejar_movimiento(config):
     sudoku_virtual = {
         "tipo": "sudoku_virtual",
         "pos": (cam_x + (10.5), cam_y + (4.5), 0),
-        "radio": 4  # Puedes afinar el radio según el tamaño visible
+        "radio":4   # Puedes afinar el radio según el tamaño visible
     }
 
     obstaculos_dinamicos = obtener_obstaculos() + [sudoku_virtual]
 
     if not hay_colision(nueva_pos, obstaculos_dinamicos):
         config['player_x'], config['player_y'] = nueva_x, nueva_y
+        objetos = obtener_objetos_dinamicos()
+        for obj_d in objetos:
+            ox, oy, oz = obj_d["pos"]
+            r = obj_d["radio"]
+            if (ox - r <= nueva_x <= ox + r) and (oy - r <= nueva_y <= oy + r) and (oz - r <= config['player_z'] <= oz + r):
+                if obj_d["tipo"] == "tiempo":
+                    estado_juego['tiempo_maximo'] += 10
+                    print("¡Colisión con objeto de TIEMPO! +10s")
+                elif obj_d["tipo"] == "errores":
+                    estado_juego['error_count'] = max(0, estado_juego['error_count'] - 1)
+                    print("¡Colisión con objeto de ERRORES! -1 error")
+        
+        # Regenerar objetos para que se reubiquen
+                generar_objetos_dinamicos()
+                break

@@ -37,7 +37,9 @@ def iniciar_nivel2(personaje_id):
         'options_cell_coords': None,
         'last_insertion': None,
         'correct_answers': 0,
-        'tiempo_restante':100
+        'tiempo_inicio': pygame.time.get_ticks(),
+        'tiempo_maximo': 100,
+        'tiempo_restante': 100
     }
     tiempo_inicio = pygame.time.get_ticks()
     # Bucle principal del juego
@@ -52,12 +54,12 @@ def iniciar_nivel2(personaje_id):
             return "reiniciar"
             
         # Manejar movimiento del personaje
-        manejar_movimiento(config)
+        manejar_movimiento(config,estado_juego)
         
         # Renderizar la escena
         tiempo_actual = pygame.time.get_ticks()
-        tiempo_transcurrido = (tiempo_actual - tiempo_inicio) // 1000  # segundos
-        estado_juego['tiempo_restante'] = max(0, 100 - tiempo_transcurrido)
+        tiempo_transcurrido = (tiempo_actual - estado_juego['tiempo_inicio']) // 1000
+        estado_juego['tiempo_restante'] = max(0, estado_juego['tiempo_maximo'] - tiempo_transcurrido)
         if estado_juego['tiempo_restante'] <= 0:
             for sonido in config['sonidos_escenarios'].values():
                 sonido.stop()

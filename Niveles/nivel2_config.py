@@ -5,6 +5,7 @@ import os
 import random
 from pygame.locals import DOUBLEBUF, OPENGL  # Añadir esta línea
 from Esenarios import escenarioObjetos as es
+from src.objetosDinamicos import generar_objetos_dinamicos
 
 def inicializar_nivel(personaje_id):
     """Inicializa todas las configuraciones del nivel"""
@@ -65,7 +66,7 @@ def inicializar_nivel(personaje_id):
     glEnable(GL_DEPTH_TEST)
     glEnable(GL_LIGHTING)
     glEnable(GL_COLOR_MATERIAL)
-    
+    generar_objetos_dinamicos()
     return config
 
 def cambiar_escenario_y_musica(config):

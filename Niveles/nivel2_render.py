@@ -7,6 +7,8 @@ from src.textos import dibujar_label_texto
 from acciones.jesusL import draw as draw_jesus
 from acciones.torchic import personaje2 as draw_torchic
 from acciones.dysonEm import dibujar_personaje as draw_dyson
+from src.objetosDinamicos import dibujar_objetos_dinamicos
+
 def renderizar_escena(config, estado_juego, tablero):
     """Renderiza toda la escena del nivel"""
     # Limpiar la pantalla
@@ -22,6 +24,7 @@ def renderizar_escena(config, estado_juego, tablero):
 
     # Mostrar el fondo del escenario
     es.mostrar_escenario(config['fondo_actual'])
+    dibujar_objetos_dinamicos()
 
     # Dibujar el personaje seleccionado en su posición
     glPushMatrix()
@@ -51,7 +54,7 @@ def renderizar_escena(config, estado_juego, tablero):
 
     
     tiempo_str = f"{estado_juego.get('tiempo_restante', 0)}s"
-    dibujar_label_texto(f"Tiempo restante: {tiempo_str}", pos_x=10, pos_y=370, tam=18)
+    
     # Mostrar información del nivel
     dibujar_label_texto(f"Nivel 2 - Sudoku", pos_x=10, pos_y=580, tam=24)
     dibujar_label_texto(f"Usa las flechas para mover al personaje", pos_x=10, pos_y=550, tam=18)
@@ -60,6 +63,9 @@ def renderizar_escena(config, estado_juego, tablero):
     dibujar_label_texto(f"Luz: {'Encendida' if config['luz_encendida'] else 'Apagada'}", pos_x=10, pos_y=460, tam=18)
     dibujar_label_texto(f"Errores: {estado_juego['error_count']}", pos_x=10, pos_y=430, tam=18)
     dibujar_label_texto(f"Aciertos: {estado_juego['correct_answers']}", pos_x=10, pos_y=400, tam=18)
+    dibujar_label_texto(f"Tiempo restante: {tiempo_str}", pos_x=10, pos_y=370, tam=18)
+    dibujar_label_texto(f"Objeto azul: +10 segundos", pos_x=10, pos_y=340, tam=18)
+    dibujar_label_texto(f"Objeto Naranja: -1 error", pos_x=10, pos_y=310, tam=18)
 
 def actualizar_personaje(config, estado_juego):
     """Actualiza la apariencia del personaje según el estado del juego"""
