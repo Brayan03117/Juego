@@ -110,6 +110,11 @@ fondos_rutas = [
     "imagenes/paisaje8.png",
     "imagenes/paisaje9.png",
     "imagenes/paisaje10.png",
+    "imagenes/paisaje11.png",
+    "imagenes/paisaje12.png",
+    "imagenes/paisaje13.png",
+    "imagenes/paisaje14.png",
+    "imagenes/paisaje15.png",
     "imagenes/suelo.jpg"
 ]
 
