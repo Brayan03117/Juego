@@ -47,7 +47,11 @@ def renderizar_escena(config, estado_juego, tablero):
     # Dibujar el tablero de Sudoku
     from Niveles.nivel2_sudoku import dibujar_tablero_sudoku
     dibujar_tablero_sudoku(config, estado_juego, tablero)
+
+
     
+    tiempo_str = f"{estado_juego.get('tiempo_restante', 0)}s"
+    dibujar_label_texto(f"Tiempo restante: {tiempo_str}", pos_x=10, pos_y=370, tam=18)
     # Mostrar información del nivel
     dibujar_label_texto(f"Nivel 2 - Sudoku", pos_x=10, pos_y=580, tam=24)
     dibujar_label_texto(f"Usa las flechas para mover al personaje", pos_x=10, pos_y=550, tam=18)

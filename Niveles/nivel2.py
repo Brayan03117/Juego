@@ -36,9 +36,10 @@ def iniciar_nivel2(personaje_id):
         'cell_options': [],
         'options_cell_coords': None,
         'last_insertion': None,
-        'correct_answers': 0
+        'correct_answers': 0,
+        'tiempo_restante':100
     }
-    
+    tiempo_inicio = pygame.time.get_ticks()
     # Bucle principal del juego
     while True:
         # Manejar eventos (teclado, ratón, etc.)
@@ -54,6 +55,24 @@ def iniciar_nivel2(personaje_id):
         manejar_movimiento(config)
         
         # Renderizar la escena
+        tiempo_actual = pygame.time.get_ticks()
+        tiempo_transcurrido = (tiempo_actual - tiempo_inicio) // 1000  # segundos
+        estado_juego['tiempo_restante'] = max(0, 100 - tiempo_transcurrido)
+        if estado_juego['tiempo_restante'] <= 0:
+            for sonido in config['sonidos_escenarios'].values():
+                sonido.stop()
+
+            from Transiciones.GameOver import mostrar_game_over
+            resultado = mostrar_game_over(config['display'])
+
+            if resultado == 'menu':
+                return 'menu'
+            elif resultado == 'salir':
+                pygame.quit()
+                return 'salir'
+
+
+
         renderizar_escena(config, estado_juego, tablero)
         
         # Actualizar el personaje según el estado del juego

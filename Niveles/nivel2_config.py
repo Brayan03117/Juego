@@ -38,7 +38,7 @@ def inicializar_nivel(personaje_id):
         'display': display,
         'sonidos_escenarios': sonidos_escenarios,
         'sonido_actual': sonido_actual,
-        'fondo_actual': 2,
+        'fondo_actual': 7,
         'jesus_posicion': 0,
         'torchic_posicion': 0,
         'dyson_emocion': "original",
@@ -73,7 +73,7 @@ def cambiar_escenario_y_musica(config):
     config['sonidos_escenarios'][config['sonido_actual']].stop()
     
     # Cambiar a un nuevo escenario y música (diferentes al actual)
-    nuevos_indices = list(range(1, 6))
+    nuevos_indices = list(range(7, 14))
     nuevos_indices.remove(config['fondo_actual'])  # Remover el escenario actual
     
     # Seleccionar un nuevo escenario aleatorio
