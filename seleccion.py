@@ -6,12 +6,14 @@ from pygame.locals import *
 from OpenGL.GLUT import GLUT_BITMAP_TIMES_ROMAN_24
 from acciones.jesusL import draw as draw_jesus 
 from acciones.torchic import personaje as draw_torchic
+from acciones import expresiones as torchic
 #from acciones.dyson import original5 as draw_dyson  
 from acciones.dysonEm import dibujar_personaje as draw_dyson
 # from Esenarios.escenario import draw_e  
 from acciones import iluminacion  
 from src.textos import dibujar_label_texto
 from Esenarios import escenario as es
+from src.textos import dibujar_label_texto
 
 
 
@@ -30,9 +32,45 @@ def renderizar_texto(texto, x, y, escala=1.0, color=(1.0, 1.0, 1.0)):
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ord(caracter))
     glEnable(GL_LIGHTING)
 
+def dibujar(seleccion_actual, emocion):
+    """Dibuja el personaje seleccionado"""
+    if seleccion_actual == 0:
+        if emocion == 0:
+            draw_jesus(0, -3, -2.2,6)
+        elif emocion == 1:
+            draw_jesus(0, -3, -2.2,8)
+        elif emocion == 2:
+            draw_jesus(0, -3, -2.2,9)
+        elif emocion == 3:
+            draw_jesus(0, -3, -2.2,10)
+        elif emocion == 4:
+            draw_jesus(0, -3, -2.2,11)
+    elif seleccion_actual == 1:
+        if emocion == 0:
+            draw_torchic()
+        elif emocion == 1:
+            torchic.draw_cejas_chad()
+        elif emocion == 2:
+            torchic.draw_enojado()
+        elif emocion == 3:
+            torchic.draw_nervioso()
+        elif emocion == 4:
+            torchic.draw_triste()
+    elif seleccion_actual == 2:
+        if emocion == 0:
+            draw_dyson((-9, 2, 8), emocion="original")  # Posición local en su propio sistema
+        elif emocion == 1:
+            draw_dyson((-9, 2, 8), emocion="asco")
+        elif emocion == 2:
+            draw_dyson((-9, 2, 8), emocion="admirar")
+        elif emocion == 3:
+            draw_dyson((-9, 2, 8), emocion="sad")
+        elif emocion == 4:
+            draw_dyson((-9, 2, 8), emocion="happy")
+
 
 def main():
-    
+    emocion=0
     fondo_actual=0
     global seleccion_actual
     global personaje_posiciones
@@ -65,8 +103,10 @@ def main():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RIGHT:
                     seleccion_actual = (seleccion_actual + 1) % len(personaje_posiciones)
+                    emocion = 0
                 elif event.key == pygame.K_LEFT:
                     seleccion_actual = (seleccion_actual - 1) % len(personaje_posiciones)
+                    emocion = 0
                 elif event.key in (pygame.K_KP_ENTER, pygame.K_RETURN):
                     pygame.display.quit()
                     return seleccion_actual
@@ -80,6 +120,11 @@ def main():
                     fondo_actual = 4
                 elif event.key == pygame.K_5:
                     fondo_actual = 5
+                elif event.key == pygame.K_k:
+                    if emocion <4:
+                        emocion = emocion + 1
+                    else:
+                        emocion = 0
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         iluminacion.iluminacion(0, 0, 0)  # Luz blanca
@@ -98,11 +143,12 @@ def main():
         if seleccion_actual == 2 or seleccion_actual == 1:
             glEnable(GL_LIGHTING)
             glColor3f(1.0, 1.0, 1.0)  # Iluminado normal
+            draw_jesus(0, -3, -2.2,6) 
         else:
             glDisable(GL_LIGHTING)
             glColor3f(0, 0, 0)  # Oscuro
-
-        draw_jesus(0, -3, -2.2,6)   
+            dibujar(seleccion_actual, emocion)
+  
         glPopMatrix()
 
 
@@ -113,10 +159,11 @@ def main():
         if seleccion_actual == 0 or seleccion_actual == 2:
             glEnable(GL_LIGHTING)
             glColor3f(1.0, 1.0, 1.0)
+            draw_torchic()  # Llamar a la función de dibujo
         else:
             glDisable(GL_LIGHTING)
             glColor3f(0.2, 0.2, 0.2)
-        draw_torchic()
+            dibujar(seleccion_actual, emocion)  # Llamar a la función de dibujo
         glPopMatrix()
 
 
@@ -127,10 +174,11 @@ def main():
         if seleccion_actual == 1 or seleccion_actual == 0:
             glEnable(GL_LIGHTING)
             glColor3f(1.0, 1.0, 1.0)
+            draw_dyson((-9, 2, 8),emocion="original")
         else:
             glDisable(GL_LIGHTING)
             glColor3f(0.2, 0.2, 0.2) 
-        draw_dyson((-9, 2, 8),emocion="original")             # Posición local en su propio sistema
+            dibujar(seleccion_actual, emocion)
         glPopMatrix()
 
 
@@ -188,6 +236,7 @@ def main():
         glMatrixMode(GL_PROJECTION)
         glPopMatrix()
         glMatrixMode(GL_MODELVIEW)
+        dibujar_label_texto(f"Presiona K para ver expresiones", pos_x=10, pos_y=580, tam=15)
 
 
         dibujar_label_texto("Selecciona tu personaje", pos_x=220, pos_y=550, tam=24)
