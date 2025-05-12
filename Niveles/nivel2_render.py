@@ -42,7 +42,7 @@ def renderizar_escena(config, estado_juego, tablero):
         draw_torchic(config['torchic_posicion'])  # Dibujar en el origen local
     elif config['personaje_id'] == 2:  # Dyson
         # Rotaciones/Traslaciones específicas para este modelo
-        draw_dyson(config['dyson_posicion'],(0, 2, 8), emocion=config['dyson_emocion'])  # Ajusta la posición relativa si es necesario
+        draw_dyson(config['dyson_posicion'],(0, 2, 0), emocion=config['dyson_emocion'])  # Ajusta la posición relativa si es necesario
    
     glPopMatrix()  # Fin del bloque del personaje
     glPopMatrix()  # Fin del bloque de la cámara
