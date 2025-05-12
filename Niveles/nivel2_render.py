@@ -6,7 +6,7 @@ from acciones.iluminacion import iluminacion
 from src.textos import dibujar_label_texto
 from acciones.jesusL import draw as draw_jesus
 from acciones.torchic import personaje2 as draw_torchic
-from acciones.dysonEm import dibujar_personaje as draw_dyson
+from acciones.dysonEm import dibujarPersonaje as draw_dyson
 from src.objetosDinamicos import dibujar_objetos_dinamicos
 
 def renderizar_escena(config, estado_juego, tablero):
@@ -42,7 +42,7 @@ def renderizar_escena(config, estado_juego, tablero):
         draw_torchic(config['torchic_posicion'])  # Dibujar en el origen local
     elif config['personaje_id'] == 2:  # Dyson
         # Rotaciones/Traslaciones específicas para este modelo
-        draw_dyson((0, 2, 8), emocion=config['dyson_emocion'])  # Ajusta la posición relativa si es necesario
+        draw_dyson(config['dyson_posicion'],(0, 2, 8), emocion=config['dyson_emocion'])  # Ajusta la posición relativa si es necesario
    
     glPopMatrix()  # Fin del bloque del personaje
     glPopMatrix()  # Fin del bloque de la cámara

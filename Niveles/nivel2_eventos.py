@@ -88,6 +88,7 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
                                 config['torchic_posicion'] = config['torchic_posicion']+1
                             elif config['personaje_id'] == 2:  # Dyson
                                 config['dyson_emocion'] = "sad"
+                                config['dyson_posicion'] = config['dyson_posicion']+1
 
                             # Comprobar si se alcanzó el límite de errores
                             if estado_juego['error_count'] >= 5:

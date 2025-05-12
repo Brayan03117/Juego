@@ -162,7 +162,6 @@ def dibujar_personaje(position, emocion):
                 color = color_por_parte(parte, paleta)
                 funcion(position, color)
 
-
     # Dibujo de partes estáticas si no están animadas
     if "cuerpo" not in partes_animadas:
         dibujar_cuerpo(position, paleta["cuerpo"])
@@ -181,4 +180,16 @@ def dibujar_personaje(position, emocion):
         dibujar_cabeza(position, paleta["cabeza"], paleta["ojos"], paleta["casco"], paleta["pico"])
 
 
-
+def dibujarPersonaje(error,position, emocion):
+    paleta = colores_emocion[emocion]
+    if error < 5:
+        dibujar_cabeza(position, paleta["cabeza"], paleta["ojos"], paleta["casco"], paleta["pico"])
+    if error < 4:
+        dibujar_cuerpo(position, paleta["cuerpo"])
+    if error < 3:
+        dibujar_brazo_izquierdo(position, paleta["brazo_izquierdo"])
+    if error < 2:
+        dibujar_brazo_derecho(position, paleta["brazo_derecho"])
+    if error < 1:
+        dibujar_pierna_derecha(position, paleta["pierna_derecha"])
+        dibujar_pierna_izquierda(position, paleta["pierna_izquierda"])
