@@ -54,7 +54,7 @@ def inicializar_nivel(personaje_id):
         'player_x': 0.0, 
         'player_y': 0.0, 
         'player_z': 0.0,
-        'player_speed': 0.1,
+        'player_speed': 0.5,
         'clock': pygame.time.Clock(),
         'font': pygame.font.SysFont('Arial', 30)
     }
