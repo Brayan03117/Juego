@@ -26,17 +26,23 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
                 return "salir"
             # Movimiento de cámara
             elif event.key == pygame.K_w:
-                config['cam_z'] += 0.5
+                if config['cam_z'] < 20:
+                    config['cam_z'] += 0.5
             elif event.key == pygame.K_s:
-                config['cam_z'] -= 0.5
+                if config['cam_z'] > 10:  
+                    config['cam_z'] -= 0.5
             elif event.key == pygame.K_a:
-                config['cam_x'] += 0.5
+                if config['cam_x'] < 20:
+                    config['cam_x'] += 0.5
             elif event.key == pygame.K_d:
-                config['cam_x'] -= 0.5
+                if config['cam_x'] > -20:  
+                    config['cam_x'] -= 0.5
             elif event.key == pygame.K_z:
-                config['cam_y'] += 0.5
+                if config['cam_y'] < 10:
+                    config['cam_y'] += 0.5
             elif event.key == pygame.K_x:
-                config['cam_y'] -= 0.5
+                if config['cam_y'] > -10: 
+                    config['cam_y'] -= 0.5
             # Control de iluminación
             elif event.key == pygame.K_l:  # Tecla L para apagar la luz
                 config['luz_encendida'] = False
@@ -153,7 +159,7 @@ def manejar_movimiento(config):
         "radio": 2.5  # Puedes afinar el radio según el tamaño visible
     }
 
-    obstaculos_dinamicos = obtener_obstaculos() + [sudoku_virtual]
+    obstaculos_dinamicos = obtener_obstaculos()
 
     if not hay_colision(nueva_pos, obstaculos_dinamicos):
         config['player_x'], config['player_y'] = nueva_x, nueva_y
