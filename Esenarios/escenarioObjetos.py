@@ -34,10 +34,10 @@ def dibujar_fondo(textura_id):
     glBindTexture(GL_TEXTURE_2D, textura_id)
 
     glBegin(GL_QUADS)
-    glTexCoord2f(0, 0); glVertex3f(-15, -15, 15)
-    glTexCoord2f(1, 0); glVertex3f(15, -15, 15)
-    glTexCoord2f(1, 1); glVertex3f(15, 15, 15)
-    glTexCoord2f(0, 1); glVertex3f(-15, 15, 15)
+    glTexCoord2f(0, 0); glVertex3f(-20, -20, 20)
+    glTexCoord2f(1, 0); glVertex3f(20, -20, 20)
+    glTexCoord2f(1, 1); glVertex3f(20, 20, 20)
+    glTexCoord2f(0, 1); glVertex3f(-20, 20, 20)
     glEnd()
 
     glDisable(GL_TEXTURE_2D)
@@ -48,10 +48,10 @@ def dibujar_pared_izq(textura_id):
     glBindTexture(GL_TEXTURE_2D, textura_id)
 
     glBegin(GL_QUADS)
-    glTexCoord2f(0, 0); glVertex3f(-15, -15, 15)
-    glTexCoord2f(1, 0); glVertex3f(-15, -15, -15)
-    glTexCoord2f(1, 1); glVertex3f(-15, 15, -15)
-    glTexCoord2f(0, 1); glVertex3f(-15, 15, 15)
+    glTexCoord2f(0, 0); glVertex3f(-20, -20, 20)
+    glTexCoord2f(1, 0); glVertex3f(-20, -20, -20)
+    glTexCoord2f(1, 1); glVertex3f(-20, 20, -20)
+    glTexCoord2f(0, 1); glVertex3f(-20, 20, 20)
     glEnd()
 
     glDisable(GL_TEXTURE_2D)
@@ -62,10 +62,10 @@ def dibujar_pared_der(textura_id):
     glBindTexture(GL_TEXTURE_2D, textura_id)
 
     glBegin(GL_QUADS)
-    glTexCoord2f(0, 0); glVertex3f(15, -15, -15)
-    glTexCoord2f(1, 0); glVertex3f(15, -15, 15)
-    glTexCoord2f(1, 1); glVertex3f(15, 15, 15)
-    glTexCoord2f(0, 1); glVertex3f(15, 15, -15)
+    glTexCoord2f(0, 0); glVertex3f(20, -20, -20)
+    glTexCoord2f(1, 0); glVertex3f(20, -20, 20)
+    glTexCoord2f(1, 1); glVertex3f(20, 20, 20)
+    glTexCoord2f(0, 1); glVertex3f(20, 20, -20)
     glEnd()
 
     glDisable(GL_TEXTURE_2D)
@@ -76,10 +76,10 @@ def dibujar_pared_frontal(textura_id):
     glBindTexture(GL_TEXTURE_2D, textura_id)
 
     glBegin(GL_QUADS)
-    glTexCoord2f(0, 0); glVertex3f(-15, -15, -15)
-    glTexCoord2f(1, 0); glVertex3f(15, -15, -15)
-    glTexCoord2f(1, 1); glVertex3f(15, 15, -15)
-    glTexCoord2f(0, 1); glVertex3f(-15, 15, -15)
+    glTexCoord2f(0, 0); glVertex3f(-20, -20, -20)
+    glTexCoord2f(1, 0); glVertex3f(20, -20, -20)
+    glTexCoord2f(1, 1); glVertex3f(20, 20, -20)
+    glTexCoord2f(0, 1); glVertex3f(-20, 20, -20)
     glEnd()
 
     glDisable(GL_TEXTURE_2D)
@@ -90,10 +90,10 @@ def dibujar_suelo(textura_id):
     glBindTexture(GL_TEXTURE_2D, textura_id)
 
     glBegin(GL_QUADS)
-    glTexCoord2f(0, 0); glVertex3f(-15, -15, -15)
-    glTexCoord2f(1, 0); glVertex3f(15, -15, -15)
-    glTexCoord2f(1, 1); glVertex3f(15, -15, 15)
-    glTexCoord2f(0, 1); glVertex3f(-15, -15, 15)
+    glTexCoord2f(0, 0); glVertex3f(-20, -20, -20)
+    glTexCoord2f(1, 0); glVertex3f(20, -20, -20)
+    glTexCoord2f(1, 1); glVertex3f(20, -20, 20)
+    glTexCoord2f(0, 1); glVertex3f(-20, -20, 20)
     glEnd()
 
     glDisable(GL_TEXTURE_2D)
@@ -137,11 +137,9 @@ def mostrar_escenario(num):
         dibujar_pared_der(textura_paredes)
         dibujar_pared_frontal(textura_paredes)
         dibujar_suelo(textura_suelo)
-        dibujar_objetos_del_escenario()
 
 
 obstaculos = [
-    {"tipo": "cubo", "pos": (-4.0, 0.0, 0.0), "radio": 2.4},
     {"tipo": "invisible", "pos": (-14.0, 0.0, 0.0), "radio": 4.0},
     {"tipo": "invisible", "pos": (14.0, 0.0, 0.0), "radio": .0},
     {"tipo": "invisible", "pos": (0.0, 12.0, 0.0), "radio": .0},
