@@ -28,12 +28,12 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
                 pygame.quit()
                 return "salir"
             # Movimiento de cámara
-            #elif event.key == pygame.K_w:
-            #    if config['cam_z'] < 20:
-            #        config['cam_z'] += 0.5
-            #elif event.key == pygame.K_s:
-            #    if config['cam_z'] > 10:  
-            #        config['cam_z'] -= 0.5
+            elif event.key == pygame.K_w:
+                if config['cam_z'] < 20:
+                    config['cam_z'] += 0.5
+            elif event.key == pygame.K_s:
+                if config['cam_z'] > 10:  
+                    config['cam_z'] -= 0.5
             #elif event.key == pygame.K_a:
             #    if config['cam_x'] < 20:
             #        config['cam_x'] += 0.5
@@ -77,7 +77,19 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
                             
                             # Incrementar contador de respuestas correctas
                             estado_juego['correct_answers'] += 1
+
+
                             
+                            config['sonidos_escenarios'][config['sonido_actual']].stop()
+
+                            # Reproducir sonido de felicitación y esperar a que termine
+                            sonido_feli = pygame.mixer.Sound("sonidos/feli.mp3")
+                            sonido_feli.play()
+
+                            # Esperar a que termine
+                            while pygame.mixer.get_busy():
+                                pygame.time.delay(10)
+
                             # Cambiar escenario y música
                             cambiar_escenario_y_musica(config)
                             

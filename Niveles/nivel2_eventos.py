@@ -5,6 +5,7 @@ from Niveles.nivel2_config import cambiar_escenario_y_musica
 from Transiciones.GameOver import mostrar_game_over # <--- AÑADIR ESTA LÍNEA
 from Esenarios.escenarioObjetos2 import obtener_obstaculos
 from src.objetosDinamicos import obtener_objetos_dinamicos, generar_objetos_dinamicos
+from sonidos import sonidos as so
 
 def manejar_eventos(config, estado_juego, tablero, solucion):
     """Maneja todos los eventos del nivel"""
@@ -25,12 +26,12 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
                 pygame.quit()
                 return "salir"
             # Movimiento de cámara
-            #elif event.key == pygame.K_w:
-            #    if config['cam_z'] < 20:
-            #        config['cam_z'] += 0.5
-            #elif event.key == pygame.K_s:
-            #    if config['cam_z'] > 10:
-            #        config['cam_z'] -= 0.5
+            elif event.key == pygame.K_w:
+                if config['cam_z'] < 20:
+                    config['cam_z'] += 0.5
+            elif event.key == pygame.K_s:
+                if config['cam_z'] > 10:
+                    config['cam_z'] -= 0.5
             #elif event.key == pygame.K_a:
             #    if config['cam_x'] < 20:
             #        config['cam_x'] += 0.5
@@ -76,6 +77,8 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
                             
                             # Incrementar contador de respuestas correctas
                             estado_juego['correct_answers'] += 1
+
+                            so.sonido("sonidos/feli.mp3")
                             
                             # Cambiar escenario y música
                             cambiar_escenario_y_musica(config)
