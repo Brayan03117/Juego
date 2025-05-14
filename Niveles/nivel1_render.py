@@ -1,7 +1,7 @@
 import pygame
 from OpenGL.GL import *
 from OpenGL.GLU import *
-from Esenarios import escenarioObjetos as es
+from Esenarios import escenarioObjetos1 as es
 from acciones.iluminacion import iluminacion
 from src.textos import dibujar_label_texto
 from acciones.jesusL import draw as draw_jesus
@@ -21,7 +21,7 @@ def renderizar_escena(config, estado_juego, tablero):
     glTranslatef(config['cam_x'], config['cam_y'], config['cam_z'])  # Mueve la cámara
 
     # Mostrar el fondo del escenario
-    es.mostrar_escenario(config['fondo_actual'])
+    es.mostrar_escenario(config['fondo_actual'],8,0,config['pista_activa'])
 
     # Dibujar el personaje seleccionado en su posición
     glPushMatrix()
@@ -56,6 +56,7 @@ def renderizar_escena(config, estado_juego, tablero):
     dibujar_label_texto(f"Luz: {'Encendida' if config['luz_encendida'] else 'Apagada'}", pos_x=10, pos_y=460, tam=18)
     dibujar_label_texto(f"Errores: {estado_juego['error_count']}", pos_x=10, pos_y=430, tam=18)
     dibujar_label_texto(f"Aciertos: {estado_juego['correct_answers']}", pos_x=10, pos_y=400, tam=18)
+    dibujar_label_texto(f"Cubo vere: pista", pos_x=10, pos_y=360, tam=18)
 
 def actualizar_personaje(config, estado_juego):
     """Actualiza la apariencia del personaje según el estado del juego"""

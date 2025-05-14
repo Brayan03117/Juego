@@ -1,4 +1,5 @@
-from Esenarios.escenarioObjetos import obtener_obstaculos
+from Esenarios.escenarioObjetos1 import obtener_obstaculos
+from Esenarios.escenarioObjetos2 import obtener_obstaculos
 
 def hay_colision(pos, obstaculos=None):
     px, py, pz = pos

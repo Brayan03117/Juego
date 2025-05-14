@@ -52,6 +52,10 @@ def iniciar_nivel1(personaje_id):
             
         # Manejar movimiento del personaje
         manejar_movimiento(config)
+
+        if config['pista_activa']== True and config['pistas_disponibles'] > 0:
+            aplicar_pista(tablero, solucion, estado_juego)
+            config['pistas_disponibles'] -= 1
         
         # Renderizar la escena
         renderizar_escena(config, estado_juego, tablero)
@@ -93,3 +97,13 @@ def iniciar_nivel1(personaje_id):
         # Actualizar la pantalla
         pygame.display.flip()
         config['clock'].tick(60)
+
+def aplicar_pista(tablero, solucion, estado_juego):
+    """Rellena una celda vacía con la solución como pista"""
+    for fila in range(4):
+        for columna in range(4):
+            if tablero[fila][columna] == 0:
+                tablero[fila][columna] = solucion[fila][columna]
+                estado_juego['last_insertion'] = (fila, columna, solucion[fila][columna])
+                estado_juego['correct_answers'] += 1
+                return

@@ -3,7 +3,8 @@ from OpenGL.GL import *
 from src.colisiones import hay_colision
 from Niveles.nivel1_config import cambiar_escenario_y_musica
 from Transiciones.GameOver import mostrar_game_over # <--- AÑADIR ESTA LÍNEA
-from Esenarios.escenarioObjetos import obtener_obstaculos
+from Esenarios.escenarioObjetos1 import obtener_obstaculos
+
 
 
 def manejar_eventos(config, estado_juego, tablero, solucion):
@@ -163,3 +164,6 @@ def manejar_movimiento(config):
 
     if not hay_colision(nueva_pos, obstaculos_dinamicos):
         config['player_x'], config['player_y'] = nueva_x, nueva_y
+    if config['pista_activa']==False:
+        if hay_colision(nueva_pos, config['pista']):
+            config['pista_activa'] = True

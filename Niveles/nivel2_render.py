@@ -1,7 +1,7 @@
 import pygame
 from OpenGL.GL import *
 from OpenGL.GLU import *
-from Esenarios import escenarioObjetos as es
+from Esenarios import escenarioObjetos2 as es
 from acciones.iluminacion import iluminacion
 from src.textos import dibujar_label_texto
 from acciones.jesusL import draw as draw_jesus
@@ -23,7 +23,7 @@ def renderizar_escena(config, estado_juego, tablero):
     glTranslatef(config['cam_x'], config['cam_y'], config['cam_z'])  # Mueve la cámara
 
     # Mostrar el fondo del escenario
-    es.mostrar_escenario(config['fondo_actual'])
+    es.mostrar_escenario(config['fondo_actual'],-5,5,config['pista_activa'])
     dibujar_objetos_dinamicos()
 
     # Dibujar el personaje seleccionado en su posición

@@ -3,7 +3,7 @@ from OpenGL.GL import *
 from src.colisiones import hay_colision
 from Niveles.nivel2_config import cambiar_escenario_y_musica
 from Transiciones.GameOver import mostrar_game_over # <--- AÑADIR ESTA LÍNEA
-from Esenarios.escenarioObjetos import obtener_obstaculos
+from Esenarios.escenarioObjetos2 import obtener_obstaculos
 from src.objetosDinamicos import obtener_objetos_dinamicos, generar_objetos_dinamicos
 
 def manejar_eventos(config, estado_juego, tablero, solucion):
@@ -174,7 +174,11 @@ def manejar_movimiento(config,estado_juego):
                 elif obj_d["tipo"] == "errores":
                     estado_juego['error_count'] = max(0, estado_juego['error_count'] - 1)
                     print("¡Colisión con objeto de ERRORES! -1 error")
+                    
         
         # Regenerar objetos para que se reubiquen
                 generar_objetos_dinamicos()
                 break
+    if config['pista_activa']==False:
+        if hay_colision(nueva_pos, config['pista']):
+            config['pista_activa'] = True

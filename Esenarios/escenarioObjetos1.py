@@ -7,10 +7,10 @@ piedra_textura_id = None
 cilindro_textura_id = None
 
 
-def dibujar_objetos_del_escenario():
+def dibujar_objetos_del_escenario(X,Y):
     # ----- Cubo -----
     glColor3f(0.0, 1.0, 0.0)  # Verde
-    obj.draw_cube((-4, -1.0, 0))
+    obj.draw_cube((X, 0, Y))
 
 
 # Cargar imagen como textura
@@ -128,7 +128,7 @@ def inicializar_fondos():
     cilindro_textura_id = cargar_textura("Imagenes/madera.jpg")  # Textura para cilindro
 
 # Dibujar escenario completo con fondo y paredes laterales y suelo
-def mostrar_escenario(num):
+def mostrar_escenario(num, X=0, Y=0, pista_activa=False):
     if 0 <= num < len(fondos_texturas) - 1:
         textura_paredes = fondos_texturas[num]
         textura_suelo = fondos_texturas[-1]  # Ultima textura es suelo
@@ -137,6 +137,9 @@ def mostrar_escenario(num):
         dibujar_pared_der(textura_paredes)
         dibujar_pared_frontal(textura_paredes)
         dibujar_suelo(textura_suelo)
+        if pista_activa==False:
+            dibujar_objetos_del_escenario(X, Y)
+            
 
 
 obstaculos = [
@@ -146,5 +149,7 @@ obstaculos = [
     {"tipo": "invisible", "pos": (0.0, -30.0, 0.0), "radio": 20.0},
 ]
 
+
 def obtener_obstaculos():
     return obstaculos
+

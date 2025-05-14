@@ -4,7 +4,7 @@ from OpenGL.GLU import *
 import os
 import random
 from pygame.locals import DOUBLEBUF, OPENGL  # Añadir esta línea
-from Esenarios import escenarioObjetos as es
+from Esenarios import escenarioObjetos1 as es
 
 def inicializar_nivel(personaje_id):
     """Inicializa todas las configuraciones del nivel"""
@@ -54,7 +54,10 @@ def inicializar_nivel(personaje_id):
         'player_z': 0.0,
         'player_speed': 0.5,
         'clock': pygame.time.Clock(),
-        'font': pygame.font.SysFont('Arial', 30)
+        'font': pygame.font.SysFont('Arial', 30),
+        'pista_activa': False,
+        'pista': [{"tipo": "pista", "pos": (8, 0, 0.0), "radio": 2.5}],
+        'pistas_disponibles': 1
     }
     
     # Configurar la perspectiva

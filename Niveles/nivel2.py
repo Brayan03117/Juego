@@ -38,8 +38,8 @@ def iniciar_nivel2(personaje_id):
         'last_insertion': None,
         'correct_answers': 0,
         'tiempo_inicio': pygame.time.get_ticks(),
-        'tiempo_maximo': 100,
-        'tiempo_restante': 100
+        'tiempo_maximo': 150,
+        'tiempo_restante': 150
     }
     tiempo_inicio = pygame.time.get_ticks()
     # Bucle principal del juego
@@ -55,6 +55,10 @@ def iniciar_nivel2(personaje_id):
             
         # Manejar movimiento del personaje
         manejar_movimiento(config,estado_juego)
+
+        if config['pista_activa']== True and config['pistas_disponibles'] > 0:
+            aplicar_pista(tablero, solucion, estado_juego)
+            config['pistas_disponibles'] -= 1
         
         # Renderizar la escena
         tiempo_actual = pygame.time.get_ticks()
@@ -114,3 +118,13 @@ def iniciar_nivel2(personaje_id):
         # Actualizar la pantalla
         pygame.display.flip()
         config['clock'].tick(60)
+
+def aplicar_pista(tablero, solucion, estado_juego):
+    """Rellena una celda vacía con la solución como pista"""
+    for fila in range(6):
+        for columna in range(6):
+            if tablero[fila][columna] == 0:
+                tablero[fila][columna] = solucion[fila][columna]
+                estado_juego['last_insertion'] = (fila, columna, solucion[fila][columna])
+                estado_juego['correct_answers'] += 1
+                return
