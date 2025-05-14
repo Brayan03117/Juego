@@ -19,6 +19,8 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
         
         # Control de teclado para salir (ESC) y mover la cámara
         if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_y:
+                config['mostrar_tablero'] = not config.get('mostrar_tablero', True)
             if event.key == pygame.K_ESCAPE:
                 # Detener todos los sonidos antes de salir
                 for sonido in config['sonidos_escenarios'].values():

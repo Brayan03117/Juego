@@ -49,7 +49,8 @@ def renderizar_escena(config, estado_juego, tablero):
 
     # Dibujar el tablero de Sudoku
     from Niveles.nivel2_sudoku import dibujar_tablero_sudoku
-    dibujar_tablero_sudoku(config, estado_juego, tablero)
+    if config.get('mostrar_tablero', True):
+        dibujar_tablero_sudoku(config, estado_juego, tablero)
 
     tiempo_str = f"{estado_juego.get('tiempo_restante', 0)}s"
     
