@@ -51,6 +51,8 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
             elif event.key == pygame.K_k:  # Tecla K para encender la luz
                 config['luz_encendida'] = True
                 glEnable(GL_LIGHTING)
+            elif event.key == pygame.K_t:  # Tecla T para mostrar/ocultar texto
+                config['mostrar_texto'] = not config.get('mostrar_texto', True)
             
             # Manejo de entrada para el Sudoku
             elif event.key in [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4]:

@@ -48,15 +48,15 @@ def renderizar_escena(config, estado_juego, tablero):
     from Niveles.nivel1_sudoku import dibujar_tablero_sudoku
     dibujar_tablero_sudoku(config, estado_juego, tablero)
     
-    # Mostrar información del nivel
-    dibujar_label_texto(f"Nivel 1 - Sudoku", pos_x=10, pos_y=580, tam=24)
-    dibujar_label_texto(f"Usa las flechas para mover al personaje", pos_x=10, pos_y=550, tam=18)
-    dibujar_label_texto(f"Usa W,A,S,D,Z,X para mover la camara", pos_x=10, pos_y=520, tam=18)
-    dibujar_label_texto(f"Presiona ESC para salir", pos_x=10, pos_y=490, tam=18)
-    dibujar_label_texto(f"Luz: {'Encendida' if config['luz_encendida'] else 'Apagada'}", pos_x=10, pos_y=460, tam=18)
-    dibujar_label_texto(f"Errores: {estado_juego['error_count']}", pos_x=10, pos_y=430, tam=18)
-    dibujar_label_texto(f"Aciertos: {estado_juego['correct_answers']}", pos_x=10, pos_y=400, tam=18)
-    dibujar_label_texto(f"Cubo vere: pista", pos_x=10, pos_y=360, tam=18)
+    # Mostrar información del nivel SOLO si mostrar_texto está activo
+    if config.get('mostrar_texto', True):
+        dibujar_label_texto(f"Nivel 1 - Sudoku Presina la Tecla T para desvaneser las instrucciones", pos_x=10, pos_y=580, tam=24)
+        dibujar_label_texto(f"Usa las flechas para mover al personaje", pos_x=10, pos_y=550, tam=18)
+        dibujar_label_texto(f"Presiona ESC para salir", pos_x=10, pos_y=490, tam=18)
+        dibujar_label_texto(f"Luz: {'Encendida' if config['luz_encendida'] else 'Apagada'}", pos_x=10, pos_y=460, tam=18)
+        dibujar_label_texto(f"Errores: {estado_juego['error_count']}", pos_x=10, pos_y=430, tam=18)
+        dibujar_label_texto(f"Aciertos: {estado_juego['correct_answers']}", pos_x=10, pos_y=400, tam=18)
+        dibujar_label_texto(f"Cubo vere: pista", pos_x=10, pos_y=360, tam=18)
 
 def actualizar_personaje(config, estado_juego):
     """Actualiza la apariencia del personaje según el estado del juego"""
