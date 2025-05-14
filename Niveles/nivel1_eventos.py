@@ -26,24 +26,24 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
                 pygame.quit()
                 return "salir"
             # Movimiento de cámara
-            elif event.key == pygame.K_w:
-                if config['cam_z'] < 20:
-                    config['cam_z'] += 0.5
-            elif event.key == pygame.K_s:
-                if config['cam_z'] > 10:  
-                    config['cam_z'] -= 0.5
-            elif event.key == pygame.K_a:
-                if config['cam_x'] < 20:
-                    config['cam_x'] += 0.5
-            elif event.key == pygame.K_d:
-                if config['cam_x'] > -20:  
-                    config['cam_x'] -= 0.5
-            elif event.key == pygame.K_z:
-                if config['cam_y'] < 10:
-                    config['cam_y'] += 0.5
-            elif event.key == pygame.K_x:
-                if config['cam_y'] > -10: 
-                    config['cam_y'] -= 0.5
+            #elif event.key == pygame.K_w:
+            #    if config['cam_z'] < 20:
+            #        config['cam_z'] += 0.5
+            #elif event.key == pygame.K_s:
+            #    if config['cam_z'] > 10:  
+            #        config['cam_z'] -= 0.5
+            #elif event.key == pygame.K_a:
+            #    if config['cam_x'] < 20:
+            #        config['cam_x'] += 0.5
+            #elif event.key == pygame.K_d:
+            #    if config['cam_x'] > -20:  
+            #        config['cam_x'] -= 0.5
+            #elif event.key == pygame.K_z:
+            #    if config['cam_y'] < 10:
+            #        config['cam_y'] += 0.5
+            #elif event.key == pygame.K_x:
+            #    if config['cam_y'] > -10: 
+            #        config['cam_y'] -= 0.5
             # Control de iluminación
             elif event.key == pygame.K_l:  # Tecla L para apagar la luz
                 config['luz_encendida'] = False
@@ -142,13 +142,21 @@ def manejar_movimiento(config):
     nueva_x, nueva_y = config['player_x'], config['player_y']
     
     if keys[pygame.K_LEFT]:
-        nueva_x -= config['player_speed']
+        if config['cam_x'] < 20:
+            config['cam_x'] += 0.5
+            nueva_x -= config['player_speed']
     if keys[pygame.K_RIGHT]:
-        nueva_x += config['player_speed']
+        if config['cam_x'] > -20:  
+            config['cam_x'] -= 0.5
+            nueva_x += config['player_speed']
     if keys[pygame.K_UP]:
-        nueva_y += config['player_speed']
+        if config['cam_y'] > -10: 
+            config['cam_y'] -= 0.5
+            nueva_y += config['player_speed']
     if keys[pygame.K_DOWN]:
-        nueva_y -= config['player_speed']
+        if config['cam_y'] < 10:
+            config['cam_y'] += 0.5
+            nueva_y -= config['player_speed']
     
     nueva_pos = [nueva_x, nueva_y, config['player_z']]
     cam_x, cam_y, cam_z = config['cam_x'], config['cam_y'], config['cam_z']
