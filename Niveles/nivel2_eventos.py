@@ -6,6 +6,8 @@ from Transiciones.GameOver import mostrar_game_over # <--- AÑADIR ESTA LÍNEA
 from Esenarios.escenarioObjetos2 import obtener_obstaculos
 from src.objetosDinamicos import obtener_objetos_dinamicos, generar_objetos_dinamicos
 from sonidos import sonidos as so
+import tkinter as tk
+from tkinter import messagebox
 
 def manejar_eventos(config, estado_juego, tablero, solucion):
     """Maneja todos los eventos del nivel"""
@@ -115,7 +117,24 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
                                 elif decision_game_over == 'salir':
                                     pygame.quit()
                                     return "salir"
-        
+            elif event.key in [pygame.K_7, pygame.K_8, pygame.K_9, pygame.K_0]:
+                row, col = estado_juego['selected_cell']
+                if estado_juego['selected_cell'] and tablero[row][col] == 0 and event.key not in [pygame.K_LEFT,pygame.K_RIGTH,pygame.K_UP,pygame.K_DOWN]:
+                    root = tk.Tk()
+                    root.withdraw()
+                    mensaje = ("SOLO SE PUEDE JUGAR CON LOS NÚMEROS DEL 1 AL 6\n")
+                    messagebox.showinfo("Manual de Usuario", mensaje)
+                    root.destroy()
+            elif event.key in [pygame.K_LEFT, pygame.K_RIGHT ,pygame.K_UP , pygame.K_DOWN]:
+                print("Movimiento con flechas")
+            else:
+                row, col = estado_juego['selected_cell']
+                if estado_juego['selected_cell'] and tablero[row][col] == 0:
+                    root = tk.Tk()
+                    root.withdraw()
+                    mensaje = ("SOLO SE PUEDE JUGAR CON VALORES NUMERICOS\n")
+                    messagebox.showinfo("Manual de Usuario", mensaje)
+                    root.destroy()
         # Manejo de clics del ratón para seleccionar celdas del Sudoku
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:  # Clic izquierdo
