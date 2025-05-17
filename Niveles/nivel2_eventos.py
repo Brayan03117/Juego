@@ -67,9 +67,8 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
             elif event.key in [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4,pygame.K_5,pygame.K_6]:
                 # Obtener el valor numérico de la tecla
                 input_value = event.key - pygame.K_0
-                
                 # Si hay una celda seleccionada y está vacía en el tablero original
-                if estado_juego['selected_cell']:
+                if estado_juego['selected_cell'] is not None:
                     row, col = estado_juego['selected_cell']
                     # Verificar si la celda está vacía (0) en el tablero actual
                     if tablero[row][col] == 0:
@@ -77,22 +76,16 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
                         if input_value == solucion[row][col]:
                             # Valor correcto
                             tablero[row][col] = input_value
-                            
                             # JesusL muestra pose feliz (0-4) cuando la respuesta es correcta
                             if config['personaje_id'] == 0:  # JesusL
                                 config['jesus_posicion'] = estado_juego['correct_answers'] % 5  # Poses 0,1,2,3,4
-                
                             # Guardar información sobre la última inserción
                             estado_juego['last_insertion'] = (row, col, input_value)
-                            
                             # Incrementar contador de respuestas correctas
                             estado_juego['correct_answers'] += 1
-
                             so.sonido("sonidos/feli.mp3")
-                            
                             # Cambiar escenario y música
                             cambiar_escenario_y_musica(config)
-                            
                             # Cambiar la emoción del personaje según el personaje seleccionado
                             #if config['personaje_id'] == 1:  # Torchic
                             #    config['torchic_posicion'] = 2  # Feliz
@@ -106,20 +99,17 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
                                 config['jesus_posicion'] = 5 + (estado_juego['error_count'] % 5)  # Poses 5,6,7,8,9
                             # Guardar información sobre el intento fallido
                             estado_juego['last_insertion'] = (row, col, input_value)
-                            
                             # Cambiar la emoción del personaje según el personaje seleccionado
                             if config['personaje_id'] == 1:  # Torchic
                                 config['torchic_posicion'] = config['torchic_posicion']+1
                             elif config['personaje_id'] == 2:  # Dyson
                                 config['dyson_emocion'] = "sad"
                                 config['dyson_posicion'] = config['dyson_posicion']+1
-
                             # Comprobar si se alcanzó el límite de errores
                             if estado_juego['error_count'] >= 5:
                                 # Detener todos los sonidos del nivel antes de mostrar Game Over
                                 for sonido_escenario in config['sonidos_escenarios'].values():
                                     sonido_escenario.stop()
-
                                 decision_game_over = mostrar_game_over(config['display'])
                                 if decision_game_over == 'menu':
                                     return "menu" # O la señal que uses para volver al menú
@@ -127,29 +117,31 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
                                     pygame.quit()
                                     return "salir"
             elif event.key in [pygame.K_7, pygame.K_8, pygame.K_9, pygame.K_0]:
-                row, col = estado_juego['selected_cell']
-                if estado_juego['selected_cell'] and tablero[row][col] == 0 and event.key not in [pygame.K_LEFT,pygame.K_RIGTH,pygame.K_UP,pygame.K_DOWN]:
-                    # JesusL muestra pose triste (5-9) cuando se usa una tecla no válida
-                    if config['personaje_id'] == 0:  # JesusL
-                        config['jesus_posicion'] = 5 + (pygame.time.get_ticks() % 5)  # Poses 5,6,7,8,9 aleatorias
-                    # Mostrar mensaje en pantalla
-                    estado_juego['mostrar_mensaje_tecla'] = True
-                    estado_juego['mensaje_tecla'] = "¡TECLA NO VÁLIDA!"
-                    estado_juego['tiempo_mensaje_tecla'] = pygame.time.get_ticks()
-                    # Solo mostrar mensaje en pantalla (sin ventana emergente)
+                if estado_juego['selected_cell'] is not None:
+                    row, col = estado_juego['selected_cell']
+                    if tablero[row][col] == 0 and event.key not in [pygame.K_LEFT,pygame.K_RIGTH,pygame.K_UP,pygame.K_DOWN]:
+                        # JesusL muestra pose triste (5-9) cuando se usa una tecla no válida
+                        if config['personaje_id'] == 0:  # JesusL
+                            config['jesus_posicion'] = 5 + (pygame.time.get_ticks() % 5)  # Poses 5,6,7,8,9 aleatorias
+                        # Mostrar mensaje en pantalla
+                        estado_juego['mostrar_mensaje_tecla'] = True
+                        estado_juego['mensaje_tecla'] = "¡TECLA NO VÁLIDA!"
+                        estado_juego['tiempo_mensaje_tecla'] = pygame.time.get_ticks()
+                        # Solo mostrar mensaje en pantalla (sin ventana emergente)
             elif event.key in [pygame.K_LEFT, pygame.K_RIGHT ,pygame.K_UP , pygame.K_DOWN]:
                 print("Movimiento con flechas")
             else:
-                row, col = estado_juego['selected_cell']
-                if estado_juego['selected_cell'] and tablero[row][col] == 0:
-                    # JesusL muestra pose triste (5-9) cuando se usa una tecla no válida
-                    if config['personaje_id'] == 0:  # JesusL
-                        config['jesus_posicion'] = 5 + (pygame.time.get_ticks() % 5)  # Poses 5,6,7,8,9 aleatorias
-                    # Mostrar mensaje en pantalla
-                    estado_juego['mostrar_mensaje_tecla'] = True
-                    estado_juego['mensaje_tecla'] = "¡TECLA NO VÁLIDA!"
-                    estado_juego['tiempo_mensaje_tecla'] = pygame.time.get_ticks()
-                    # Solo mostrar mensaje en pantalla (sin ventana emergente)
+                if estado_juego['selected_cell'] is not None:
+                    row, col = estado_juego['selected_cell']
+                    if tablero[row][col] == 0:
+                        # JesusL muestra pose triste (5-9) cuando se usa una tecla no válida
+                        if config['personaje_id'] == 0:  # JesusL
+                            config['jesus_posicion'] = 5 + (pygame.time.get_ticks() % 5)  # Poses 5,6,7,8,9 aleatorias
+                        # Mostrar mensaje en pantalla
+                        estado_juego['mostrar_mensaje_tecla'] = True
+                        estado_juego['mensaje_tecla'] = "¡TECLA NO VÁLIDA!"
+                        estado_juego['tiempo_mensaje_tecla'] = pygame.time.get_ticks()
+                        # Solo mostrar mensaje en pantalla (sin ventana emergente)
         # Manejo de clics del ratón para seleccionar celdas del Sudoku
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:  # Clic izquierdo
