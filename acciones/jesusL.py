@@ -453,6 +453,18 @@ def Pos5(t_x, t_y, t_z):
     # Cabeza
     draw_rectangular_prism(0.5, 1, 1, (0.5, 0, 1), (1 + t_x, 2.3 + t_y, 5.2 + t_z))
     
+    # Cara (texto "O_o")
+    glPushMatrix()
+    glTranslatef(2 + t_x, 2.5 + t_y, 5.6 + t_z)
+    glRotatef(180, 0, 1, 0)  # Girar para que el texto mire hacia la cámara
+    glDisable(GL_LIGHTING)  # Desactivar iluminación para el texto
+    glColor3f(0, 0, 0)  # Color negro para el texto
+    glRasterPos3f(0, 0, 0)
+    for c in "O_o":
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ord(c))
+    glEnable(GL_LIGHTING)  # Reactivar iluminación
+    glPopMatrix()
+    
     # Pecho (más delgado)
     draw_rectangular_prism(1, 2, 3.15, (255/255, 255/255, 0/255), (0.80 + t_x, 1.8 + t_y, 2 + t_z))  # Amarillo
     
@@ -489,6 +501,18 @@ def Pos6(t_x, t_y, t_z):
     
     # Cabeza
     draw_rectangular_prism(0.5, 1, 1, (0.5, 0, 1), (1 + t_x, 3.5 + t_y, 5.7 + t_z))
+    
+    # Cara (texto "@_@")
+    glPushMatrix()
+    glTranslatef(2 + t_x, 3.7 + t_y, 6.1 + t_z)
+    glRotatef(180, 0, 1, 0)  # Girar para que el texto mire hacia la cámara
+    glDisable(GL_LIGHTING)  # Desactivar iluminación para el texto
+    glColor3f(0, 0, 0)  # Color negro para el texto
+    glRasterPos3f(0, 0, 0)
+    for c in "@_@":
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ord(c))
+    glEnable(GL_LIGHTING)  # Reactivar iluminación
+    glPopMatrix()
     
     # Pecho (más delgado)
     draw_rectangular_prism(1, 2, 3.15, (255/255, 255/255, 0/255), (0.80 + t_x, 3. + t_y, 2.5 + t_z))  # Amarillo

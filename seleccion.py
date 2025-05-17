@@ -44,7 +44,7 @@ def dibujar(seleccion_actual, emocion):
         elif emocion == 3:
             draw_jesus(0, -3, -2.2,3)
         elif emocion == 4:
-            draw_jesus(0, -3, -2.2,5)
+            draw_jesus(0, -3, -2.2,7)
         
  
     elif seleccion_actual == 1:
