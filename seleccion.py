@@ -36,15 +36,17 @@ def dibujar(seleccion_actual, emocion):
     """Dibuja el personaje seleccionado"""
     if seleccion_actual == 0:
         if emocion == 0:
-            draw_jesus(0, -3, -2.2,6)
+            draw_jesus(0, -3, -2.2,0)
         elif emocion == 1:
-            draw_jesus(0, -3, -2.2,8)
+            draw_jesus(0, -3, -2.2,1)
         elif emocion == 2:
-            draw_jesus(0, -3, -2.2,9)
+            draw_jesus(0, -3, -2.2,2)
         elif emocion == 3:
-            draw_jesus(0, -3, -2.2,10)
+            draw_jesus(0, -3, -2.2,3)
         elif emocion == 4:
-            draw_jesus(0, -3, -2.2,11)
+            draw_jesus(0, -3, -2.2,7)
+        
+ 
     elif seleccion_actual == 1:
         if emocion == 0:
             draw_torchic()
@@ -143,7 +145,7 @@ def main():
         if seleccion_actual == 2 or seleccion_actual == 1:
             glEnable(GL_LIGHTING)
             glColor3f(1.0, 1.0, 1.0)  # Iluminado normal
-            draw_jesus(0, -3, -2.2,6) 
+            draw_jesus(0, -3, -2.2,8) 
         else:
             glDisable(GL_LIGHTING)
             glColor3f(0, 0, 0)  # Oscuro
