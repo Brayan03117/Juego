@@ -210,3 +210,5 @@ def manejar_movimiento(config):
     if config['pista_activa']==False:
         if hay_colision(nueva_pos, config['pista']):
             config['pista_activa'] = True
+            if config['personaje_id'] == 0:  # Si el personaje es JesusL
+                config['jesus_posicion'] = pygame.time.get_ticks() % 5  # Cambiar pose a 0,1,2,3 o 4
