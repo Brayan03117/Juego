@@ -65,6 +65,10 @@ def renderizar_escena(config, estado_juego, tablero):
         dibujar_label_texto(f"Tiempo restante: {tiempo_str}", pos_x=10, pos_y=370, tam=18)
         dibujar_label_texto(f"Objeto azul: +10 segundos", pos_x=10, pos_y=340, tam=18)
         dibujar_label_texto(f"Objeto Naranja: -1 error", pos_x=10, pos_y=310, tam=18)
+        
+    # Mostrar mensaje de tecla no válida si está activo
+    if estado_juego.get('mostrar_mensaje_tecla', False):
+        dibujar_label_texto(estado_juego['mensaje_tecla'], pos_x=config['display'][0]//2 - 100, pos_y=config['display'][1]//2, tam=36, color=(255, 0, 0))
 
 def actualizar_personaje(config, estado_juego):
     """Actualiza la apariencia del personaje según el estado del juego"""

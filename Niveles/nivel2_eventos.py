@@ -6,11 +6,16 @@ from Transiciones.GameOver import mostrar_game_over # <--- AÑADIR ESTA LÍNEA
 from Esenarios.escenarioObjetos2 import obtener_obstaculos
 from src.objetosDinamicos import obtener_objetos_dinamicos, generar_objetos_dinamicos
 from sonidos import sonidos as so
-import tkinter as tk
-from tkinter import messagebox
+# Se eliminaron las importaciones de tkinter ya que no se usan ventanas emergentes
 
 def manejar_eventos(config, estado_juego, tablero, solucion):
     """Maneja todos los eventos del nivel"""
+    # Actualizar el tiempo de visualización del mensaje de tecla no válida
+    if estado_juego.get('mostrar_mensaje_tecla', False):
+        tiempo_actual = pygame.time.get_ticks()
+        if tiempo_actual - estado_juego.get('tiempo_mensaje_tecla', 0) > 2000:  # 2 segundos
+            estado_juego['mostrar_mensaje_tecla'] = False
+    
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             # Detener todos los sonidos antes de salir
@@ -72,7 +77,10 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
                         if input_value == solucion[row][col]:
                             # Valor correcto
                             tablero[row][col] = input_value
-                            # JesusL mantiene su posición original
+                            
+                            # JesusL muestra pose feliz (0-4) cuando la respuesta es correcta
+                            if config['personaje_id'] == 0:  # JesusL
+                                config['jesus_posicion'] = estado_juego['correct_answers'] % 5  # Poses 0,1,2,3,4
                 
                             # Guardar información sobre la última inserción
                             estado_juego['last_insertion'] = (row, col, input_value)
@@ -93,8 +101,9 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
                         else:
                             # Valor incorrecto
                             estado_juego['error_count'] += 1
-                            # JesusL cambia de posición cuando hay un error
-                            config['jesus_posicion'] = estado_juego['error_count'] % 5 + 1
+                            # JesusL cambia de posición cuando hay un error (poses 5-9)
+                            if config['personaje_id'] == 0:  # JesusL
+                                config['jesus_posicion'] = 5 + (estado_juego['error_count'] % 5)  # Poses 5,6,7,8,9
                             # Guardar información sobre el intento fallido
                             estado_juego['last_insertion'] = (row, col, input_value)
                             
@@ -120,21 +129,27 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
             elif event.key in [pygame.K_7, pygame.K_8, pygame.K_9, pygame.K_0]:
                 row, col = estado_juego['selected_cell']
                 if estado_juego['selected_cell'] and tablero[row][col] == 0 and event.key not in [pygame.K_LEFT,pygame.K_RIGTH,pygame.K_UP,pygame.K_DOWN]:
-                    root = tk.Tk()
-                    root.withdraw()
-                    mensaje = ("SOLO SE PUEDE JUGAR CON LOS NÚMEROS DEL 1 AL 6\n")
-                    messagebox.showinfo("Manual de Usuario", mensaje)
-                    root.destroy()
+                    # JesusL muestra pose triste (5-9) cuando se usa una tecla no válida
+                    if config['personaje_id'] == 0:  # JesusL
+                        config['jesus_posicion'] = 5 + (pygame.time.get_ticks() % 5)  # Poses 5,6,7,8,9 aleatorias
+                    # Mostrar mensaje en pantalla
+                    estado_juego['mostrar_mensaje_tecla'] = True
+                    estado_juego['mensaje_tecla'] = "¡TECLA NO VÁLIDA!"
+                    estado_juego['tiempo_mensaje_tecla'] = pygame.time.get_ticks()
+                    # Solo mostrar mensaje en pantalla (sin ventana emergente)
             elif event.key in [pygame.K_LEFT, pygame.K_RIGHT ,pygame.K_UP , pygame.K_DOWN]:
                 print("Movimiento con flechas")
             else:
                 row, col = estado_juego['selected_cell']
                 if estado_juego['selected_cell'] and tablero[row][col] == 0:
-                    root = tk.Tk()
-                    root.withdraw()
-                    mensaje = ("SOLO SE PUEDE JUGAR CON VALORES NUMERICOS\n")
-                    messagebox.showinfo("Manual de Usuario", mensaje)
-                    root.destroy()
+                    # JesusL muestra pose triste (5-9) cuando se usa una tecla no válida
+                    if config['personaje_id'] == 0:  # JesusL
+                        config['jesus_posicion'] = 5 + (pygame.time.get_ticks() % 5)  # Poses 5,6,7,8,9 aleatorias
+                    # Mostrar mensaje en pantalla
+                    estado_juego['mostrar_mensaje_tecla'] = True
+                    estado_juego['mensaje_tecla'] = "¡TECLA NO VÁLIDA!"
+                    estado_juego['tiempo_mensaje_tecla'] = pygame.time.get_ticks()
+                    # Solo mostrar mensaje en pantalla (sin ventana emergente)
         # Manejo de clics del ratón para seleccionar celdas del Sudoku
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:  # Clic izquierdo
@@ -186,7 +201,13 @@ def manejar_movimiento(config,estado_juego):
     
     nueva_pos = [nueva_x, nueva_y, config['player_z']]
     cam_x, cam_y, cam_z = config['cam_x'], config['cam_y'], config['cam_z']
-
+    
+    # Verificar colisiones y cambiar pose de JesusL si hay colisión
+    obstaculos_dinamicos = obtener_obstaculos()
+    if hay_colision(nueva_pos, obstaculos_dinamicos) and config['personaje_id'] == 0:
+        # JesusL muestra pose feliz (0-4) cuando colisiona con un objeto
+        config['jesus_posicion'] = pygame.time.get_ticks() % 5  # Poses 0,1,2,3,4
+        
     # Ajusta esta posición para que coincida con donde *visualmente* está el tablero
     sudoku_virtual = {
         "tipo": "sudoku_virtual",

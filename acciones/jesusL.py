@@ -202,14 +202,14 @@ def Pos0(t_x, t_y, t_z):
     # Cabeza
     draw_rectangular_prism(0.5, 1, 1, (0.5, 0, 1), (1 + t_x, 3.5 + t_y, 5.7 + t_z))
     
-    # Cara (texto "0_0")
+    # Cara (texto "^_^" - cara feliz)
     glPushMatrix()
     glTranslatef(2 + t_x, 3.7 + t_y, 6.1 + t_z)
     glRotatef(180, 0, 1, 0)  # Girar para que el texto mire hacia la cámara
     glDisable(GL_LIGHTING)  # Desactivar iluminación para el texto
     glColor3f(0, 0, 0)  # Color negro para el texto
     glRasterPos3f(0, 0, 0)
-    for c in "0_0":
+    for c in "^_^":
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ord(c))
     glEnable(GL_LIGHTING)  # Reactivar iluminación
     glPopMatrix()
@@ -251,14 +251,14 @@ def Pos1(t_x, t_y, t_z):
     # Cabeza
     draw_rectangular_prism(0.5, 1, 1, (0.5, 0, 1), (1 + t_x, 3.5 + t_y, 5.7 + t_z))
     
-    # Cara (texto "^_^")
+    # Cara (texto "^o^" - cara feliz)
     glPushMatrix()
     glTranslatef(2 + t_x, 3.7 + t_y, 6.1 + t_z)
     glRotatef(180, 0, 1, 0)  # Girar para que el texto mire hacia la cámara
     glDisable(GL_LIGHTING)  # Desactivar iluminación para el texto
     glColor3f(0, 0, 0)  # Color negro para el texto
     glRasterPos3f(0, 0, 0)
-    for c in "^_^":
+    for c in "^o^":
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ord(c))
     glEnable(GL_LIGHTING)  # Reactivar iluminación
     glPopMatrix()
@@ -301,14 +301,14 @@ def Pos2(t_x, t_y, t_z):
     # Cabeza
     draw_rectangular_prism(0.5, 1, 1, (0.5, 0, 1), (1 + t_x, 3.5 + t_y, 5.7 + t_z))
     
-    # Cara (texto "o_O")
+    # Cara (texto "=D" - cara feliz)
     glPushMatrix()
     glTranslatef(2 + t_x, 3.7 + t_y, 6.1 + t_z)
     glRotatef(180, 0, 1, 0)  # Girar para que el texto mire hacia la cámara
     glDisable(GL_LIGHTING)  # Desactivar iluminación para el texto
     glColor3f(0, 0, 0)  # Color negro para el texto
     glRasterPos3f(0, 0, 0)
-    for c in "o_O":
+    for c in "D-D":
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ord(c))
     glEnable(GL_LIGHTING)  # Reactivar iluminación
     glPopMatrix()
@@ -352,14 +352,14 @@ def Pos3(t_x, t_y, t_z):
     # Cabeza
     draw_rectangular_prism(0.5, 1, 1, (0.5, 0, 1), (1 + t_x, 3.5 + t_y, 5.7 + t_z))
     
-    # Cara (texto ">_<")
+    # Cara (texto ":D" - cara feliz)
     glPushMatrix()
     glTranslatef(2 + t_x, 3.7 + t_y, 6.1 + t_z)
     glRotatef(180, 0, 1, 0)  # Girar para que el texto mire hacia la cámara
     glDisable(GL_LIGHTING)  # Desactivar iluminación para el texto
     glColor3f(0, 0, 0)  # Color negro para el texto
     glRasterPos3f(0, 0, 0)
-    for c in ">_<":
+    for c in "P-P":
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ord(c))
     glEnable(GL_LIGHTING)  # Reactivar iluminación
     glPopMatrix()
@@ -403,14 +403,14 @@ def Pos4(t_x, t_y, t_z):
     # Cabeza
     draw_rectangular_prism(0.5, 1, 1, (0.5, 0, 1), (1 + t_x, 3.5 + t_y, 5.7 + t_z))
     
-    # Cara (texto "u_u")
+    # Cara (texto "^-^" - cara feliz)
     glPushMatrix()
     glTranslatef(2 + t_x, 3.7 + t_y, 6.1 + t_z)
     glRotatef(180, 0, 1, 0)  # Girar para que el texto mire hacia la cámara
     glDisable(GL_LIGHTING)  # Desactivar iluminación para el texto
     glColor3f(0, 0, 0)  # Color negro para el texto
     glRasterPos3f(0, 0, 0)
-    for c in "u_u":
+    for c in "^-^":
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ord(c))
     glEnable(GL_LIGHTING)  # Reactivar iluminación
     glPopMatrix()
@@ -453,14 +453,14 @@ def Pos5(t_x, t_y, t_z):
     # Cabeza
     draw_rectangular_prism(0.5, 1, 1, (0.5, 0, 1), (1 + t_x, 2.3 + t_y, 5.2 + t_z))
     
-    # Cara (texto "O_o")
+    # Cara (texto ":'(" - cara triste)
     glPushMatrix()
     glTranslatef(2 + t_x, 2.5 + t_y, 5.6 + t_z)
     glRotatef(180, 0, 1, 0)  # Girar para que el texto mire hacia la cámara
     glDisable(GL_LIGHTING)  # Desactivar iluminación para el texto
     glColor3f(0, 0, 0)  # Color negro para el texto
     glRasterPos3f(0, 0, 0)
-    for c in "O_o":
+    for c in ".-.":
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ord(c))
     glEnable(GL_LIGHTING)  # Reactivar iluminación
     glPopMatrix()
@@ -502,14 +502,14 @@ def Pos6(t_x, t_y, t_z):
     # Cabeza
     draw_rectangular_prism(0.5, 1, 1, (0.5, 0, 1), (1 + t_x, 3.5 + t_y, 5.7 + t_z))
     
-    # Cara (texto "@_@")
+    # Cara (texto "T_T" - cara triste)
     glPushMatrix()
     glTranslatef(2 + t_x, 3.7 + t_y, 6.1 + t_z)
     glRotatef(180, 0, 1, 0)  # Girar para que el texto mire hacia la cámara
     glDisable(GL_LIGHTING)  # Desactivar iluminación para el texto
     glColor3f(0, 0, 0)  # Color negro para el texto
     glRasterPos3f(0, 0, 0)
-    for c in "@_@":
+    for c in "T_T":
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ord(c))
     glEnable(GL_LIGHTING)  # Reactivar iluminación
     glPopMatrix()
@@ -550,14 +550,14 @@ def Pos7(t_x, t_y, t_z):
     # Cabeza
     draw_rectangular_prism(0.5, 1, 1, (0.5, 0, 1), (1 + t_x, 3.5 + t_y, 5.7 + t_z))
     
-    # Cara (texto "*_*")
+    # Cara (texto ":(" - cara triste)
     glPushMatrix()
     glTranslatef(2 + t_x, 3.7 + t_y, 6.1 + t_z)
     glRotatef(180, 0, 1, 0)  # Girar para que el texto mire hacia la cámara
     glDisable(GL_LIGHTING)  # Desactivar iluminación para el texto
     glColor3f(0, 0, 0)  # Color negro para el texto
     glRasterPos3f(0, 0, 0)
-    for c in "*_*":
+    for c in "'-'":
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ord(c))
     glEnable(GL_LIGHTING)  # Reactivar iluminación
     glPopMatrix()
@@ -611,7 +611,7 @@ def Pos8(t_x, t_y, t_z):
     glDisable(GL_LIGHTING)  # Desactivar iluminación para el texto
     glColor3f(0, 0, 0)  # Color negro para el texto
     glRasterPos3f(0, 0, 0)
-    for c in "T_T":
+    for c in "O-O":
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ord(c))
     glEnable(GL_LIGHTING)  # Reactivar iluminación
     glPopMatrix()
@@ -660,7 +660,7 @@ def Pos9(t_x, t_y, t_z):
     glDisable(GL_LIGHTING)  # Desactivar iluminación para el texto
     glColor3f(0, 0, 0)  # Color negro para el texto
     glRasterPos3f(0, 0, 0)
-    for c in "* - *":
+    for c in "X-X":
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ord(c))
     glEnable(GL_LIGHTING)  # Reactivar iluminación
     glPopMatrix()
