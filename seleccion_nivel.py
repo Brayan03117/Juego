@@ -55,6 +55,9 @@ def seleccion_nivel(personaje_id):
                 elif evento.key == K_RETURN:
                     pygame.quit()
                     return f"nivel{seleccion_actual + 1}"
+                elif evento.key == K_ESCAPE:
+                    pygame.quit()
+                    return "back"
         
         # Dibujar fondo
         pantalla.fill(NEGRO)

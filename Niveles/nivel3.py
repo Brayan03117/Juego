@@ -89,7 +89,7 @@ def iniciar_nivel3(personaje_id):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     pygame.quit()
-                    return
+                    return "back"
                 # Movimiento de cámara (si aún lo quieres)
                 elif event.key == pygame.K_w:
                     cam_z += 0.5

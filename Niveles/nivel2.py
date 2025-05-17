@@ -52,6 +52,8 @@ def iniciar_nivel2(personaje_id):
             return "menu"
         elif accion == "reiniciar":
             return "reiniciar"
+        elif accion == "back":
+            return "back"
             
         # Manejar movimiento del personaje
         manejar_movimiento(config,estado_juego)

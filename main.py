@@ -13,41 +13,60 @@ def main():
     while True:
         opcion = pantalla_inicial()
         if opcion == "seleccionar_personaje":
-            personaje_seleccionado = seleccion_personaje()
-            print(f"Seleccionaste el personaje {personaje_seleccionado}")
-            
-            # Después de seleccionar el personaje, mostrar la selección de nivel
-            nivel_seleccionado = seleccion_nivel(personaje_seleccionado)
-            print(f"Seleccionaste el nivel {nivel_seleccionado}")
-            
-            # Iniciar el juego automáticamente después de seleccionar nivel
-            if personaje_seleccionado is not None and nivel_seleccionado is not None:
-                print(f"Iniciando juego con personaje {personaje_seleccionado} en nivel {nivel_seleccionado}")
-                
-                # Variable para controlar si se debe reiniciar el nivel
-                reiniciar_nivel = True
-                
-                while reiniciar_nivel:
-                    # Cargar el nivel correspondiente
-                    if nivel_seleccionado == "nivel1":
-                        resultado = iniciar_nivel1(personaje_seleccionado)
-                    elif nivel_seleccionado == "nivel2":
-                        resultado = iniciar_nivel2(personaje_seleccionado)
-                    elif nivel_seleccionado == "nivel3":
-                        resultado = iniciar_nivel3(personaje_seleccionado)
-                    # Aquí puedes agregar más niveles en el futuro
-                    
-                    # Procesar el resultado del nivel
-                    if resultado == "salir":
-                        sys.exit()  # Cerrar el juego completamente con Esc
-                    elif resultado == "menu" or resultado == "gameover":
-                        reiniciar_nivel = False  # Volver al menú principal con Enter o en caso de Game Over
-                    # Se elimina la opción de reiniciar nivel en Game Over
-                    elif resultado == "reiniciar":
-                        reiniciar_nivel = True  # Reiniciar el nivel actual con Espacio (solo durante el juego)
+            # Loop for character and level selection
+            while True:
+                personaje_seleccionado = seleccion_personaje()
+                if personaje_seleccionado == "back":
+                    # Go back to main menu (pantalla_inicial)
+                    break # Break out of the inner character/level selection loop
+
+                print(f"Seleccionaste el personaje {personaje_seleccionado}")
+
+                # After selecting the character, show level selection
+                nivel_seleccionado = seleccion_nivel(personaje_seleccionado)
+                if nivel_seleccionado == "back":
+                    # Go back to character selection
+                    continue # Continue the inner character/level selection loop
+
+                print(f"Seleccionaste el nivel {nivel_seleccionado}")
+
+                # Start the game automatically after selecting level
+                if personaje_seleccionado is not None and nivel_seleccionado is not None:
+                    print(f"Iniciando juego con personaje {personaje_seleccionado} en nivel {nivel_seleccionado}")
+
+                    # Variable to control if the level should restart
+                    reiniciar_nivel = True
+                    go_back_to_level_selection = False # Flag for going back to level selection
+
+                    while reiniciar_nivel:
+                        # Load the corresponding level
+                        if nivel_seleccionado == "nivel1":
+                            resultado = iniciar_nivel1(personaje_seleccionado)
+                        elif nivel_seleccionado == "nivel2":
+                            resultado = iniciar_nivel2(personaje_seleccionado)
+                        elif nivel_seleccionado == "nivel3":
+                            resultado = iniciar_nivel3(personaje_seleccionado)
+                        # You can add more levels here in the future
+
+                        # Process the level result
+                        if resultado == "salir":
+                            sys.exit()  # Close the game completely with Esc
+                        elif resultado == "menu" or resultado == "gameover":
+                            reiniciar_nivel = False  # Return to main menu with Enter or in case of Game Over
+                        elif resultado == "reiniciar":
+                            reiniciar_nivel = True  # Restart the current level with Space (only during the game)
+                        elif resultado == "back":
+                            reiniciar_nivel = False # Exit the level loop
+                            go_back_to_level_selection = True # Set flag to go back to level selection
+                        else:
+                            reiniciar_nivel = False  # By default, return to main menu
+
+                    # After the level loop, check if we need to go back to level selection
+                    if go_back_to_level_selection:
+                        continue # Continue the inner character/level selection loop (will call seleccion_nivel again)
                     else:
-                        reiniciar_nivel = False  # Por defecto, volver al menú principal
-                
+                        break # Break out of the inner character/level selection loop (will go back to main menu)
+
         elif opcion == "salir":
             break
 

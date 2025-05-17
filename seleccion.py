@@ -112,6 +112,9 @@ def main():
                 elif event.key in (pygame.K_KP_ENTER, pygame.K_RETURN):
                     pygame.display.quit()
                     return seleccion_actual
+                elif event.key == pygame.K_ESCAPE:
+                    pygame.display.quit()
+                    return "back"
                 elif event.key == pygame.K_1:
                     fondo_actual = 1
                 elif event.key == pygame.K_2:
