@@ -93,9 +93,9 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
                         else:
                             # Valor incorrecto
                             estado_juego['error_count'] += 1
-                            # JesusL cambia de posición cuando hay un error (poses 5-9)
+                            # JesusL cambia de posición cuando hay un error (poses 0-4)
                             if config['personaje_id'] == 0:  # JesusL
-                                config['jesus_posicion'] = 5 + (estado_juego['error_count'] % 5)  # Poses 5,6,7,8,9
+                                config['jesus_posicion'] = pygame.time.get_ticks() % 5  # Poses 0,1,2,3,4
                             # Guardar información sobre el intento fallido
                             estado_juego['last_insertion'] = (row, col, input_value)
                             # Cambiar la emoción del personaje según el personaje seleccionado
@@ -118,10 +118,10 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
             elif event.key in [pygame.K_7, pygame.K_8, pygame.K_9, pygame.K_0]:
                 if estado_juego['selected_cell'] is not None:
                     row, col = estado_juego['selected_cell']
-                    if tablero[row][col] == 0 and event.key not in [pygame.K_LEFT,pygame.K_RIGTH,pygame.K_UP,pygame.K_DOWN]:
-                        # JesusL muestra pose triste (5-9) cuando se usa una tecla no válida
+                    if tablero[row][col] == 0 and event.key not in [pygame.K_LEFT,pygame.K_RIGHT,pygame.K_UP,pygame.K_DOWN]: # Corregido K_RIGTH a K_RIGHT
+                        # JesusL muestra pose (0-4) cuando se usa una tecla no válida
                         if config['personaje_id'] == 0:  # JesusL
-                            config['jesus_posicion'] = 5 + (pygame.time.get_ticks() % 5)  # Poses 5,6,7,8,9 aleatorias
+                            config['jesus_posicion'] = pygame.time.get_ticks() % 5  # Poses 0,1,2,3,4 aleatorias
                         # Mostrar mensaje en pantalla
                         estado_juego['mostrar_mensaje_tecla'] = True
                         estado_juego['mensaje_tecla'] = "¡TECLA NO VÁLIDA!"
@@ -133,9 +133,9 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
                 if estado_juego['selected_cell'] is not None:
                     row, col = estado_juego['selected_cell']
                     if tablero[row][col] == 0:
-                        # JesusL muestra pose triste (5-9) cuando se usa una tecla no válida
+                        # JesusL muestra pose (0-4) cuando se usa una tecla no válida
                         if config['personaje_id'] == 0:  # JesusL
-                            config['jesus_posicion'] = 5 + (pygame.time.get_ticks() % 5)  # Poses 5,6,7,8,9 aleatorias
+                            config['jesus_posicion'] = pygame.time.get_ticks() % 5  # Poses 0,1,2,3,4 aleatorias
                         # Mostrar mensaje en pantalla
                         estado_juego['mostrar_mensaje_tecla'] = True
                         estado_juego['mensaje_tecla'] = "¡TECLA NO VÁLIDA!"
@@ -218,9 +218,13 @@ def manejar_movimiento(config,estado_juego):
                 if obj_d["tipo"] == "tiempo":
                     estado_juego['tiempo_maximo'] += 10
                     print("¡Colisión con objeto de TIEMPO! +10s")
+                    if config['personaje_id'] == 0:  # JesusL
+                        config['jesus_posicion'] = pygame.time.get_ticks() % 5  # Poses 0,1,2,3,4
                 elif obj_d["tipo"] == "errores":
                     estado_juego['error_count'] = max(0, estado_juego['error_count'] - 1)
                     print("¡Colisión con objeto de ERRORES! -1 error")
+                    if config['personaje_id'] == 0:  # JesusL
+                        config['jesus_posicion'] = pygame.time.get_ticks() % 5  # Poses 0,1,2,3,4
                     
         
         # Regenerar objetos para que se reubiquen
@@ -229,3 +233,5 @@ def manejar_movimiento(config,estado_juego):
     if config['pista_activa']==False:
         if hay_colision(nueva_pos, config['pista']):
             config['pista_activa'] = True
+            if config['personaje_id'] == 0:  # JesusL
+                config['jesus_posicion'] = pygame.time.get_ticks() % 5  # Poses 0,1,2,3,4
