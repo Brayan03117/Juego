@@ -5,256 +5,139 @@ from OpenGL.GLUT import *
 from pygame.locals import *
 import sys
 
-# Importar funciones para dibujar escenarios
-from Esenarios import escenarioObjetos1 as es
+# Importar módulos segmentados del nivel 3
+from Niveles.nivel3_config import inicializar_nivel
+from Niveles.nivel3_sudoku import crear_tablero_sudoku, verificar_solucion # dibujar_tablero_sudoku no se usa directamente aquí
+from Niveles.nivel3_render import renderizar_escena, actualizar_personaje
+from Niveles.nivel3_eventos import manejar_eventos, manejar_movimiento
 
-# Importar personajes
-from acciones.jesusL import draw as draw_jesus
-from acciones.torchic import personaje as draw_torchic
-from acciones.dysonEm import dibujar_personaje as draw_dyson
-from acciones.expresiones import draw_cejas_chad,draw_feliz,draw_triste,draw_enojado,draw_nervioso
-
-# Importar otras utilidades
-from acciones.iluminacion import iluminacion
-from src.textos import dibujar_label_texto
-from src.colisiones import hay_colision
-
-# Importar módulo para sonidos
-import os
+# Importar la función mostrar_felicitacion
+from Transiciones.Felicitacion import mostrar_felicitacion
 
 def iniciar_nivel3(personaje_id):
     """
-    Inicia el nivel 3 con el personaje seleccionado.
+    Inicia el Nivel 3 con el personaje seleccionado.
     
     Args:
         personaje_id: ID del personaje seleccionado (0=JesusL, 1=Torchic, 2=Dyson)
     """
-    pygame.init()
-    display = (800, 600)
-    pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
-    pygame.display.set_caption("Nivel 3")
+    # Inicializar configuraciones del nivel
+    config = inicializar_nivel(personaje_id)
     
-    # Inicializar el módulo de sonido
-    pygame.mixer.init()
+    # Crear tablero de Sudoku
+    tablero, solucion = crear_tablero_sudoku()
     
-    # Cargar los sonidos para cada escenario
-    sonidos_escenarios = {
-        1: pygame.mixer.Sound(os.path.join("Sonidos", "BackOnTrack.mp3")),
-        2: pygame.mixer.Sound(os.path.join("Sonidos", "Cycles.mp3")),
-        3: pygame.mixer.Sound(os.path.join("Sonidos", "Electroman.mp3")),
-        4: pygame.mixer.Sound(os.path.join("Sonidos", "GeometricalDominator.mp3")),
-        5: pygame.mixer.Sound(os.path.join("Sonidos", "Jumper.mp3"))
+    # Variables de estado del juego
+    estado_juego = {
+        'selected_cell': None,
+        'input_value': 0,
+        'error_count': 0,
+        'showing_options': False,
+        'cell_options': [],
+        'options_cell_coords': None,
+        'last_insertion': None,
+        'correct_answers': 0,
+        'tiempo_inicio': pygame.time.get_ticks(),
+        'tiempo_maximo': 150, # Tiempo para nivel 3, se puede ajustar
+        'tiempo_restante': 150,
+        'tiempo_luz_apagada': 0, # Para controlar el apagado de luz
+        'luz_intermitente_activa': True, # Controla si la luz parpadea
+        'tiempo_ultimo_cambio_luz': pygame.time.get_ticks() # Inicializar tiempo para el control de luz
     }
-
-    # Inicializar fondos
-    es.inicializar_fondos()
-    # Puedes cambiar el índice del fondo si quieres otro diferente
-    fondo_actual = 2
-    
-    # Variable para controlar la posición de JesusL
-    jesus_posicion = 0
-
-    torchic_posicion = 0
-
-    dyson_emocion="original"
-    
-    # Variable para controlar la iluminación
-    luz_encendida = True
-
-    # Configurar la perspectiva
-    gluPerspective(45, (display[0]/display[1]), 0.1, 50.0)
-    glTranslatef(0.0, -2.0, -30) # Aleja la cámara para que el fondo se vea mejor
-
-    # Habilitar prueba de profundidad e iluminación
-    glEnable(GL_DEPTH_TEST)
-    glEnable(GL_LIGHTING)
-    glEnable(GL_COLOR_MATERIAL)
-    
-    # Variables para controlar la cámara
-    cam_x, cam_y, cam_z = -4, 0, 15  # Iniciar con la cámara más cerca
-    rot_x, rot_y = 0, 0
-
-    # Variables para la posición y velocidad del jugador
-    player_x, player_y, player_z = 0.0, 0.0, 0.0
-    player_speed = 0.1 # Ajusta la velocidad según sea necesario
     
     # Bucle principal del juego
     while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                return
+        # Manejar eventos (teclado, ratón, etc.)
+        accion = manejar_eventos(config, estado_juego, tablero, solucion)
+        if accion == "salir":
+            return "salir"
+        elif accion == "menu":
+            return "menu"
+        elif accion == "reiniciar":
+            return "reiniciar"
+        elif accion == "back":
+            return "back"
             
-            # Control de teclado para salir (ESC) y mover la cámara (opcional)
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    pygame.quit()
-                    return "back"
-                # Movimiento de cámara (si aún lo quieres)
-                elif event.key == pygame.K_w:
-                    cam_z += 0.5
-                elif event.key == pygame.K_s:
-                    cam_z -= 0.5
-                elif event.key == pygame.K_a:
-                    cam_x += 0.5
-                elif event.key == pygame.K_d:
-                    cam_x -= 0.5
-                elif event.key == pygame.K_z:
-                    cam_y += 0.5
-                elif event.key == pygame.K_x:
-                    cam_y -= 0.5
-                # Control de iluminación
-                elif event.key == pygame.K_6:  # Tecla 6 para apagar la luz
-                    luz_encendida = False
-                    glDisable(GL_LIGHTING)
-                elif event.key == pygame.K_7:  # Tecla 7 para encender la luz
-                    luz_encendida = True
-                    glEnable(GL_LIGHTING)
-                # En la sección donde manejas los eventos de teclado:
-                # Cambio de escenarios y posiciones
-                elif event.key == pygame.K_1:
-                    # Detener sonido actual y reproducir el nuevo
-                    for sonido in sonidos_escenarios.values():
-                        sonido.stop()
-                    sonidos_escenarios[1].play()
-                    
-                    fondo_actual = 1
-                    if personaje_id == 0:  # Solo si es JesusL
-                        jesus_posicion = 1
-                    if personaje_id == 2: 
-                        dyson_emocion="happy"
-                    if personaje_id == 1:  # Solo si es Torchic
-                        torchic_posicion = 1
-                elif event.key == pygame.K_2:
-                    # Detener sonido actual y reproducir el nuevo
-                    for sonido in sonidos_escenarios.values():
-                        sonido.stop()
-                    sonidos_escenarios[2].play()
-                    
-                    fondo_actual = 2
-                    if personaje_id == 0:  # Solo si es JesusL
-                        jesus_posicion = 2
-                    if personaje_id == 2: 
-                        dyson_emocion="sad"
-                    if personaje_id == 1:
-                        torchic_posicion = 2
-                elif event.key == pygame.K_3:
-                    # Detener sonido actual y reproducir el nuevo
-                    for sonido in sonidos_escenarios.values():
-                        sonido.stop()
-                    sonidos_escenarios[3].play()
-                    
-                    fondo_actual = 3
-                    if personaje_id == 0:  # Solo si es JesusL
-                        jesus_posicion = 3
-                    if personaje_id == 2: 
-                        dyson_emocion="asco"
-                    if personaje_id == 1:
-                        torchic_posicion = 3
-                elif event.key == pygame.K_4:
-                    # Detener sonido actual y reproducir el nuevo
-                    for sonido in sonidos_escenarios.values():
-                        sonido.stop()
-                    sonidos_escenarios[4].play()
-                    
-                    fondo_actual = 4
-                    if personaje_id == 0:  # Solo si es JesusL
-                        jesus_posicion = 4
-                    if personaje_id == 2: 
-                        dyson_emocion="admirar"
-                    if personaje_id == 1:
-                        torchic_posicion = 4
-                elif event.key == pygame.K_5:
-                    # Detener sonido actual y reproducir el nuevo
-                    for sonido in sonidos_escenarios.values():
-                        sonido.stop()
-                    sonidos_escenarios[5].play()
-                    
-                    fondo_actual = 5
-                    if personaje_id == 0:  # Solo si es JesusL
-                        jesus_posicion = 5
-                    if personaje_id == 2: 
-                        dyson_emocion="dormir"
-                    if personaje_id == 1:
-                        torchic_posicion = 5
+        # Manejar movimiento del personaje
+        manejar_movimiento(config,estado_juego)
 
-
-        # --- Control de movimiento del personaje (fuera del bucle de eventos) ---
-        keys = pygame.key.get_pressed()
-        nueva_x, nueva_y = player_x, player_y
-        if keys[pygame.K_LEFT]:
-            nueva_x -= player_speed
-        if keys[pygame.K_RIGHT]:
-            nueva_x += player_speed
-        if keys[pygame.K_UP]:
-            # Mover hacia arriba en el eje Y
-            nueva_y += player_speed
-        if keys[pygame.K_DOWN]:
-            # Mover hacia abajo en el eje Y
-            nueva_y -= player_speed
+        if config['pista_activa']== True and config['pistas_disponibles'] > 0:
+            aplicar_pista(tablero, solucion, estado_juego)
+            config['pistas_disponibles'] -= 1
         
-        nueva_pos = [nueva_x, nueva_y, player_z]
+        # Lógica para apagar/encender la luz cada 5 segundos
+        tiempo_actual_luz = pygame.time.get_ticks()
+        if estado_juego.get('luz_intermitente_activa', True):
+            if (tiempo_actual_luz - estado_juego.get('tiempo_ultimo_cambio_luz', 0)) > 5000: # 5 segundos
+                config['luz_encendida'] = not config['luz_encendida']
+                estado_juego['tiempo_ultimo_cambio_luz'] = tiempo_actual_luz
+                # El efecto de encender/apagar la luz se maneja en renderizar_escena 
+                # o directamente antes de llamar a iluminacion() en renderizar_escena.
+                # Aquí solo cambiamos el estado.
 
-        if not hay_colision(nueva_pos):
-            player_x, player_y = nueva_x, nueva_y
+        # Renderizar la escena
+        tiempo_actual = pygame.time.get_ticks()
+        tiempo_transcurrido = (tiempo_actual - estado_juego['tiempo_inicio']) // 1000
+        estado_juego['tiempo_restante'] = max(0, estado_juego['tiempo_maximo'] - tiempo_transcurrido)
+        if estado_juego['tiempo_restante'] <= 0:
+            for sonido in config['sonidos_escenarios'].values():
+                sonido.stop()
+
+            from Transiciones.GameOver import mostrar_game_over
+            resultado = mostrar_game_over(config['display'])
+
+            if resultado == 'menu':
+                return 'menu'
+            elif resultado == 'salir':
+                pygame.quit()
+                return 'salir'
+
+        renderizar_escena(config, estado_juego, tablero)
         
+        # Actualizar el personaje según el estado del juego
+        actualizar_personaje(config, estado_juego)
         
-        # Limpiar la pantalla
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        # Verificar si el Sudoku está completo (todas las celdas llenas)
+        sudoku_completo = all(all(cell != 0 for cell in row) for row in tablero)
         
-        # Aplicar iluminación solo si está encendida
-        if luz_encendida:
-            iluminacion(1.0, 1.0, 1.0)  # Luz blanca
+        # Si está completo, verificar si es correcto
+        if sudoku_completo:
+            # Verificar cada celda del tablero
+            sudoku_correcto = True
+            for fila in range(len(tablero)):
+                for columna in range(len(tablero[fila])):
+                    valor = tablero[fila][columna]
+                    # Verificar si el valor en esta celda es correcto
+                    if not verificar_solucion(tablero, solucion, fila, columna, valor):
+                        sudoku_correcto = False
+                        break
+                if not sudoku_correcto:
+                    break
+            
+            if sudoku_correcto:
+                # Detener todos los sonidos antes de mostrar la felicitación
+                for sonido in config['sonidos_escenarios'].values():
+                    sonido.stop()
+                
+                # Mostrar la pantalla de felicitación
+                resultado = mostrar_felicitacion(config['display'])
+                
+                # Procesar el resultado de la pantalla de felicitación
+                if resultado == 'menu':
+                    return 'menu'
+                elif resultado == 'salir':
+                    return 'salir'
         
-        # Aplicar transformaciones de cámara (si las usas)
-        glPushMatrix()
-        glTranslatef(cam_x, cam_y, cam_z) # Mueve la cámara
-
-        # Mostrar el fondo del escenario
-        es.mostrar_escenario(fondo_actual)
-
-        # Dibujar el personaje seleccionado en su posición
-        glPushMatrix()
-        # Aplicar la posición del jugador ANTES de las rotaciones específicas del modelo
-        glTranslatef(player_x, player_y, player_z)
-
-        if personaje_id == 0:  # JesusL
-            # Rotaciones específicas para este modelo
-            glRotatef(90, 1, 0, 0)
-            glRotatef(180, 0, 1, 0)
-            glRotatef(90, 0, 0, 1)
-            draw_jesus(0, -3, -2.2, jesus_posicion) # Usar la posición seleccionada
-        elif personaje_id == 1:  # Torchic
-            glRotatef(180, 0, 1, 0)
-            if torchic_posicion == 0:
-                draw_torchic()
-            elif torchic_posicion == 1:
-                draw_triste()
-            elif torchic_posicion == 2:
-                draw_feliz()
-            elif torchic_posicion == 3:
-                draw_enojado()
-            elif torchic_posicion == 4:
-                draw_nervioso()
-            elif torchic_posicion == 5:
-                draw_cejas_chad()
-            draw_torchic() # Dibujar en el origen local
-        elif personaje_id == 2:  # Dyson
-            # Rotaciones/Traslaciones específicas para este modelo
-            draw_dyson((0, 2, 8),emocion=dyson_emocion) # Ajusta la posición relativa si es necesario
-       
-        glPopMatrix() # Fin del bloque del personaje
-
-        glPopMatrix() # Fin del bloque de la cámara
-
-        # Mostrar información del nivel (actualizada)
-        dibujar_label_texto(f"Nivel 3", pos_x=10, pos_y=580, tam=24)
-        dibujar_label_texto(f"Usa las flechas para mover al personaje", pos_x=10, pos_y=550, tam=18)
-        dibujar_label_texto(f"Usa W,A,S,D,Z,X para mover la camara (opcional)", pos_x=10, pos_y=520, tam=18)
-        dibujar_label_texto(f"Presiona ESC para salir", pos_x=10, pos_y=490, tam=18)
-        dibujar_label_texto(f"Presiona 1-5 para cambiar el escenario y expresiones", pos_x=10, pos_y=460, tam=18)
-        dibujar_label_texto(f"Presiona 6 para apagar la luz, 7 para encenderla", pos_x=10, pos_y=430, tam=18)
-        dibujar_label_texto(f"Luz: {'Encendida' if luz_encendida else 'Apagada'}", pos_x=10, pos_y=400, tam=18)
-
+        # Actualizar la pantalla
         pygame.display.flip()
-        pygame.time.wait(10) # Considera usar pygame.time.Clock().tick(60) para framerate estable
+        config['clock'].tick(60)
+
+def aplicar_pista(tablero, solucion, estado_juego):
+    """Rellena una celda vacía con la solución como pista"""
+    for fila in range(6):
+        for columna in range(6):
+            if tablero[fila][columna] == 0:
+                tablero[fila][columna] = solucion[fila][columna]
+                estado_juego['last_insertion'] = (fila, columna, solucion[fila][columna])
+                estado_juego['correct_answers'] += 1
+                return
