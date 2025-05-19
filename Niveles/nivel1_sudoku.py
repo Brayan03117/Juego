@@ -2,6 +2,7 @@ import pygame
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from src.textos import dibujar_label_texto
+import random
 
 def crear_tablero_sudoku():
     """Crea el tablero de Sudoku y su solución"""
