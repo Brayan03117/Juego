@@ -2,28 +2,41 @@ import pygame
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from src.textos import dibujar_label_texto
+import random
+import copy
+
+def generar_matriz_6x6():
+    matriz = []
+    columnas = [set() for _ in range(6)]  # Listas de números usados por columna
+
+    while len(matriz) < 6:
+        fila = random.sample(range(1, 7), 6)
+        # Verificar que no repite en columnas
+        if all(fila[i] not in columnas[i] for i in range(6)):
+            matriz.append(fila)
+            for i in range(6):
+                columnas[i].add(fila[i])
+    return matriz
+
+
 
 def crear_tablero_sudoku():
     """Crea el tablero de Sudoku y su solución"""
     # Tablero inicial con algunas casillas llenas
-    tablero = [
-        [4, 3, 2, 1, 5, 6],
-        [6, 1, 5, 2, 0, 4],
-        [5, 0, 4, 3, 2, 1],
-        [3, 0, 1, 0, 4, 5],
-        [2, 0, 6, 0, 1, 3],
-        [1, 5, 3, 0, 0, 2]
-    ]
-    
-    # Solución del Sudoku 2x2 (4x4)
-    solucion = [
-        [4, 3, 2, 1, 5, 6],
-        [6, 1, 5, 2, 3, 4],
-        [5, 6, 4, 3, 2, 1],
-        [3, 2, 1, 6, 4, 5],
-        [2, 4, 6, 5, 1, 3],
-        [1, 5, 3, 4, 6, 2]
-    ]
+    solucion = generar_matriz_6x6()
+    # Tablero inicial con algunas casillas llenas
+    tablero = copy.deepcopy(solucion)
+    for i in range(12):
+            fila= random.randint(0, 5)
+            columna= random.randint(0, 5)
+            tablero[fila][columna] = 0
+
+    print("Tablero inicial:")
+    for fila in tablero:
+        print(fila) 
+    print("Solución:") 
+    for fila in solucion:
+        print(fila)
     
     return tablero, solucion
 

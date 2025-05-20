@@ -3,25 +3,40 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 from src.textos import dibujar_label_texto
 import random
+import copy
+
+def numeros_random():
+    n=random.sample(range(1, 5), 4)
+    return n
+
+def veridicar_numeros():
+    while True:
+        n1 = numeros_random()
+        n2 = numeros_random()
+        n3 = numeros_random()
+        n4 = numeros_random()
+        columnas = list(zip(n1, n2, n3, n4))
+        if all(len(set(col)) == 4 for col in columnas):
+            return [n1, n2, n3, n4]
 
 def crear_tablero_sudoku():
     """Crea el tablero de Sudoku y su solución"""
-    # Tablero inicial con algunas casillas llenas
-    tablero = [
-        [4, 3, 2, 1],
-        [2, 1, 4, 3],
-        [3, 2, 1, 4],
-        [0, 4, 0, 0]
-    ]
-    
     # Solución del Sudoku 2x2 (4x4)
-    solucion = [
-        [4, 3, 2, 1],
-        [2, 1, 4, 3],
-        [3, 2, 1, 4],
-        [1, 4, 3, 2]
-    ]
-    
+    solucion = veridicar_numeros()
+    # Tablero inicial con algunas casillas llenas
+    tablero = copy.deepcopy(solucion)
+    for i in range(5):
+            fila= random.randint(0, 3)
+            columna= random.randint(0, 3)
+            tablero[fila][columna] = 0
+
+    print("Tablero inicial:")
+    for fila in tablero:
+        print(fila) 
+    print("Solución:") 
+    for fila in solucion:
+        print(fila)
+
     return tablero, solucion
 
 def verificar_solucion(tablero, solucion, fila, columna, valor):
