@@ -12,7 +12,7 @@ def inicializar_nivel(personaje_id):
     pygame.init()
     display = (800, 600)
     pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
-    pygame.display.set_caption("Sudoku - Nivel 1")
+    pygame.display.set_caption("Sudoku - Nivel 3")
     
     # Inicializar el módulo de sonido
     pygame.mixer.init()
