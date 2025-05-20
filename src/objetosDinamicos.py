@@ -5,6 +5,8 @@ from src import objetos as obj
 import random
 
 objetos_dinamicos = []
+objetos = []
+velocidad_caida = 0.02  # velocidad con la que los objetos bajan
 
 def generar_objetos_dinamicos():
     """Genera dos objetos 3D dinámicos con coordenadas aleatorias donde z=0"""
@@ -39,3 +41,6 @@ def dibujar_objetos_dinamicos():
             glColor3f(1.0, 0.5, 0.0)  # Naranja
             obj.draw_pyramid((0, 0, 0))  # Representa reducción de errores
         glPopMatrix()
+
+
+
