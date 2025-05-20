@@ -66,10 +66,17 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
             elif event.key == pygame.K_t:  # Tecla T para mostrar/ocultar texto
                 config['mostrar_texto'] = not config.get('mostrar_texto', True)
             elif event.key == pygame.K_y:
-                config['mostrar_tablero'] = not config.get('mostrar_tablero', True)
-            
+                    # Si ya está oculto por el usuario, volver a mostrar
+                if estado_juego['forzar_ocultar_tablero']:
+                    estado_juego['forzar_ocultar_tablero'] = False
+                    estado_juego['estado_tablero_visible'] = True
+                else:
+                    estado_juego['forzar_ocultar_tablero'] = True
+                    estado_juego['estado_tablero_visible'] = False
+
+                config['mostrar_tablero'] = estado_juego['estado_tablero_visible']    
             # Manejo de entrada para el Sudoku
-            elif event.key in [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4,pygame.K_5,pygame.K_6]:
+            elif event.key in [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4,pygame.K_5,pygame.K_6,pygame.K_7, pygame.K_8, pygame.K_9]:
                 # Obtener el valor numérico de la tecla
                 input_value = event.key - pygame.K_0
                 # Si hay una celda seleccionada y está vacía en el tablero original
@@ -121,7 +128,7 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
                                 elif decision_game_over == 'salir':
                                     pygame.quit()
                                     return "salir"
-            elif event.key in [pygame.K_7, pygame.K_8, pygame.K_9, pygame.K_0]:
+            elif event.key in [pygame.K_0]:
                 if estado_juego['selected_cell'] is not None:
                     row, col = estado_juego['selected_cell']
                     if tablero[row][col] == 0 and event.key not in [pygame.K_LEFT,pygame.K_RIGHT,pygame.K_UP,pygame.K_DOWN]: # Corregido K_RIGTH a K_RIGHT
@@ -155,18 +162,18 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
                 y = config['display'][1] - y  # Invertir Y para OpenGL
                 
                 # Calcular posición del tablero
-                cell_size = 50
-                board_width = 6 * cell_size
-                board_height = 6 * cell_size
-                board_x = config['display'][0] - board_width - 20
-                board_y = config['display'][1] - board_height -20
+                cell_size = 40
+                board_width = 9 * cell_size
+                board_height = 9 * cell_size
+                board_x = config['display'][0] - board_width - 40
+                board_y = config['display'][1] - board_height - 40
                 
                 # Verificar si el clic está dentro del tablero
                 if (board_x <= x <= board_x + board_width and
                     board_y <= y <= board_y + board_height):
                     # Calcular la celda seleccionada
                     col = int((x - board_x) / cell_size)
-                    row = 5 - int((y - board_y) / cell_size)  # Invertir filas
+                    row = 8 - int((y - board_y) / cell_size)  # Invertir filas
                     
                     # Actualizar celda seleccionada
                     estado_juego['selected_cell'] = (row, col)
