@@ -57,6 +57,8 @@ def renderizar_escena(config, estado_juego, tablero):
     # Mostrar información del nivel SOLO si mostrar_texto está activo
     if config.get('mostrar_texto', True):
         dibujar_label_texto(f"Nivel 1 - Sudoku Presina la Tecla T quitar Texto", pos_x=10, pos_y=580, tam=24)
+        dibujar_label_texto("Sudoku se oculta si tiempo < 20s o si presionas Y", pos_x=10, pos_y=520, tam=18)
+        dibujar_label_texto("Sudoku aparece cuando tiempo ≥ 60s", pos_x=10, pos_y=490, tam=18)
         dibujar_label_texto(f"Usa las flechas para mover al personaje", pos_x=10, pos_y=550, tam=18)
         dibujar_label_texto(f"Presiona ESC para salir", pos_x=10, pos_y=490, tam=18)
         dibujar_label_texto(f"Luz: {'Encendida' if config['luz_encendida'] else 'Apagada'}", pos_x=10, pos_y=460, tam=18)

@@ -39,8 +39,10 @@ def iniciar_nivel3(personaje_id):
         'last_insertion': None,
         'correct_answers': 0,
         'tiempo_inicio': pygame.time.get_ticks(),
-        'tiempo_maximo': 150,
-        'tiempo_restante': 150
+        'tiempo_maximo': 100,
+        'tiempo_restante': 120,
+        'estado_tablero_visible': False,
+        'forzar_ocultar_tablero': False
     }
     tiempo_inicio = pygame.time.get_ticks()
     # Bucle principal del juego
@@ -55,7 +57,7 @@ def iniciar_nivel3(personaje_id):
             return "reiniciar"
         elif accion == "back":
             return "back"
-            
+             
         # Manejar movimiento del personaje
         manejar_movimiento(config,estado_juego)
 
@@ -122,7 +124,17 @@ def iniciar_nivel3(personaje_id):
                     return 'menu'
                 elif resultado == 'salir':
                     return 'salir'
+                            
+            tiempo_restante = estado_juego['tiempo_restante']
 
+            if not estado_juego['forzar_ocultar_tablero']:
+                if tiempo_restante >= 60:
+                    estado_juego['estado_tablero_visible'] = True
+                elif tiempo_restante < 20:
+                    estado_juego['estado_tablero_visible'] = False
+
+            # Aplicar a config siempre
+            config['mostrar_tablero'] = estado_juego['estado_tablero_visible']
         
         # Actualizar la pantalla
         pygame.display.flip()
