@@ -2,31 +2,41 @@ import pygame
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from src.textos import dibujar_label_texto
+import random
+import copy
+
+
+def generar_matriz_9x9():
+    matriz = []
+    columnas = [set() for _ in range(9)]  # Listas de números usados por columna
+
+    while len(matriz) < 9:
+        fila = random.sample(range(1, 10), 9)
+        # Verificar que no repite en columnas
+        if all(fila[i] not in columnas[i] for i in range(9)):
+            matriz.append(fila)
+            for i in range(9):
+                columnas[i].add(fila[i])
+    return matriz
+
 
 def crear_tablero_sudoku():
-    tablero = [
-        [5, 3, 0, 0, 7, 0, 0, 0, 0],
-        [6, 0, 0, 1, 9, 5, 0, 0, 0],
-        [0, 9, 8, 0, 0, 0, 0, 6, 0],
-        [8, 0, 0, 0, 6, 0, 0, 0, 3],
-        [4, 0, 0, 8, 0, 3, 0, 0, 1],
-        [7, 0, 0, 0, 2, 0, 0, 0, 6],
-        [0, 6, 0, 0, 0, 0, 2, 8, 0],
-        [0, 0, 0, 4, 1, 9, 0, 0, 5],
-        [0, 0, 0, 0, 8, 0, 0, 7, 9],
-    ]
-    # Tablero original 
-    solucion = [
-        [5, 3, 4, 6, 7, 8, 9, 1, 2],
-        [6, 7, 2, 1, 9, 5, 3, 4, 8],
-        [1, 9, 8, 3, 4, 2, 5, 6, 7],
-        [8, 5, 9, 7, 6, 1, 4, 2, 3],
-        [4, 2, 6, 8, 5, 3, 7, 9, 1],
-        [7, 1, 3, 9, 2, 4, 8, 5, 6],
-        [9, 6, 1, 5, 3, 7, 2, 8, 4],
-        [2, 8, 7, 4, 1, 9, 6, 3, 5],
-        [3, 4, 5, 2, 8, 6, 1, 7, 9],
-    ]
+    """Crea el tablero de Sudoku y su solución"""
+    # Tablero inicial con algunas casillas llenas
+    solucion = generar_matriz_9x9()
+    # Tablero inicial con algunas casillas llenas
+    tablero = copy.deepcopy(solucion)
+    for i in range(30):
+            fila= random.randint(0, 8)
+            columna= random.randint(0, 8)
+            tablero[fila][columna] = 0
+
+    print("Tablero inicial:")
+    for fila in tablero:
+        print(fila) 
+    print("Solución:") 
+    for fila in solucion:
+        print(fila)
     return tablero, solucion
 
 def verificar_solucion(tablero, solucion, fila, columna, valor):
