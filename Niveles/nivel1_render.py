@@ -51,14 +51,17 @@ def renderizar_escena(config, estado_juego, tablero):
     
     # Mostrar información del nivel SOLO si mostrar_texto está activo
     if config.get('mostrar_texto', True):
-        dibujar_label_texto(f"Nivel 1 - Sudoku Presina la Tecla T quitar Texto", pos_x=10, pos_y=580, tam=24)
-        dibujar_label_texto(f"Usa las flechas para mover al personaje", pos_x=10, pos_y=550, tam=18)
-        dibujar_label_texto(f"Presiona ESC para salir", pos_x=10, pos_y=490, tam=18)
-        dibujar_label_texto(f"Luz: {'Encendida' if config['luz_encendida'] else 'Apagada'}", pos_x=10, pos_y=460, tam=18)
-        dibujar_label_texto(f"Errores: {estado_juego['error_count']}", pos_x=10, pos_y=430, tam=18)
-        dibujar_label_texto(f"Aciertos: {estado_juego['correct_answers']}", pos_x=10, pos_y=400, tam=18)
-        dibujar_label_texto(f"Cubo vere: pista", pos_x=10, pos_y=360, tam=18)
-        
+        dibujar_label_texto(f"Nivel 1 - Sudoku Presiona la Tecla T quitar/mostrar instrucciones", pos_x=10, pos_y=580, tam=20)
+        dibujar_label_texto(f"Usa las flechas para mover al personaje", pos_x=10, pos_y=550, tam=15)
+        dibujar_label_texto(f"Usa el mouse para seleccionar las celdas", pos_x=10, pos_y=520, tam=15)
+        dibujar_label_texto(f"Presiona 1-4 para insertar un número en la celda seleccionada", pos_x=10, pos_y=490, tam=15)
+        dibujar_label_texto(f"Presiona ESC para salir", pos_x=10, pos_y=460, tam=15)
+        dibujar_label_texto(f"Luz: {'Encendida' if config['luz_encendida'] else 'Apagada'}", pos_x=10, pos_y=430, tam=15)
+        dibujar_label_texto(f"Errores: {estado_juego['error_count']}", pos_x=10, pos_y=400, tam=15)
+        dibujar_label_texto(f"Aciertos: {estado_juego['correct_answers']}", pos_x=10, pos_y=370, tam=15)
+        dibujar_label_texto(f"Objeto Verde: +1 acierto", pos_x=10, pos_y=340, tam=15)
+        dibujar_label_texto(f"No puede haber 2 numeros iguales en una fila o columna", pos_x=10, pos_y=310, tam=15)
+        dibujar_label_texto(f"Objetivo: Completa el Sudoku", pos_x=10, pos_y=280, tam=15)
     # Mostrar mensaje de tecla no válida si está activo
     if estado_juego.get('mostrar_mensaje_tecla', False):
         dibujar_label_texto(estado_juego['mensaje_tecla'], pos_x=config['display'][0]//2 - 100, pos_y=config['display'][1]//2, tam=36, color=(255, 0, 0))
