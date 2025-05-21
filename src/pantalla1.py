@@ -52,7 +52,7 @@ def pantalla_inicial():
                 dibujar_label_texto(texto, pos_x=x, pos_y=y, tam=28)
 
         # Indicador de selección
-        dibujar_label_texto("Usar las flechas para seleccionae", pos_x=150, pos_y=190, tam=15)
+        dibujar_label_texto("Usar las flechas para seleccionar opcion", pos_x=150, pos_y=190, tam=15)
         dibujar_label_texto("Presiona Enter para continuar", pos_x=150, pos_y=170, tam=15)
 
         # Créditos
