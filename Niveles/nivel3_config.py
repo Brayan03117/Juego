@@ -58,7 +58,7 @@ def inicializar_nivel(personaje_id):
         'clock': pygame.time.Clock(),
         'font': pygame.font.SysFont('Arial', 30),
         'pista_activa': False,
-        'pista': [{"tipo": "pista", "pos": (-5, 5, 0.0), "radio": 2.5}],
+        'pista': [{"tipo": "pista", "pos": (-5, 0, 0.0), "radio": 2.5}],
         'pistas_disponibles': 1,
         'pausa': False
     }
