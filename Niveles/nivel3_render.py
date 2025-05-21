@@ -57,15 +57,15 @@ def renderizar_escena(config, estado_juego, tablero):
     # Mostrar información del nivel SOLO si mostrar_texto está activo
     if config.get('mostrar_texto', True):
         dibujar_label_texto(f"Nivel 3 - Sudoku Presiona la Tecla T quitar/mostrar instrucciones", pos_x=10, pos_y=580, tam=20)
-        dibujar_label_texto("Sudoku se oculta si tiempo < 20s o si presionas Y", pos_x=10, pos_y=520, tam=15)
-        dibujar_label_texto("Sudoku aparece cuando tiempo ≥ 60s", pos_x=10, pos_y=550, tam=15)
+        dibujar_label_texto("Captura los objetos para obtner mas recursos", pos_x=10, pos_y=520, tam=15)
+        dibujar_label_texto("Presiona Q para detener el tiempo", pos_x=10, pos_y=550, tam=15)
         dibujar_label_texto(f"Usa las flechas para mover al personaje", pos_x=10, pos_y=550, tam=15)
         dibujar_label_texto(f"Usa el mouse para seleccionar las celdas", pos_x=10, pos_y=520, tam=15)
         dibujar_label_texto(f"Presiona 1-9 para insertar un número en la celda seleccionada", pos_x=10, pos_y=490, tam=15)
         dibujar_label_texto(f"Presiona ESC para salir", pos_x=10, pos_y=460, tam=15)
         dibujar_label_texto(f"Presiona la tecla Y para ocultar el Sudoku", pos_x=10, pos_y=430, tam=15)
         dibujar_label_texto(f"Luz: {'Encendida' if config['luz_encendida'] else 'Apagada'}", pos_x=10, pos_y=400, tam=15)
-        dibujar_label_texto(f"Errores: {estado_juego['error_count']}", pos_x=10, pos_y=370, tam=15)
+        dibujar_label_texto(f"Game over 5 errores", pos_x=10, pos_y=370, tam=15)
         dibujar_label_texto(f"Aciertos: {estado_juego['correct_answers']}", pos_x=10, pos_y=340, tam=15)
         dibujar_label_texto(f"Objeto azul: +10 segundos", pos_x=10, pos_y=310, tam=15)
         dibujar_label_texto(f"Objeto Naranja: -1 error", pos_x=10, pos_y=280, tam=15)
@@ -76,6 +76,9 @@ def renderizar_escena(config, estado_juego, tablero):
     # Mostrar el cronómetro en rojo y abajo
     tiempo_str = f"Tiempo restante: {estado_juego.get('tiempo_restante', 0)}s"
     dibujar_label_texto(tiempo_str, pos_x=config['display'][0] // 2 - 50, pos_y=30, tam=20, color=(255, 0, 0))
+
+    # Mostrar el cronómetro en rojo y abajo
+    dibujar_label_texto(f"Errores: {estado_juego['error_count']}", pos_x=10, pos_y=30, tam=15, color=(0,255,0))
 
     # Mostrar "PAUSA" si el juego está en pausa
     if config['pausa']:
