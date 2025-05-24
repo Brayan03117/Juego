@@ -37,13 +37,13 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
             elif event.key == pygame.K_q:
                 config['pausa'] = not config['pausa']
 
-            # Movimiento de cámara
-            elif event.key == pygame.K_w:
-                if config['cam_z'] < 20:
-                    config['cam_z'] += 0.5
-            elif event.key == pygame.K_s:
-                if config['cam_z'] > 10:
-                    config['cam_z'] -= 0.5
+            # Movimiento de cámara (desactivado)
+            #elif event.key == pygame.K_w:
+            #    if config['cam_z'] < 20:
+            #        config['cam_z'] += 0.5
+            #elif event.key == pygame.K_s:
+            #    if config['cam_z'] > 10:
+            #        config['cam_z'] -= 0.5
             #elif event.key == pygame.K_a:
             #    if config['cam_x'] < 20:
             #        config['cam_x'] += 0.5
@@ -56,13 +56,13 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
             #elif event.key == pygame.K_x:
             #    if config['cam_y'] > -10: 
             #        config['cam_y'] -= 0.5
-            # Control de iluminación
-            elif event.key == pygame.K_l:  # Tecla L para apagar la luz
-                config['luz_encendida'] = False
-                glDisable(GL_LIGHTING)
-            elif event.key == pygame.K_k:  # Tecla K para encender la luz
-                config['luz_encendida'] = True
-                glEnable(GL_LIGHTING)
+            # Control de iluminación (desactivado)
+            #elif event.key == pygame.K_l:  # Tecla L para apagar la luz
+            #    config['luz_encendida'] = False
+            #    glDisable(GL_LIGHTING)
+            #elif event.key == pygame.K_k:  # Tecla K para encender la luz
+            #    config['luz_encendida'] = True
+            #    glEnable(GL_LIGHTING)
             elif event.key == pygame.K_t:  # Tecla T para mostrar/ocultar texto
                 config['mostrar_texto'] = not config.get('mostrar_texto', True)
             elif event.key == pygame.K_y:
