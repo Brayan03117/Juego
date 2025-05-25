@@ -2,6 +2,13 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 import pygame
 from src import objetos as obj
+import os
+import sys
+
+def ruta_absoluta(relativa):
+    if getattr(sys, 'frozen', False):
+        return os.path.join(sys._MEIPASS, relativa)
+    return os.path.join(os.path.dirname(__file__), relativa)
 
 piedra_textura_id = None
 cilindro_textura_id = None
@@ -101,22 +108,22 @@ def dibujar_suelo(textura_id):
 
 # Cargar texturas de las paredes y suelo
 fondos_rutas = [
-    "imagenes/paisaje.jpg",
-    "imagenes/paisaje2.jpg",
-    "imagenes/paisaje3.jpg",
-    "imagenes/paisaje4.jpeg",
-    "imagenes/paisaje5.jpeg",
-    "imagenes/paisaje6.jpg",
-    "imagenes/paisaje7.jpg",
-    "imagenes/paisaje8.png",
-    "imagenes/paisaje9.png",
-    "imagenes/paisaje10.png",
-    "imagenes/paisaje11.png",
-    "imagenes/paisaje12.png",
-    "imagenes/paisaje13.png",
-    "imagenes/paisaje14.png",
-    "imagenes/paisaje15.png",
-    "imagenes/suelo.jpg"
+    ruta_absoluta("imagenes/paisaje.jpg"),
+    ruta_absoluta("imagenes/paisaje2.jpg"),
+    ruta_absoluta("imagenes/paisaje3.jpg"),
+    ruta_absoluta("imagenes/paisaje4.jpeg"),
+    ruta_absoluta("imagenes/paisaje5.jpeg"),
+    ruta_absoluta("imagenes/paisaje6.jpg"),
+    ruta_absoluta("imagenes/paisaje7.jpg"),
+    ruta_absoluta("imagenes/paisaje8.png"),
+    ruta_absoluta("imagenes/paisaje9.png"),
+    ruta_absoluta("imagenes/paisaje10.png"),
+    ruta_absoluta("imagenes/paisaje11.png"),
+    ruta_absoluta("imagenes/paisaje12.png"),
+    ruta_absoluta("imagenes/paisaje13.png"),
+    ruta_absoluta("imagenes/paisaje14.png"),
+    ruta_absoluta("imagenes/paisaje15.png"),
+    ruta_absoluta("imagenes/suelo.jpg")
 ]
 
 fondos_texturas = ["imagenes/madera.jpg"]
@@ -125,8 +132,6 @@ fondos_texturas = ["imagenes/madera.jpg"]
 def inicializar_fondos():
     global fondos_texturas,piedra_textura_id, cilindro_textura_id
     fondos_texturas = [cargar_textura(ruta) for ruta in fondos_rutas]
-    piedra_textura_id = cargar_textura("Imagenes/piedra.jpg")      # Textura para piedra
-    cilindro_textura_id = cargar_textura("Imagenes/madera.jpg")  # Textura para cilindro
     inicializar_laberinto()  # Inicializar laberinto al cargar texturas
 
 # Dibujar escenario completo con fondo y paredes laterales y suelo
