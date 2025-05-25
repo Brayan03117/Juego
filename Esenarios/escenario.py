@@ -6,8 +6,10 @@ import sys
 
 def ruta_absoluta(relativa):
     if getattr(sys, 'frozen', False):
-        return os.path.join(sys._MEIPASS, relativa)
-    return os.path.join(os.path.dirname(__file__), relativa)
+        base = sys._MEIPASS
+    else:
+        base = os.path.abspath(".")  # usa raíz del proyecto
+    return os.path.join(base, relativa)
 
 # Cargar imagen como textura
 def cargar_textura(ruta):
@@ -96,14 +98,14 @@ def dibujar_suelo(textura_id):
 
 # Cargar texturas de las paredes y suelo
 fondos_rutas = [
-    ruta_absoluta("imagenes/paisaje.jpg"),
-    ruta_absoluta("imagenes/paisaje2.jpg"),
-    ruta_absoluta("imagenes/paisaje3.jpg"),
-    ruta_absoluta("imagenes/paisaje4.jpeg"),
-    ruta_absoluta("imagenes/paisaje5.jpeg"),
-    ruta_absoluta("imagenes/paisaje6.jpg"),
-    ruta_absoluta("imagenes/paisaje7.jpg"),
-    ruta_absoluta("imagenes/suelo.jpg")
+    ruta_absoluta(r"imagenes\paisaje.jpg"),
+    ruta_absoluta(r"imagenes\paisaje2.jpg"),
+    ruta_absoluta(r"imagenes\paisaje3.jpg"),
+    ruta_absoluta(r"imagenes\paisaje4.jpeg"),
+    ruta_absoluta(r"imagenes\paisaje5.jpeg"),
+    ruta_absoluta(r"imagenes\paisaje6.jpg"),
+    ruta_absoluta(r"imagenes\paisaje7.jpg"),
+    ruta_absoluta(r"imagenes\suelo.jpg")
 ]
 
 fondos_texturas = []
