@@ -3,6 +3,15 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 from pygame.locals import *
 from src.textos import dibujar_label_texto
+import os
+import sys
+
+def ruta_absoluta(relativa):
+    if getattr(sys, 'frozen', False):
+        base = sys._MEIPASS
+    else:
+        base = os.path.abspath(".")  # usa raíz del proyecto
+    return os.path.join(base, relativa)
 
 opciones = ["Seleccionar Personaje", "Salir"]
 coordenadas_opciones = [(150, 280), (150, 230)]
@@ -12,7 +21,7 @@ def pantalla_inicial():
     global seleccion_actual
     pygame.init()
     pygame.mixer.init()
-    pygame.mixer.music.load("Sonidos/Tetris.mp3")
+    pygame.mixer.music.load(ruta_absoluta(r"sonidos\Tetris.mp3"))
     pygame.mixer.music.play(-1)  # -1 para que se repita en bucle
     display = (800, 600)
     pygame.display.set_mode(display, DOUBLEBUF | OPENGL)

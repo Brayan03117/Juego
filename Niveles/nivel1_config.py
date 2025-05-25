@@ -5,6 +5,14 @@ import os
 import random
 from pygame.locals import DOUBLEBUF, OPENGL  # Añadir esta línea
 from Esenarios import escenarioObjetos1 as es
+import sys
+
+def ruta_absoluta(relativa):
+    if getattr(sys, 'frozen', False):
+        base = sys._MEIPASS
+    else:
+        base = os.path.abspath(".")  # usa raíz del proyecto
+    return os.path.join(base, relativa)
 
 def inicializar_nivel(personaje_id):
     """Inicializa todas las configuraciones del nivel"""
@@ -18,11 +26,11 @@ def inicializar_nivel(personaje_id):
     
     # Cargar los sonidos para cada escenario
     sonidos_escenarios = {
-        1: pygame.mixer.Sound(os.path.join("Sonidos", "BackOnTrack.mp3")),
-        2: pygame.mixer.Sound(os.path.join("Sonidos", "Cycles.mp3")),
-        3: pygame.mixer.Sound(os.path.join("Sonidos", "Electroman.mp3")),
-        4: pygame.mixer.Sound(os.path.join("Sonidos", "GeometricalDominator.mp3")),
-        5: pygame.mixer.Sound(os.path.join("Sonidos", "Jumper.mp3"))
+        1: pygame.mixer.Sound(ruta_absoluta(r"sonidos\BackOnTrack.mp3")),
+        2: pygame.mixer.Sound(ruta_absoluta(r"sonidos\Cycles.mp3")),
+        3: pygame.mixer.Sound(ruta_absoluta(r"sonidos\Electroman.mp3")),
+        4: pygame.mixer.Sound(ruta_absoluta(r"sonidos\GeometricalDominator.mp3")),
+        5: pygame.mixer.Sound(ruta_absoluta(r"sonidos\Jumper.mp3"))
     }
     
     # Reproducir la música inicial

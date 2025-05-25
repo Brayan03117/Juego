@@ -5,6 +5,15 @@ from Niveles.nivel1_config import cambiar_escenario_y_musica
 from Transiciones.GameOver import mostrar_game_over # <--- AÑADIR ESTA LÍNEA
 from Esenarios.escenarioObjetos1 import obtener_obstaculos
 # Se eliminaron las importaciones de tkinter ya que no se usan ventanas emergentes
+import os
+import sys
+
+def ruta_absoluta(relativa):
+    if getattr(sys, 'frozen', False):
+        base = sys._MEIPASS
+    else:
+        base = os.path.abspath(".")  # usa raíz del proyecto
+    return os.path.join(base, relativa)
 
 
 def manejar_eventos(config, estado_juego, tablero, solucion):
@@ -84,7 +93,7 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
                             estado_juego['correct_answers'] += 1
                             config['sonidos_escenarios'][config['sonido_actual']].stop()
                             # Reproducir sonido de felicitación y esperar a que termine
-                            sonido_feli = pygame.mixer.Sound("sonidos/feli.mp3")
+                            sonido_feli = pygame.mixer.Sound(ruta_absoluta(r"sonidos\feli.mp3"))
                             sonido_feli.play()
                             while pygame.mixer.get_busy():
                                 pygame.time.delay(10)

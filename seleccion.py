@@ -14,6 +14,15 @@ from acciones import iluminacion
 from src.textos import dibujar_label_texto
 from Esenarios import escenario as es
 from src.textos import dibujar_label_texto
+import os
+import sys
+
+def ruta_absoluta(relativa):
+    if getattr(sys, 'frozen', False):
+        base = sys._MEIPASS
+    else:
+        base = os.path.abspath(".")  # usa raíz del proyecto
+    return os.path.join(base, relativa)
 
 
 
@@ -78,7 +87,7 @@ def main():
     global personaje_posiciones
     pygame.init()
     pygame.mixer.init()
-    pygame.mixer.music.load("Sonidos/Jumper.mp3")
+    pygame.mixer.music.load(ruta_absoluta(r"sonidos\Jumper.mp3"))
     pygame.mixer.music.play(-1)
     display = (800, 600)
     pygame.display.quit()

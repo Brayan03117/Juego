@@ -6,6 +6,14 @@ import random
 from pygame.locals import DOUBLEBUF, OPENGL  # Añadir esta línea
 from Esenarios import escenarioObjetos2 as es
 from src.objetosDinamicos import generar_objetos_dinamicos
+import sys
+
+def ruta_absoluta(relativa):
+    if getattr(sys, 'frozen', False):
+        base = sys._MEIPASS
+    else:
+        base = os.path.abspath(".")  # usa raíz del proyecto
+    return os.path.join(base, relativa)
 
 def inicializar_nivel(personaje_id):
     """Inicializa todas las configuraciones del nivel"""
@@ -19,12 +27,12 @@ def inicializar_nivel(personaje_id):
     
     # Cargar los sonidos para cada escenario
     sonidos_escenarios = {
-        1: pygame.mixer.Sound(os.path.join("Sonidos", "TFR.mp3")),
-        2: pygame.mixer.Sound(os.path.join("Sonidos", "RD1.mp3")),
-        3: pygame.mixer.Sound(os.path.join("Sonidos", "RD2.mp3")),
-        4: pygame.mixer.Sound(os.path.join("Sonidos", "RD3.mp3")),
-        5: pygame.mixer.Sound(os.path.join("Sonidos", "RD4.mp3")),
-        6: pygame.mixer.Sound(os.path.join("Sonidos", "RD5.mp3"))
+        1: pygame.mixer.Sound(ruta_absoluta(r"sonidos\TFR.mp3")),
+        2: pygame.mixer.Sound(ruta_absoluta(r"sonidos\RD1.mp3")),
+        3: pygame.mixer.Sound(ruta_absoluta(r"sonidos\RD2.mp3")),
+        4: pygame.mixer.Sound(ruta_absoluta(r"sonidos\RD3.mp3")),
+        5: pygame.mixer.Sound(ruta_absoluta(r"sonidos\RD4.mp3")),
+        6: pygame.mixer.Sound(ruta_absoluta(r"sonidos\RD5.mp3"))
     }
     
     # Reproducir la música inicial
