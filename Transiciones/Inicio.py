@@ -143,8 +143,14 @@ def main():
     stopsonido() # Apagar el sonido al terminar de mostrar el título
 
     # Importar y ejecutar el main directamente
-    from main import main
-    main()
+    import importlib.util
+    import os
+
+    ruta_main = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "main.py")
+    spec = importlib.util.spec_from_file_location("main", ruta_main)
+    main_mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(main_mod)
+    main_mod.main()
 
 if __name__ == "__main__":
     main()
