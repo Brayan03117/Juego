@@ -10,7 +10,7 @@ from pygame.locals import *
 from time import time
 
 from acciones.renderizarTexto import cargar_textura_desde_texto, renderizar_texto_textura
-# from Sonidos.sonidos import sonido # Puedes agregar un sonido de Game Over si lo tienes
+# from sonidos.sonidos import sonido # Puedes agregar un sonido de Game Over si lo tienes
 
 # def stop_game_over_sound(): # Si agregas sonido, necesitarás una función para detenerlo
 #     pygame.mixer.music.stop()
@@ -21,10 +21,10 @@ def mostrar_game_over(display):
         pygame.mixer.init()
     
     try:
-        pygame.mixer.music.load("Sonidos/gameover.mp3") # Cargar la música
+        pygame.mixer.music.load("sonidos/gameover.mp3") # Cargar la música
         pygame.mixer.music.play(-1)  # Reproducir en bucle (-1)
     except pygame.error as e:
-        print(f"No se pudo cargar o reproducir la música: Sonidos/xSep.mp3 - {e}")
+        print(f"No se pudo cargar o reproducir la música: sonidos/xSep.mp3 - {e}")
 
 
     parpadeo_activo = True

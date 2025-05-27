@@ -19,12 +19,12 @@ def inicializar_nivel(personaje_id):
     
     # Cargar los sonidos para cada escenario
     sonidos_escenarios = {
-        1: pygame.mixer.Sound(os.path.join("Sonidos", "TFR.mp3")),
-        2: pygame.mixer.Sound(os.path.join("Sonidos", "RD1.mp3")),
-        3: pygame.mixer.Sound(os.path.join("Sonidos", "RD2.mp3")),
-        4: pygame.mixer.Sound(os.path.join("Sonidos", "RD3.mp3")),
-        5: pygame.mixer.Sound(os.path.join("Sonidos", "RD4.mp3")),
-        6: pygame.mixer.Sound(os.path.join("Sonidos", "RD5.mp3"))
+        1: pygame.mixer.Sound(os.path.join("sonidos", "TFR.mp3")),
+        2: pygame.mixer.Sound(os.path.join("sonidos", "RD1.mp3")),
+        3: pygame.mixer.Sound(os.path.join("sonidos", "RD2.mp3")),
+        4: pygame.mixer.Sound(os.path.join("sonidos", "RD3.mp3")),
+        5: pygame.mixer.Sound(os.path.join("sonidos", "RD4.mp3")),
+        6: pygame.mixer.Sound(os.path.join("sonidos", "RD5.mp3"))
     }
     
     # Reproducir la música inicial

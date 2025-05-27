@@ -12,7 +12,7 @@ def pantalla_inicial():
     global seleccion_actual
     pygame.init()
     pygame.mixer.init()
-    pygame.mixer.music.load("Sonidos/Tetris.mp3")
+    pygame.mixer.music.load("sonidos/Tetris.mp3")
     pygame.mixer.music.play(-1)  # -1 para que se repita en bucle
     display = (800, 600)
     pygame.display.set_mode(display, DOUBLEBUF | OPENGL)

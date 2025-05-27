@@ -18,12 +18,12 @@ def mostrar_felicitacion(display):
     
     try:
         # Cambiamos la música a una canción más festiva
-        pygame.mixer.music.load("Sonidos/Electroman.mp3") # Asegúrate de tener este archivo
+        pygame.mixer.music.load("sonidos/Electroman.mp3") # Asegúrate de tener este archivo
         pygame.mixer.music.play(-1)  # Reproducir en bucle (-1)
     except pygame.error as e:
         try:
             # Intentar con la canción original como respaldo
-            pygame.mixer.music.load("Sonidos/victory.mp3")
+            pygame.mixer.music.load("sonidos/victory.mp3")
             pygame.mixer.music.play(-1)
         except pygame.error as e2:
             print(f"No se pudo cargar o reproducir ninguna música de victoria: {e2}")
