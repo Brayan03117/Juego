@@ -226,13 +226,24 @@ def main():
         # Usar colores diferentes según el personaje seleccionado
         if seleccion_actual == 0:  # JESUSL
             color_texto = (1.0, 0.8, 0.0)  # Dorado
+            nivel_dificultad = "FÁCIL"
+            color_dificultad = (0.0, 1.0, 0.0)  # Verde brillante
         elif seleccion_actual == 1:  # TORCHICH
             color_texto = (1.0, 0.5, 0.0)  # Naranja
+            nivel_dificultad = "DIFÍCIL"
+            color_dificultad = (1.0, 0.0, 0.0)  # Rojo brillante
         else:  # DYSON
             color_texto = (0.0, 0.8, 1.0)  # Azul claro
+            nivel_dificultad = "MEDIO"
+            color_dificultad = (1.0, 1.0, 0.0)  # Amarillo brillante
             
         # Usar una escala mayor para hacer el texto más grande
-        renderizar_texto(f"PERSONAJE: {nombre_personaje}", display[0]/2 - 120, 20, escala=2.0, color=color_texto)
+        renderizar_texto(f"PERSONAJE: {nombre_personaje}", display[0]/2 - 120, 30, escala=2.0, color=color_texto)
+        
+        # Añadir texto de dificultad con efecto parpadeante
+        tiempo_actual = pygame.time.get_ticks()
+        if (tiempo_actual // 500) % 2 == 0:  # Parpadeo cada 500ms
+            renderizar_texto(f"DIFICULTAD: {nivel_dificultad}", display[0]/2 - 120, 10, escala=1.8, color=color_dificultad)
         
         # Restaurar matrices
         glEnable(GL_DEPTH_TEST)
@@ -241,7 +252,7 @@ def main():
         glMatrixMode(GL_PROJECTION)
         glPopMatrix()
         glMatrixMode(GL_MODELVIEW)
-        dibujar_label_texto(f"Presiona K para ver expresiones", pos_x=10, pos_y=580, tam=15)
+        dibujar_label_texto(f"Presiona K para ver expresiones y del 1 al 5 para ver algunos escenarios", pos_x=10, pos_y=580, tam=15)
 
 
         dibujar_label_texto("Selecciona tu personaje", pos_x=220, pos_y=550, tam=24)
