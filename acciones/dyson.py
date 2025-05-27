@@ -374,7 +374,7 @@ def pAsco(position):
     )
 
     # Ojos cuadrados como en el método original (visibles con rotación de cabeza)
-    set_color_rgb(10, 10, 10)  # Negro mate como en dibujar_ojos()
+    set_color_rgb(0,0,0)  # Negro mate como en dibujar_ojos()
     
     # Ojo izquierdo
     glPushMatrix()
@@ -863,7 +863,7 @@ def set_negro():
 
 def set_black():
     # Negro
-    glColor3f(10, 10, 10) # RGB: 0, 0, 0
+    glColor3f(0,0,0) # RGB: 0, 0, 0
 
 def set_robot_dark():
     # Robot Oscuro (Gris Oscuro)

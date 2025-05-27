@@ -51,7 +51,7 @@ def main():
 
                     if go_back_to_level_selection:
                         continue 
-                        break 
+                        
 
         elif opcion == "salir":
             break
