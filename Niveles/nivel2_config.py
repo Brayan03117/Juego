@@ -42,9 +42,9 @@ def inicializar_nivel(personaje_id):
         'sonido_actual': sonido_actual,
         'fondo_actual': 7,
         'jesus_posicion': 0,
-        'torchic_posicion': 0,
+        'torchic_posicion': 0,  # Siempre inicializar en 0
         'dyson_emocion': "original",
-        'dyson_posicion': 0,
+        'dyson_posicion': 0,  # Siempre inicializar en 0
         'luz_encendida': True,
         'cam_x': -4, 
         'cam_y': 0, 

@@ -113,10 +113,14 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
                             estado_juego['last_insertion'] = (row, col, input_value)
                             # Cambiar la emoción del personaje según el personaje seleccionado
                             if config['personaje_id'] == 1:  # Torchic
-                                config['torchic_posicion'] = config['torchic_posicion']+1
+                                # Solo cambiar posición si no ha alcanzado 4 errores
+                                if estado_juego['error_count'] < 4:
+                                    config['torchic_posicion'] = config['torchic_posicion']+1
                             elif config['personaje_id'] == 2:  # Dyson
                                 config['dyson_emocion'] = "sad"
-                                config['dyson_posicion'] = config['dyson_posicion']+1
+                                # Solo cambiar posición si no ha alcanzado 4 errores
+                                if estado_juego['error_count'] < 4:
+                                    config['dyson_posicion'] = config['dyson_posicion']+1
                             # Comprobar si se alcanzó el límite de errores
                             if estado_juego['error_count'] >= 5:
                                 # Detener todos los sonidos del nivel antes de mostrar Game Over

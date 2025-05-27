@@ -96,10 +96,14 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
                                 config['jesus_posicion'] = 5 + (estado_juego['error_count'] % 5)  # Poses 5,6,7,8,9
                             estado_juego['last_insertion'] = (row, col, input_value)
                             if config['personaje_id'] == 1:  # Torchic
-                                config['torchic_posicion'] = config['torchic_posicion']+1
+                                # Solo cambiar posición si no ha alcanzado 4 errores
+                                if estado_juego['error_count'] < 4:
+                                    config['torchic_posicion'] = config['torchic_posicion']+1
                             elif config['personaje_id'] == 2:  # Dyson
                                 config['dyson_emocion'] = "sad"
-                                config['dyson_posicion'] = config['dyson_posicion']+1
+                                # Solo cambiar posición si no ha alcanzado 4 errores
+                                if estado_juego['error_count'] < 4:
+                                    config['dyson_posicion'] = config['dyson_posicion']+1
                             if estado_juego['error_count'] >= 5:
                                 for sonido_escenario in config['sonidos_escenarios'].values():
                                     sonido_escenario.stop()

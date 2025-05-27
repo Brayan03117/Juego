@@ -10,6 +10,21 @@ from sonidos import sonidos as so
 
 def manejar_eventos(config, estado_juego, tablero, solucion):
     """Maneja todos los eventos del nivel"""
+    # Verificar si es la primera vez que se ejecuta esta función
+    if not hasattr(manejar_eventos, "inicializado"):
+        # Reiniciar posiciones de personajes
+        config['torchic_posicion'] = 0
+        config['dyson_posicion'] = 0
+        config['dyson_emocion'] = "original"
+        manejar_eventos.inicializado = True
+        print("[INIT] Posiciones de personajes reiniciadas a 0")
+    
+    # Depuración: Imprimir posiciones actuales
+    if config['personaje_id'] == 1:  # Torchic
+        print(f"[DEBUG] Torchic posición actual: {config['torchic_posicion']}, Errores: {estado_juego['error_count']}")
+    elif config['personaje_id'] == 2:  # Dyson
+        print(f"[DEBUG] Dyson posición actual: {config['dyson_posicion']}, Errores: {estado_juego['error_count']}")
+
     # Actualizar el tiempo de visualización del mensaje de tecla no válida
     if estado_juego.get('mostrar_mensaje_tecla', False):
         tiempo_actual = pygame.time.get_ticks()
@@ -100,10 +115,29 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
                             estado_juego['last_insertion'] = (row, col, input_value)
                             # Cambiar la emoción del personaje según el personaje seleccionado
                             if config['personaje_id'] == 1:  # Torchic
-                                config['torchic_posicion'] = config['torchic_posicion']+1
+                                # Solo cambiar posición si no ha alcanzado 4 errores
+                                if estado_juego['error_count'] <= 3:  # Cambiado de < 4 a <= 3 para mayor claridad
+                                    # Limitar la posición a un máximo de 4
+                                    if config['torchic_posicion'] < 4:
+                                        config['torchic_posicion'] += 1
+                                        print(f"Torchic posición incrementada a: {config['torchic_posicion']}, Errores: {estado_juego['error_count']}")
+                                    else:
+                                        print(f"Torchic ya alcanzó la posición máxima: {config['torchic_posicion']}")
+                                else:
+                                    print(f"No se incrementa posición de Torchic. Posición actual: {config['torchic_posicion']}, Errores: {estado_juego['error_count']}")
                             elif config['personaje_id'] == 2:  # Dyson
-                                config['dyson_emocion'] = "sad"
-                                config['dyson_posicion'] = config['dyson_posicion']+1
+                                config['dyson_emocion'] = "sad"  # Siempre cambia a triste
+                                # Solo cambiar posición si no ha alcanzado 4 errores
+                                if estado_juego['error_count'] <= 3:  # Cambiado de < 4 a <= 3 para mayor claridad
+                                    # Limitar la posición a un máximo de 4
+                                    if config['dyson_posicion'] < 4:
+                                        config['dyson_posicion'] += 1
+                                        print(f"Dyson posición incrementada a: {config['dyson_posicion']}, Errores: {estado_juego['error_count']}")
+                                    else:
+                                        print(f"Dyson ya alcanzó la posición máxima: {config['dyson_posicion']}")
+                                else:
+                                    print(f"No se incrementa posición de Dyson. Posición actual: {config['dyson_posicion']}, Errores: {estado_juego['error_count']}")
+
                             # Comprobar si se alcanzó el límite de errores
                             if estado_juego['error_count'] >= 5:
                                 # Detener todos los sonidos del nivel antes de mostrar Game Over
@@ -221,10 +255,22 @@ def manejar_movimiento(config,estado_juego):
                     if config['personaje_id'] == 0:  # JesusL
                         config['jesus_posicion'] = pygame.time.get_ticks() % 5  # Poses 0,1,2,3,4
                 elif obj_d["tipo"] == "errores":
+                    # Guardar el valor anterior de error_count
+                    error_anterior = estado_juego['error_count']
                     estado_juego['error_count'] = max(0, estado_juego['error_count'] - 1)
-                    print("¡Colisión con objeto de ERRORES! -1 error")
+                    print(f"¡Colisión con objeto de ERRORES! -1 error. Errores: {estado_juego['error_count']}")
+                    
+                    # Actualizar posición de personajes según el nuevo contador de errores
                     if config['personaje_id'] == 0:  # JesusL
                         config['jesus_posicion'] = pygame.time.get_ticks() % 5  # Poses 0,1,2,3,4
+                    elif config['personaje_id'] == 1 and error_anterior > 4 and estado_juego['error_count'] <= 4:  # Torchic
+                        # Si bajamos de 5 a 4 errores o menos, ajustar la posición
+                        config['torchic_posicion'] = min(4, estado_juego['error_count'])
+                        print(f"Ajustando posición de Torchic a: {config['torchic_posicion']}")
+                    elif config['personaje_id'] == 2 and error_anterior > 4 and estado_juego['error_count'] <= 4:  # Dyson
+                        # Si bajamos de 5 a 4 errores o menos, ajustar la posición
+                        config['dyson_posicion'] = min(4, estado_juego['error_count'])
+                        print(f"Ajustando posición de Dyson a: {config['dyson_posicion']}")
                     
         
         # Regenerar objetos para que se reubiquen
