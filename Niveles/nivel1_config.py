@@ -5,6 +5,15 @@ import os
 import random
 from pygame.locals import DOUBLEBUF, OPENGL  # Añadir esta línea
 from Esenarios import escenarioObjetos1 as es
+import os
+import sys
+
+def ruta_absoluta(relativa):
+    if getattr(sys, 'frozen', False):
+        base = sys._MEIPASS
+    else:
+        base = os.path.abspath(".")  # usa raíz del proyecto
+    return os.path.join(base, relativa)
 
 def inicializar_nivel(personaje_id):
     """Inicializa todas las configuraciones del nivel"""

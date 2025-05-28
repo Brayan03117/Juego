@@ -1,6 +1,15 @@
 import pygame
 import sys
 from pygame.locals import *
+import os
+import sys
+
+def ruta_absoluta(relativa):
+    if getattr(sys, 'frozen', False):
+        base = sys._MEIPASS
+    else:
+        base = os.path.abspath(".")  # usa raíz del proyecto
+    return os.path.join(base, relativa)
 
 def seleccion_nivel(personaje_id):
     """
@@ -15,7 +24,7 @@ def seleccion_nivel(personaje_id):
     # Inicializar pygame
     pygame.init()
     pygame.mixer.init()
-    pygame.mixer.music.load("sonidos/Cycles.mp3")
+    pygame.mixer.music.load(ruta_absoluta(r"sonidos\Cycles.mp3"))
     pygame.mixer.music.play(-1)
     
     # Configuración de la pantalla

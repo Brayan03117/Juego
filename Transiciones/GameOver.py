@@ -8,6 +8,15 @@ from OpenGL.GLU import *
 from OpenGL.GLUT import *
 from pygame.locals import *
 from time import time
+import os
+import sys
+
+def ruta_absoluta(relativa):
+    if getattr(sys, 'frozen', False):
+        base = sys._MEIPASS
+    else:
+        base = os.path.abspath(".")  # usa raíz del proyecto
+    return os.path.join(base, relativa)
 
 from acciones.renderizarTexto import cargar_textura_desde_texto, renderizar_texto_textura
 # from sonidos.sonidos import sonido # Puedes agregar un sonido de Game Over si lo tienes
@@ -21,7 +30,7 @@ def mostrar_game_over(display):
         pygame.mixer.init()
     
     try:
-        pygame.mixer.music.load("sonidos/gameover.mp3") # Cargar la música
+        pygame.mixer.music.load(ruta_absoluta(r"sonidos\gameover.mp3")) # Cargar la música
         pygame.mixer.music.play(-1)  # Reproducir en bucle (-1)
     except pygame.error as e:
         print(f"No se pudo cargar o reproducir la música: sonidos/xSep.mp3 - {e}")
@@ -31,8 +40,8 @@ def mostrar_game_over(display):
     tiempo_ultimo_parpadeo = time()
     intervalo_parpadeo = 0.5  # Segundos
 
-    fuente_grande = pygame.font.Font("Fuentes/PressStart2P-Regular.ttf", 60) # Un poco más grande para "GAME OVER"
-    fuente_pequena = pygame.font.Font("Fuentes/PressStart2P-Regular.ttf", 18)
+    fuente_grande = pygame.font.Font(ruta_absoluta(r"Fuentes\PressStart2P-Regular.ttf"), 60) # Un poco más grande para "GAME OVER"
+    fuente_pequena = pygame.font.Font(ruta_absoluta(r"Fuentes\PressStart2P-Regular.ttf"), 18)
 
     # Título "GAME OVER"
     titulo_game_over = "GAME OVER"

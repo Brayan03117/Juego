@@ -7,6 +7,15 @@ from Esenarios.escenarioObjetos2 import obtener_obstaculos
 from src.objetosDinamicos import obtener_objetos_dinamicos, generar_objetos_dinamicos
 from sonidos import sonidos as so
 # Se eliminaron las importaciones de tkinter ya que no se usan ventanas emergentes
+import os
+import sys
+
+def ruta_absoluta(relativa):
+    if getattr(sys, 'frozen', False):
+        base = sys._MEIPASS
+    else:
+        base = os.path.abspath(".")  # usa raíz del proyecto
+    return os.path.join(base, relativa)
 
 def manejar_eventos(config, estado_juego, tablero, solucion):
     """Maneja todos los eventos del nivel"""
@@ -95,7 +104,7 @@ def manejar_eventos(config, estado_juego, tablero, solucion):
                             estado_juego['last_insertion'] = (row, col, input_value)
                             # Incrementar contador de respuestas correctas
                             estado_juego['correct_answers'] += 1
-                            so.sonido("sonidos/feli.mp3")
+                            so.sonido(ruta_absoluta(r"sonidos\feli.mp3"))
                             # Cambiar escenario y música
                             cambiar_escenario_y_musica(config)
                             # Cambiar la emoción del personaje según el personaje seleccionado

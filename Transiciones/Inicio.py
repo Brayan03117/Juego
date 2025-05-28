@@ -8,6 +8,15 @@ from OpenGL.GLU import *
 from OpenGL.GLUT import *
 from pygame.locals import *
 from time import time
+import os
+import sys
+
+def ruta_absoluta(relativa):
+    if getattr(sys, 'frozen', False):
+        base = sys._MEIPASS
+    else:
+        base = os.path.abspath(".")  # usa raíz del proyecto
+    return os.path.join(base, relativa)
 
 from acciones.renderizarTexto import cargar_textura_desde_texto, renderizar_texto_textura
 from sonidos.sonidos import sonido
@@ -18,14 +27,14 @@ def stopsonido():
 def mostrar_titulo(display):
     glutInit()
     pygame.mixer.init()
-    sonido("sonidos/Tetris.mp3")  # Cambia la ruta según tu archivo de audio
+    sonido(ruta_absoluta(r"sonidos\Tetris.mp3"))  # Cambia la ruta según tu archivo de audio
 
     inicio = time()
     duracion = 3.0
     parpadeo = True
 
-    fuente_grande = pygame.font.Font("Fuentes/PressStart2P-Regular.ttf", 48)
-    fuente_pequena = pygame.font.Font("Fuentes/PressStart2P-Regular.ttf", 18)
+    fuente_grande = pygame.font.Font(ruta_absoluta(r"Fuentes\PressStart2P-Regular.ttf"), 48)
+    fuente_pequena = pygame.font.Font(ruta_absoluta(r"Fuentes\PressStart2P-Regular.ttf"), 18)
 
     # Título sin acentos y dividido en dos líneas
     titulo_linea1 = "LA GRAN AVENTURA"
